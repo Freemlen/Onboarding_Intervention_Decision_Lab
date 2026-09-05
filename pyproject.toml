@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "onboarding-intervention-decision-lab"
 version = "0.0.1"
-description = "Frozen v0.2.5 contract validation and synthetic journey construction"
+description = "Frozen v0.2.6 contract validation and synthetic journey construction"
 requires-python = ">=3.12,<3.13"
 dependencies = ["PyYAML==6.0.1", "numpy==2.1.3"]
 

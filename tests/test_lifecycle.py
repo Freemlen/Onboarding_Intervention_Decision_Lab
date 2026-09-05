@@ -13,7 +13,7 @@ from oidl.domain.lifecycle import (
 )
 
 GOLDEN = yaml.safe_load((Path(__file__).resolve().parents[1] /
-                        "contracts/Golden_Fixtures_v0.2.5.yaml").read_bytes())
+                        "contracts/Golden_Fixtures_v0.2.6.yaml").read_bytes())
 
 
 @pytest.mark.parametrize("fixture", GOLDEN["repeated_failure_fixtures"], ids=lambda f: f["id"])

@@ -1,8 +1,8 @@
-# ResearchSpec v0.2.5
+# ResearchSpec v0.2.6
 
 **Project:** Onboarding Intervention Decision Lab  
 **Status:** FINAL_PRE_IMPLEMENTATION  
-**Normative twin:** `ResearchSpec_v0.2.5.yaml`
+**Normative twin:** `ResearchSpec_v0.2.6.yaml`
 
 The sections below are a lossless human-readable rendering of the complete typed ResearchSpec tree. Field names are retained for direct lookup. Quoted values are strings; unquoted numbers, `true`/`false`, and `null` retain their machine types. Ordered items retain YAML sequence order. Requirements incorporated by linked-contract reference are the same in both twins.
 
@@ -10,35 +10,35 @@ The sections below are a lossless human-readable rendering of the complete typed
 
 **Root field:** `specification`
 
-- **`document_id`**: `"ResearchSpec_v0.2.5"`
+- **`document_id`**: `"ResearchSpec_v0.2.6"`
 - **`study_id`**: `"OIDL-ONBOARDING-ASSIST-001"`
-- **`version`**: `"0.2.5"`
+- **`version`**: `"0.2.6"`
 - **`status`**: `"FINAL_PRE_IMPLEMENTATION"`
-- **`human_readable_twin`**: `"ResearchSpec_v0.2.5.md"`
+- **`human_readable_twin`**: `"ResearchSpec_v0.2.6.md"`
 - **`required_linked_contracts`**:
   - **`dgp_parameter_card`**: `"DGP_Parameter_Sheet_v0.3.0"`
-  - **`statistical_analysis_plan`**: `"Statistical_Analysis_Plan_v0.3.0"`
+  - **`statistical_analysis_plan`**: `"Statistical_Analysis_Plan_v0.4.0"`
   - **`decision_rule`**: `"Decision_Rule_Spec_v0.3.0"`
   - **`guardrails`**: `"Guardrail_Spec_v0.3.0"`
   - **`oracle_protocol`**: `"Oracle_Benchmark_Spec_v0.4.0"`
-  - **`architecture`**: `"Architecture_v0.2.5"`
-  - **`contract_bundle`**: `"Contract_Bundle_v0.2.5"`
-  - **`slice_1`**: `"Slice_1_Definition_of_Done_v0.2.5"`
-  - **`golden_fixtures`**: `"Golden_Fixtures_v0.2.5"`
+  - **`architecture`**: `"Architecture_v0.2.6"`
+  - **`contract_bundle`**: `"Contract_Bundle_v0.2.6"`
+  - **`slice_1`**: `"Slice_1_Definition_of_Done_v0.2.6"`
+  - **`golden_fixtures`**: `"Golden_Fixtures_v0.2.6"`
 - **`equivalence_rule`**:
   - **`normative`**: `true`
   - **`rule`**: `"Markdown and YAML encode the same complete typed normative tree. Markdown is a lossless sectioned rendering of this tree: identical keys, ordered lists, scalar values, types, formulas, rationales and prohibitions. A mismatch fails release; neither form may be silently preferred. Linked-contract requirements are incorporated identically by reference in both twins."`
-- **`bundle_release`**: `"0.2.5"`
+- **`bundle_release`**: `"0.2.6"`
 - **`semantic_versions`**:
-  - **`research_spec`**: `"0.2.5"`
-  - **`architecture`**: `"0.2.5"`
+  - **`research_spec`**: `"0.2.6"`
+  - **`architecture`**: `"0.2.6"`
   - **`dgp`**: `"0.3.0"`
-  - **`sap`**: `"0.3.0"`
+  - **`sap`**: `"0.4.0"`
   - **`decision_rule`**: `"0.3.0"`
   - **`guardrails`**: `"0.3.0"`
   - **`oracle_protocol`**: `"0.4.0"`
-  - **`slice_1`**: `"0.2.5"`
-  - **`golden_fixtures`**: `"0.2.5"`
+  - **`slice_1`**: `"0.2.6"`
+  - **`golden_fixtures`**: `"0.2.6"`
 
 ## 1. Scope and claim boundary
 
@@ -687,12 +687,279 @@ The sections below are a lossless human-readable rendering of the complete typed
   - `"covariate-adaptive algorithm"`
   - `"seed chosen after outcome inspection"`
 - **`allocation_probability_interpretation`**: `"0.5 is the marginal inclusion probability under the committed exact-balance block assignment distribution; not an independent Bernoulli draw or a constant conditional probability after observing preceding slots."`
+- **`balance_diagnostics`**:
+  - **`authoritative_rule`**: `"Statistical_Analysis_Plan_v0.4.0.md section 4.3 is exhaustive for randomization_audit.json and its baseline_balance.json projection."`
+  - **`method_id`**: `"OIDL-PRE-T0-BALANCE-SMD"`
+  - **`method_version`**: `"1.0.0"`
+  - **`scope`**: `"Existing Slice 1 descriptive baseline audit only. No new covariate, hypothesis, p-value, readiness threshold, exclusion, estimator, outcome or HTE analysis."`
+  - **`selection_rationale`**: `"Intentionally select the seven existing pre-T0 adjustment-source fields from SAP section 2.5. This is an explicit audit-source selection, not an inference that the sensitivity design matrix defines balance. The diagnostic catalogue uses all categorical levels, positively oriented language match and the original load value; the Lin basis remains unchanged."`
+  - **`catalogue`**:
+    - Item 1:
+      - **`order`**: `1`
+      - **`variable_id`**: `"acquisition_channel"`
+      - **`source_table`**: `"persons_and_t0_snapshot"`
+      - **`source_field`**: `"acquisition_channel"`
+      - **`source_type`**: `"CATEGORICAL"`
+      - **`representation`**: `"ALL_LEVEL_INDICATORS"`
+      - **`level_order`**:
+        - `"ORGANIC"`
+        - `"PAID"`
+        - `"AFFILIATE"`
+      - **`omit_reference_level`**: `false`
+      - **`encoding`**: `"Exact case-sensitive labels; one 0/1 indicator for each listed level; no omitted reference."`
+      - **`diagnostic_ids`**:
+        - `"acquisition_channel__ORGANIC"`
+        - `"acquisition_channel__PAID"`
+        - `"acquisition_channel__AFFILIATE"`
+      - **`source_time_rule`**: `"DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other six fields; all applicable values and their source times must be present at or before T0."`
+      - **`applicability`**: `"Required and applicable for every randomized eligible person in every reported scope."`
+    - Item 2:
+      - **`order`**: `2`
+      - **`variable_id`**: `"device_verification_route"`
+      - **`source_table`**: `"persons_and_t0_snapshot"`
+      - **`source_field`**: `"device_verification_route"`
+      - **`source_type`**: `"CATEGORICAL"`
+      - **`representation`**: `"ALL_LEVEL_INDICATORS"`
+      - **`level_order`**:
+        - `"MOBILE_APP"`
+        - `"MOBILE_WEB"`
+        - `"DESKTOP_WEB"`
+      - **`omit_reference_level`**: `false`
+      - **`encoding`**: `"Exact case-sensitive labels; one 0/1 indicator for each listed level; no omitted reference."`
+      - **`diagnostic_ids`**:
+        - `"device_verification_route__MOBILE_APP"`
+        - `"device_verification_route__MOBILE_WEB"`
+        - `"device_verification_route__DESKTOP_WEB"`
+      - **`source_time_rule`**: `"DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other six fields; all applicable values and their source times must be present at or before T0."`
+      - **`applicability`**: `"Required and applicable for every randomized eligible person in every reported scope."`
+    - Item 3:
+      - **`order`**: `3`
+      - **`variable_id`**: `"language_service_match"`
+      - **`source_table`**: `"persons_and_t0_snapshot"`
+      - **`source_field`**: `"language_service_match"`
+      - **`source_type`**: `"BINARY"`
+      - **`representation`**: `"BINARY_IDENTITY"`
+      - **`level_order`**: `[]`
+      - **`omit_reference_level`**: `false`
+      - **`encoding`**: `"Logical 1=service language matches; logical 0=does not match. Use x=language_service_match, NOT 1-language_service_match. Lossless physical Boolean storage maps true to 1 and false to 0."`
+      - **`diagnostic_ids`**:
+        - `"language_service_match"`
+      - **`source_time_rule`**: `"DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other six fields; all applicable values and their source times must be present at or before T0."`
+      - **`applicability`**: `"Required and applicable for every randomized eligible person in every reported scope."`
+    - Item 4:
+      - **`order`**: `4`
+      - **`variable_id`**: `"declared_experience"`
+      - **`source_table`**: `"persons_and_t0_snapshot"`
+      - **`source_field`**: `"declared_experience"`
+      - **`source_type`**: `"ORDERED_CATEGORICAL"`
+      - **`representation`**: `"ALL_LEVEL_INDICATORS"`
+      - **`level_order`**:
+        - `"LOW"`
+        - `"MEDIUM"`
+        - `"HIGH"`
+      - **`omit_reference_level`**: `false`
+      - **`encoding`**: `"Ordered labels LOW < MEDIUM < HIGH; report all three indicators, not an ordinal numeric score; no omitted reference."`
+      - **`diagnostic_ids`**:
+        - `"declared_experience__LOW"`
+        - `"declared_experience__MEDIUM"`
+        - `"declared_experience__HIGH"`
+      - **`source_time_rule`**: `"DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other six fields; all applicable values and their source times must be present at or before T0."`
+      - **`applicability`**: `"Required and applicable for every randomized eligible person in every reported scope."`
+    - Item 5:
+      - **`order`**: `5`
+      - **`variable_id`**: `"pre_t0_completed_step_count"`
+      - **`source_table`**: `"persons_and_t0_snapshot"`
+      - **`source_field`**: `"pre_t0_completed_step_count"`
+      - **`source_type`**: `"CONTINUOUS"`
+      - **`representation`**: `"NUMERIC_IDENTITY"`
+      - **`level_order`**: `[]`
+      - **`omit_reference_level`**: `false`
+      - **`encoding`**: `"Logical integer 0,1,2,3,4 in original step units; analyzed as a numeric count with the continuous-variable sample-variance formula, not five indicators."`
+      - **`diagnostic_ids`**:
+        - `"pre_t0_completed_step_count"`
+      - **`source_time_rule`**: `"DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other six fields; all applicable values and their source times must be present at or before T0."`
+      - **`applicability`**: `"Required and applicable for every randomized eligible person in every reported scope."`
+    - Item 6:
+      - **`order`**: `6`
+      - **`variable_id`**: `"registration_shift"`
+      - **`source_table`**: `"persons_and_t0_snapshot"`
+      - **`source_field`**: `"registration_shift"`
+      - **`source_type`**: `"CATEGORICAL"`
+      - **`representation`**: `"ALL_LEVEL_INDICATORS"`
+      - **`level_order`**:
+        - `"DAY"`
+        - `"EVENING"`
+        - `"NIGHT"`
+      - **`omit_reference_level`**: `false`
+      - **`encoding`**: `"Exact case-sensitive labels; one 0/1 indicator for each listed level; no omitted reference."`
+      - **`diagnostic_ids`**:
+        - `"registration_shift__DAY"`
+        - `"registration_shift__EVENING"`
+        - `"registration_shift__NIGHT"`
+      - **`source_time_rule`**: `"DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other six fields; all applicable values and their source times must be present at or before T0."`
+      - **`applicability`**: `"Required and applicable for every randomized eligible person in every reported scope."`
+    - Item 7:
+      - **`order`**: `7`
+      - **`variable_id`**: `"day_shift_load_index"`
+      - **`source_table`**: `"persons_and_t0_snapshot"`
+      - **`source_field`**: `"day_shift_load_index"`
+      - **`source_type`**: `"CONTINUOUS"`
+      - **`representation`**: `"NUMERIC_IDENTITY"`
+      - **`level_order`**: `[]`
+      - **`omit_reference_level`**: `false`
+      - **`encoding`**: `"The original finite binary64 value in the immutable snapshot; no sample restandardization, winsorization, binning or day/shift aggregation. Repeated day/shift values still contribute one observation per person."`
+      - **`diagnostic_ids`**:
+        - `"day_shift_load_index"`
+      - **`source_time_rule`**: `"DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other six fields; all applicable values and their source times must be present at or before T0."`
+      - **`applicability`**: `"Required and applicable for every randomized eligible person in every reported scope."`
+  - **`excluded_from_smd_catalogue`**:
+    - Item 1:
+      - **`fields`**:
+        - `"kyc_friction"`
+        - `"synthetic_market_regime"`
+        - `"registration_period"`
+        - `"block_id"`
+      - **`reason`**: `"Assignment/block variables are reported through SAP sections 4.1-4.2 exact arm/block/subgroup counts, not additional SMD rows. kyc_friction additionally defines the two diagnostic scopes."`
+    - Item 2:
+      - **`fields`**:
+        - `"kyc_source_state_at_t0"`
+        - `"local_utc_offset_hours"`
+      - **`reason`**: `"Not selected for the balance catalogue. Source state retains eligibility/modifier and temporal validation; UTC offset retains clock validation. Neither is selected automatically merely because it is observable."`
+    - Item 3:
+      - **`fields`**:
+        - `"person_id"`
+        - `"R"`
+        - `"T0"`
+        - `"H"`
+        - `"source_ts"`
+        - `"allocation_sequence_position"`
+        - `"assignment_probability"`
+        - `"eligibility_flags"`
+        - `"contact_permissions"`
+        - `"prior_outreach"`
+        - `"pre_t0_deposit_status"`
+      - **`reason`**: `"Identifiers, clocks, allocation and eligibility inputs remain in their existing validation/count audits, not SMD covariates."`
+    - Item 4:
+      - **`fields`**:
+        - `"all_post_T0_fields"`
+        - `"all_oracle_only_fields"`
+      - **`reason`**: `"Never baseline diagnostic inputs."`
+  - **`scope_order`**:
+    - Item 1:
+      - **`scope_id`**: `"OVERALL"`
+      - **`kyc_friction_value`**: `null`
+    - Item 2:
+      - **`scope_id`**: `"KYC_FRICTION_0"`
+      - **`kyc_friction_value`**: `0`
+    - Item 3:
+      - **`scope_id`**: `"KYC_FRICTION_1"`
+      - **`kyc_friction_value`**: `1`
+  - **`source_variable_count`**: `7`
+  - **`diagnostic_count_per_scope`**: `15`
+  - **`total_diagnostic_rows`**: `45`
+  - **`population_and_missingness`**:
+    - **`population`**: `"All 50000 eligible randomized persons, joined one-to-one on person_id to the immutable T0 snapshot and assignment; include every assigned person regardless of delivery, outcome or later events."`
+    - **`denominators`**: `"Within each scope, n_treatment and n_control count all its assigned persons, once each. Canonical overall counts 25000/25000, F0 17500/17500, F1 7500/7500. No per-field complete-case denominator, block weighting or day/shift clustering."`
+    - **`excluded_persons`**: `"The 5000 nonrandomized screened persons never enter any diagnostic scope. Their DGP-authorized structural N/A values, including ineligible-state step counts and no-calling-window shift/load, remain in screened validation only."`
+    - **`randomized_sources`**: `"All seven fields and their applicable source timestamps must be present/valid. None has structural N/A in the randomized population. Absent, null, unknown-category, nonfinite, wrong-domain or post-T0 values stop the design audit; do not impute, coerce an unknown label to a reference, drop a row/variable/level, or treat N/A as zero."`
+    - **`missingness_indicators`**: `"None. Missingness is not an allowed state of these randomized baseline fields; reject malformed inputs. Successful per-variable completeness counts equal scope denominators with zero missing/invalid/structural-N/A counts. Missingness reports for fidelity remain separate and unchanged."`
+    - **`minimum_arm_n`**: `2`
+    - **`empty_or_singleton_scope`**: `"Reject; never omit the scope or manufacture its SMD."`
+  - **`formulas`**:
+    - **`orientation`**: `"treatment (assigned_onboarding_assistance=1) minus control (=0), within the declared scope; positive means greater encoded value/proportion in treatment."`
+    - **`continuous`**: `"m_z=sum x_i/n_z; v_z=(sum x_i^2-(sum x_i)^2/n_z)/(n_z-1). d=m_1-m_0; v_pool=(v_1+v_0)/2; SMD=d/sqrt(v_pool). This is the unweighted mean of arm variances, NOT a sample-size-weighted pooled variance."`
+    - **`binary_indicator`**: `"p_z=c_z/n_z; v_z=p_z*(1-p_z) with NO n/(n-1) correction. d=p_1-p_0; v_pool=(v_1+v_0)/2; SMD=d/sqrt(v_pool). The same rule applies to every categorical indicator."`
+    - **`zero_variance_equal`**: `"v_pool=0 and d=0 exactly: smd=0, smd_status=ZERO_VARIANCE_EQUAL, pooled_sd=0."`
+    - **`zero_variance_positive`**: `"v_pool=0 and d>0 exactly: smd=null, smd_status=ZERO_VARIANCE_UNEQUAL_POSITIVE, pooled_sd=0."`
+    - **`zero_variance_negative`**: `"v_pool=0 and d<0 exactly: smd=null, smd_status=ZERO_VARIANCE_UNEQUAL_NEGATIVE, pooled_sd=0."`
+    - **`positive_variance`**: `"v_pool>0: smd_status=NONZERO_VARIANCE; d=0 yields canonical smd=0 without changing that status."`
+    - **`categorical_maximum`**: `"max_abs_smd is max of absolute real SMDs over ALL indicator levels (for scalar variables, the single row). Compare exact squared ratios d^2/v_pool before rounding. If any row is zero-variance unequal, max_abs_smd=null and max_abs_smd_status=UNBOUNDED; otherwise round the finite maximum once and status=FINITE. Absent levels in both arms remain zero rows."`
+  - **`arithmetic`**:
+    - **`sufficient_statistics`**: `"Exact integer counts/sums for binary indicators and step counts. For day_shift_load_index, each stored finite binary64 input denotes its exact dyadic rational. Accumulate sums and squared sums as exact rationals; use exact arm means, variances, d and v_pool without intermediate float rounding."`
+    - **`zero_and_sign`**: `"Use exact rational zero and sign before conversion, independent of row/summation order. No epsilon, tolerance, clipping or subtraction of rounded arm means is permitted."`
+    - **`conversion`**: `"For every reported number use one correctly rounded binary64 value of the complete mathematical expression, round-to-nearest ties-to-even. In particular SMD=RN(d/sqrt(v_pool))=sign(d)*RN(sqrt(d^2/v_pool)); do NOT divide already-rounded d by already-rounded pooled_sd. The stored pooled_sd is separately RN(sqrt(v_pool))."`
+    - **`representation_limit`**: `"If any nonzero finite mathematical reported quantity rounds to zero or nonfinite binary64, reject with NUMERIC_REPRESENTATION_LIMIT. Exact zeros serialize as JSON numeric token 0 (positive zero), not -0 or a string; null/status branches are exact."`
+    - **`serialization`**: `"Use lossless binary64 round-trip JSON under Oracle section 2.4, not decimal-truncated output. Array order is normative; JSON object-key order follows existing canonicalization. Existing primary-statistical arithmetic/CI/p-value conventions are unchanged."`
+    - **`fixture_comparison`**: `"New balance fixtures require exact integers, labels, nulls, statuses, array ordering and correctly rounded binary64 values, NOT the general 1e-12 fixture tolerance."`
+  - **`output`**:
+    - **`authoritative_path`**: `"randomization_audit.json.payload.deterministic_result.balance_diagnostics"`
+    - **`projection_path`**: `"baseline_balance.json.payload.deterministic_result.balance_diagnostics"`
+    - **`projection_rule`**: `"Identical typed balance_diagnostics object in both existing artifacts, never a recalculated or reduced alternative. A mismatch is BASELINE_BALANCE_PROJECTION_MISMATCH. No mutual hash dependency is introduced."`
+    - **`object_fields`**:
+      - `"method_id"`
+      - `"method_version"`
+      - `"population"`
+      - `"time_window"`
+      - `"treatment_value"`
+      - `"control_value"`
+      - `"unweighted"`
+      - `"source_variable_count"`
+      - `"diagnostic_count_per_scope"`
+      - `"scope_count"`
+      - `"scopes"`
+    - **`population_literal`**: `"ALL_ELIGIBLE_RANDOMIZED_PERSONS"`
+    - **`time_window_literal`**: `"IMMUTABLE_T0_SNAPSHOT_SOURCES_AT_OR_BEFORE_T0"`
+    - **`scope_fields`**:
+      - `"scope_id"`
+      - `"kyc_friction_value"`
+      - `"n_treatment"`
+      - `"n_control"`
+      - `"variables"`
+    - **`variable_fields`**:
+      - `"variable_id"`
+      - `"source_field"`
+      - `"source_type"`
+      - `"representation"`
+      - `"n_present_treatment"`
+      - `"n_present_control"`
+      - `"n_missing_treatment"`
+      - `"n_missing_control"`
+      - `"n_invalid_treatment"`
+      - `"n_invalid_control"`
+      - `"n_structural_na_treatment"`
+      - `"n_structural_na_control"`
+      - `"diagnostics"`
+      - `"max_abs_smd"`
+      - `"max_abs_smd_status"`
+    - **`diagnostic_fields`**:
+      - `"diagnostic_id"`
+      - `"level"`
+      - `"count_treatment"`
+      - `"count_control"`
+      - `"mean_treatment"`
+      - `"mean_control"`
+      - `"variance_treatment"`
+      - `"variance_control"`
+      - `"mean_difference"`
+      - `"pooled_variance"`
+      - `"pooled_sd"`
+      - `"smd"`
+      - `"smd_status"`
+    - **`field_semantics`**: `"scopes in declared order; variables in catalogue order; diagnostics in level order. level is the exact string for categorical indicators, otherwise null. count_treatment/control are counts of encoded ones for binary/indicators, otherwise null. Means, arm variances and pooled variance use the selected formula; they are not outcome risks or standard errors. Source_field is the exact unqualified snapshot field from the catalogue. On valid input n_present equals scope n and all other completeness counts are integer zero."`
+    - **`fixed_counts`**: `"treatment_value=1, control_value=0, unweighted=true, source_variable_count=7, diagnostic_count_per_scope=15, scope_count=3."`
+    - **`array_completeness`**: `"Exactly 3 scopes, 7 variables per scope and 15 diagnostic rows per scope; no optional/reference/missingness/block rows, no data-derived sorting. No unknown extra fields inside balance_diagnostics or its nested objects."`
+    - **`provenance`**: `"Both existing audit artifacts retain mandatory data aliases and method/spec/code/environment bindings under Oracle sections 2.4-2.5.2. Their balance method binding is OIDL-PRE-T0-BALANCE-SMD version 1.0.0; any generic duplicate method binding for this balance calculation must agree. Signed release/manifest references remain only in payload.provenance. Do not alter the R5 lifecycle or primary method version."`
+    - **`no_outcome_inference`**: `"No p-value, CI, significance flag, balance threshold or causal/HTE claim in balance_diagnostics. Zero-variance unequal is a diagnostic, not a gate or a reason to change assignment/analysis."`
+  - **`rejection`**:
+    - **`input_codes`**:
+      - `"MISSING_REQUIRED_BASELINE_DATA"`
+      - `"INVALID_BALANCE_SOURCE_VALUE"`
+      - `"STRUCTURAL_NA_IN_RANDOMIZED_BALANCE"`
+      - `"POST_T0_BALANCE_SOURCE"`
+      - `"INSUFFICIENT_BALANCE_ARM_SIZE"`
+    - **`output_codes`**:
+      - `"BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"`
+      - `"BASELINE_BALANCE_PROJECTION_MISMATCH"`
+      - `"NUMERIC_REPRESENTATION_LIMIT"`
+    - **`action`**: `"Fail data/design validation, preserve predecessor records and last valid lifecycle state, emit failure stage/reasons in the existing validation record; do not emit/accept an authoritative successful randomization audit or run the primary analysis. Report all detected reason codes sorted lexicographically, no duplicates. Existing primary/assignment/provenance failures retain their rules."`
+    - **`reason_definitions`**: `"Missing/null source or source timestamp -> MISSING_REQUIRED_BASELINE_DATA; unknown category, out-of-domain or nonfinite source -> INVALID_BALANCE_SOURCE_VALUE; any declared structural N/A on a required randomized source -> STRUCTURAL_NA_IN_RANDOMIZED_BALANCE (do not additionally label its null as ordinary missing); source timestamp after T0 -> POST_T0_BALANCE_SOURCE; scope arm n<2 -> INSUFFICIENT_BALANCE_ARM_SIZE. Invalid catalogue/order/encoding/output schema -> BALANCE_CATALOGUE_OR_ENCODING_MISMATCH; unequal audit/projection objects -> BASELINE_BALANCE_PROJECTION_MISMATCH. All numeric representation limits use the existing named failure."`
+  - **`sensitivity_basis_relation`**: `"Distinct diagnostic representation selected from the same seven source fields; SAP section 2.5 remains an optional full-rank Lin basis with omitted reference levels, 1-language_service_match and standardized load. No Lin execution is introduced into Slice 1."`
 
 ## 13. Primary statistical contract and boundary behavior
 
 **Root field:** `primary_statistical_contract`
 
-- **`authoritative_plan`**: `"Statistical_Analysis_Plan_v0.3.0.md sections 3-5"`
+- **`authoritative_plan`**: `"Statistical_Analysis_Plan_v0.4.0.md sections 3-5"`
 - **`method_id`**: `"OIDL-BLOCKED-ITT-NEYMAN-NORMAL"`
 - **`method_version`**: `"0.3.0"`
 - **`point_estimate`**: `"sum_b (N_b/N)*(mean_Y_1b-mean_Y_0b)"`
@@ -718,7 +985,7 @@ The sections below are a lossless human-readable rendering of the complete typed
   - **`condition`**: `"V_Q=0 AND tau_Q!=0 by exact rational sufficient-statistic arithmetic before binary64 conversion"`
 - **`zero_se_interpretation`**: `"Computational/limiting normal conventions, not an exact finite-sample test or proof of certainty."`
 - **`zero_se_rules_apply_to_later_interaction`**: `true`
-- **`golden_fixtures`**: `"Golden_Fixtures_v0.2.5.yaml"`
+- **`golden_fixtures`**: `"Golden_Fixtures_v0.2.6.yaml"`
 - **`adjustment_basis_unchanged`**: `true`
 - **`kyc_subtype_adjustment_rationale`**: `"KYC subtypes are intentionally omitted from the frozen Lin basis. Binary-friction assignment-block indicators do not represent separate subtype main effects."`
 - **`arithmetic_contract`**:
@@ -1280,7 +1547,7 @@ The sections below are a lossless human-readable rendering of the complete typed
       - `"DATASET_RELEASE_BINDING_MISMATCH"`
       - `"DATASET_RELEASE_NOT_AUTHENTICATED"`
       - `"CIRCULAR_PROVENANCE_FIELD"`
-    - **`fixture_reference`**: `"Golden_Fixtures_v0.2.5.yaml pre_release_scan_provenance_fixtures"`
+    - **`fixture_reference`**: `"Golden_Fixtures_v0.2.6.yaml pre_release_scan_provenance_fixtures"`
 - **`placement_rule`**: `"Dataset-grounded records carry both frozen aliases per hashing.mandatory_data_hash_domains. The pre-release scan and signed release carry them in payload.provenance with the exact producer-side lifecycle in hashing.pre_release_scan_provenance and Oracle section 2.5.2; neither has deterministic_result or a dataset_release_record_sha256. Ordinary downstream records require signed-release authentication and its exact hash in surrounding provenance. Run/profile/approval/exposure and volatile scan/manifest/release hashes never enter deterministic_result; no arbitrary exclusion mask."`
 - **`pre_release_record_schema_scope`**: `"For analyst_leakage_scan.json and dataset_release_record.json only, the exhaustive validation/governance field schemas in Oracle section 2.5.2 replace analysis-specific every_result_and_claim_requires fields. Both remain dataset-grounded with both aliases and all registered benchmark/contract/profile/exposure bindings. No other downstream result or claim is exempted."`
 

@@ -1,9 +1,9 @@
-# Statistical Analysis Plan v0.3.0
+# Statistical Analysis Plan v0.4.0
 
 **Study:** `OIDL-ONBOARDING-ASSIST-001`  
-**SAP version:** `0.3.0`  
+**SAP version:** `0.4.0`  
 **Status:** `FINAL_PRE_IMPLEMENTATION`  
-**Linked specification:** `ResearchSpec_v0.2.5`  
+**Linked specification:** `ResearchSpec_v0.2.6`  
 **Primary design:** 1:1 person-level blocked randomized assignment  
 **Primary estimand:** customer-level assignment ITT risk difference
 
@@ -80,7 +80,7 @@ There are 16 canonical blocks.
 
 ### 2.5 Prespecified adjustment variables
 
-The optional precision-adjusted sensitivity analysis uses this exact full-rank baseline basis:
+The optional precision-adjusted sensitivity analysis uses this exact full-rank baseline basis. This is NOT the randomization-audit design matrix; the exhaustive balance catalogue and its separate encodings are in §4.3:
 
 - acquisition channel indicators: `PAID`, `AFFILIATE`; reference `ORGANIC`;
 - device/verification-route indicators: `MOBILE_WEB`, `DESKTOP_WEB`; reference `MOBILE_APP`;
@@ -109,6 +109,7 @@ The analysis must stop before estimation if any of the following occurs:
 11. Block ID does not equal the deterministic crossing defined in the ResearchSpec.
 12. Any block-arm has fewer than two observations, making the frozen sample variance undefined. This includes an empty arm. Canonical block-arm counts must additionally match their exact quotas.
 13. File/spec/manifests fail their committed hashes.
+14. A required balance source, scope or diagnostic/projection fails the exhaustive §4.3 contract; missing randomized baseline input is never repaired by complete-case diagnostics.
 
 A hard failure emits a validation artifact and no authoritative effect estimate.
 
@@ -141,17 +142,95 @@ For the canonical cohort:
 
 Any deviation is a hard failure for the canonical benchmark.
 
-### 4.3 Baseline balance
+### 4.3 Exhaustive baseline-balance contract
 
-For each prespecified pre-T0 covariate, report unweighted standardized mean differences overall and within KYC-friction subgroup.
+Method ID `OIDL-PRE-T0-BALANCE-SMD`, version `1.0.0`. This section is the exhaustive specification for the balance component of `randomization_audit.json` and its identical `baseline_balance.json` projection. It is descriptive only and is already in Slice 1. The primary method remains `OIDL-BLOCKED-ITT-NEYMAN-NORMAL`, version `0.3.0`; its estimator, inference and §5.2.1 arithmetic are unchanged by this SAP version.
 
-- Continuous variables: pooled-standard-deviation SMD.
-- Binary variables: difference in proportions divided by the pooled Bernoulli standard deviation.
-- Multilevel categorical variables: one indicator per level; report all level SMDs and the maximum absolute level SMD.
+#### 4.3.1 Frozen source selection and encodings
 
-Balance is a diagnostic of the realized assignment, not a criterion for rerandomization and not a basis for changing the estimator.
+Intentionally select the seven existing pre-T0 **source fields** used in §2.5, not that sensitivity analysis's full-rank design matrix. This is an explicit audit selection. Do not infer a catalogue from all observable fields or from a fitted sensitivity model. All sources are columns of the existing logical `persons_and_t0_snapshot` table, joined by `person_id`; no derived post-T0 or oracle value is used.
 
-For continuous variables use sqrt((s1_squared+s0_squared)/2), with unbiased within-arm sample variances, as the SMD denominator. For binary/indicator variables use sqrt((p1*(1-p1)+p0*(1-p0))/2). If the denominator is zero and means agree, SMD=0 with ZERO_VARIANCE_EQUAL flag. If denominator is zero and means differ, store SMD=null with ZERO_VARIANCE_UNEQUAL_POSITIVE or ZERO_VARIANCE_UNEQUAL_NEGATIVE; no NaN/Infinity serialization or rerandomization is allowed. Nullable structural fields for excluded persons do not enter eligible-population balance calculations.
+| Order | Exact source field / variable_id | Source type | Diagnostic level order | Exact representation |
+|---|---|---|---|---|
+| 1 | `acquisition_channel` | CATEGORICAL | `ORGANIC`, `PAID`, `AFFILIATE` | Exact case-sensitive labels; one 0/1 indicator for each listed level; no omitted reference. |
+| 2 | `device_verification_route` | CATEGORICAL | `MOBILE_APP`, `MOBILE_WEB`, `DESKTOP_WEB` | Exact case-sensitive labels; one 0/1 indicator for each listed level; no omitted reference. |
+| 3 | `language_service_match` | BINARY | Scalar | Logical 1=service language matches; logical 0=does not match. Use x=language_service_match, NOT 1-language_service_match. Lossless physical Boolean storage maps true to 1 and false to 0. |
+| 4 | `declared_experience` | ORDERED_CATEGORICAL | `LOW`, `MEDIUM`, `HIGH` | Ordered labels LOW < MEDIUM < HIGH; report all three indicators, not an ordinal numeric score; no omitted reference. |
+| 5 | `pre_t0_completed_step_count` | CONTINUOUS | Scalar | Logical integer 0,1,2,3,4 in original step units; analyzed as a numeric count with the continuous-variable sample-variance formula, not five indicators. |
+| 6 | `registration_shift` | CATEGORICAL | `DAY`, `EVENING`, `NIGHT` | Exact case-sensitive labels; one 0/1 indicator for each listed level; no omitted reference. |
+| 7 | `day_shift_load_index` | CONTINUOUS | Scalar | The original finite binary64 value in the immutable snapshot; no sample restandardization, winsorization, binning or day/shift aggregation. Repeated day/shift values still contribute one observation per person. |
+
+For categorical and ordered-categorical sources, use `1[source_field=level]` and report **every** listed level, including levels absent in both arms. No reference level is omitted. Their diagnostic IDs are the exact source field, two underscores, and exact uppercase level (for example `acquisition_channel__ORGANIC`). For scalar binary/numeric sources, the diagnostic ID is exactly the source field. This yields 15 rows per scope in the table/level order.
+
+`language_service_match` is positively coded: higher means **more matches** in treatment. A treatment-minus-control mismatch SMD has the opposite sign and is not a conforming audit output. No simultaneous match/mismatch duplicate is reported. `declared_experience` retains its level order but is NOT scored 0/1/2. Completed steps use the numeric sample-variance formula despite being an integer count. Load uses its existing raw value, not the optional sensitivity standardization.
+
+**Explicit exclusions.** `kyc_friction`, `synthetic_market_regime`, `registration_period` and derived `block_id` do **not** have SMD rows; their exact treatment/control counts remain mandatory in §§4.1–4.2, and friction also defines the diagnostic scopes below. `kyc_source_state_at_t0` and `local_utc_offset_hours` are not selected; their eligibility/modifier and time-validation roles remain unchanged. IDs, clocks, source timestamps, allocation slots/probabilities, eligibility/permission/prior-outreach/early-deposit flags, every post-T0 field and every oracle-only field are likewise outside the SMD catalogue. Absence from this catalogue never waives another existing validation obligation. Do not append exploratory SMDs to these authoritative artifacts.
+
+#### 4.3.2 Population, ordering and complete inputs
+
+The denominator is the complete eligible randomized person population, not all screened persons and not a reached/helped/activated subset. One person contributes one observation even when several persons share a day/shift load. Use three scopes in this exact order:
+
+1. `OVERALL`: all randomized eligible persons; `kyc_friction_value=null`; canonical n1=n0=25,000.
+2. `KYC_FRICTION_0`: F=0; `kyc_friction_value=0`; canonical n1=n0=17,500.
+3. `KYC_FRICTION_1`: F=1; `kyc_friction_value=1`; canonical n1=n0=7,500.
+
+Within a scope use unweighted raw arm means/proportions, NOT block-standardized means, regression residuals, average block SMDs, clusters or population weights. Subgroup weights are not transported to another composition. Both arms must have at least two observations. Small mathematical fixtures bypass canonical quotas only; the production canonical checks remain mandatory. All three scopes are required, with seven variables and fifteen diagnostic rows each (45 total). Report variables in the table order, then indicators in the declared level order; never sort levels by observed frequency, alphabetical order or library defaults.
+
+All seven fields are present and applicable for every randomized eligible person. Their existing associated source timestamps obey DGP §2.6: registration R for six context fields, R+9h for completed steps, all at or before T0. No source-column or time distribution is added. Enforce logical domains in §4.3.1 and complete source timestamps; finite binary64 load values retain their exact stored value. There are **no missingness indicators** in this catalogue, because randomized baseline missingness is invalid, not an allowed covariate level. Never impute, drop a person/variable/level, treat null as zero, or reduce a denominator to complete cases.
+
+The 5,000 excluded nonrandomized persons do not enter any scope. Their registered structural N/A values (e.g., ineligible-KYC completed steps or no-window shift/load) remain valid **only** in screened-person validation. A structural N/A on one of these seven fields for a randomized person is a hard data failure; it is not an omitted diagnostic. On successful output each variable's n_present equals its scope's arm denominator and its missing/invalid/structural-N/A counts are zero.
+
+#### 4.3.3 SMD formulas and signs
+
+In each scope let arm 1 be treatment (`assigned_onboarding_assistance=1`) and arm 0 control. All signs are treatment minus control on the frozen encoding.
+
+- Numeric/continuous representation: `m_z=(sum x_i)/n_z`; `v_z=(sum x_i^2-(sum x_i)^2/n_z)/(n_z-1)`, the unbiased within-arm sample variance.
+- Binary/indicator representation: `m_z=p_z=c_z/n_z`, with c_z the integer count of encoded ones; `v_z=p_z*(1-p_z)`, **without** an n/(n-1) adjustment.
+- In both cases: `d=m_1-m_0`; `v_pool=(v_1+v_0)/2`; `pooled_sd=sqrt(v_pool)`; `SMD=d/sqrt(v_pool)` for v_pool>0. The pooling is the unweighted arithmetic mean of the two arm variances, not weighting by sample sizes or sample degrees of freedom.
+
+| Exact condition | smd | smd_status | pooled_sd |
+|---|---|---|---|
+| v_pool>0, any d | d/sqrt(v_pool), canonical 0 if d=0 | NONZERO_VARIANCE | sqrt(v_pool) |
+| v_pool=0, d=0 | 0 | ZERO_VARIANCE_EQUAL | 0 |
+| v_pool=0, d>0 | null | ZERO_VARIANCE_UNEQUAL_POSITIVE | 0 |
+| v_pool=0, d<0 | null | ZERO_VARIANCE_UNEQUAL_NEGATIVE | 0 |
+
+The latter two nulls encode an unbounded signed diagnostic, not missing source data. They do not fail a valid assignment, initiate rerandomization, exclude data or change the primary estimate. No NaN/Infinity is serialized. No balance significance test, CI, p-value, pass/fail SMD threshold or effect/HTE claim is added.
+
+For each variable also report `max_abs_smd` over every diagnostic row (the sole row for scalar variables). If any row is zero-variance unequal, store null and `max_abs_smd_status=UNBOUNDED`; otherwise report the correctly rounded finite maximum and status `FINITE`. Compare exact squared ratios d^2/v_pool before rounding, treating zero-variance equal rows as exact zero. This defines ties without choosing an arbitrary reference or dropping absent levels; no argmax level is reported.
+
+#### 4.3.4 Deterministic arithmetic and serialization
+
+Counts and integer-step sums are exact integers. Interpret each stored finite binary64 load as its exact dyadic rational; compute sums, squared sums, arm means, arm variances, d and v_pool with exact rational arithmetic or an algebraically identical exact calculation. Sum before converting. Classify zero and sign exactly, not using a residual, an epsilon or a rounded mean. Finite input values cannot produce a negative exact within-arm variance.
+
+Each reported numeric quantity is rounded **once** from its complete mathematical expression to binary64, nearest with ties to even. In particular, `smd=RN(d/sqrt(v_pool))=sign(d)*RN(sqrt(d^2/v_pool))`; dividing separately rounded stored d and pooled_sd is not authoritative. The stored pooled_sd is separately `RN(sqrt(v_pool))`. Exact rational means/differences/variances convert once; compute max_abs_smd before its one rounding. Row order, summation order and library reduction order must not change any diagnostic, sign, status or maximum. This diagnostic rule does not modify the existing primary SE, interval or p-value calculations.
+
+Exact zero is positive zero in memory and the JSON number token `0` (not `-0`, a decimal string or an omitted value). Other finite values use lossless binary64 round-trip JSON under the existing Oracle §2.4 environment-pinned serializer; do not truncate to displayed decimals. If a nonzero mathematical reported quantity rounds to zero or a nonfinite value, fail `NUMERIC_REPRESENTATION_LIMIT` rather than misclassify zero or serialize infinity. Counts are exact integers; nulls/statuses are typed. New balance golden values require the specified correctly rounded binary64 value, not the general absolute 1e-12 numeric tolerance. Human rendering may format these authoritative numbers, never recalculate them or introduce thresholds.
+
+#### 4.3.5 Exact structured output
+
+The authoritative object is `randomization_audit.json.payload.deterministic_result.balance_diagnostics`. The existing `baseline_balance.json.payload.deterministic_result.balance_diagnostics` MUST be an identical typed copy/projection, not a separate alternative calculation. Both use their existing run envelopes and Oracle §§2.4–2.5.2 provenance; no artifact or hash dependency is added. Their method binding for this balance calculation is `OIDL-PRE-T0-BALANCE-SMD`, version `1.0.0`; any generic duplicate method binding must agree. Do not relabel the primary outcome estimator.
+
+These are the **exact** nested balance fields, no additions/omissions. Object-key enumeration here is descriptive; canonical object-key ordering remains Oracle §2.4. Array order is normative.
+
+- Balance object: `method_id`, `method_version`, `population`, `time_window`, `treatment_value`, `control_value`, `unweighted`, `source_variable_count`, `diagnostic_count_per_scope`, `scope_count`, `scopes`.
+- Each scope: `scope_id`, `kyc_friction_value`, `n_treatment`, `n_control`, `variables`.
+- Each variable: `variable_id`, `source_field`, `source_type`, `representation`, `n_present_treatment`, `n_present_control`, `n_missing_treatment`, `n_missing_control`, `n_invalid_treatment`, `n_invalid_control`, `n_structural_na_treatment`, `n_structural_na_control`, `diagnostics`, `max_abs_smd`, `max_abs_smd_status`.
+- Each diagnostic: `diagnostic_id`, `level`, `count_treatment`, `count_control`, `mean_treatment`, `mean_control`, `variance_treatment`, `variance_control`, `mean_difference`, `pooled_variance`, `pooled_sd`, `smd`, `smd_status`.
+
+Fixed balance values: population=`ALL_ELIGIBLE_RANDOMIZED_PERSONS`, time_window=`IMMUTABLE_T0_SNAPSHOT_SOURCES_AT_OR_BEFORE_T0`, treatment_value=1, control_value=0, unweighted=true, source_variable_count=7, diagnostic_count_per_scope=15, scope_count=3. `source_field` is the exact unqualified snapshot column. Source types are table literals; representations are `ALL_LEVEL_INDICATORS` for categorical/ordered-categorical, `BINARY_IDENTITY` for language match and `NUMERIC_IDENTITY` for steps/load. On each categorical row `level` is its exact label; scalar rows have level=null. `count_treatment/control` are counts of encoded ones for binary/indicator rows, and null for numeric steps/load. Means/variances are those in §4.3.3, not outcome risks, standard errors or Lin coefficients.
+
+All scope/variable completeness counts are nonnegative integers; valid n_present equals the corresponding scope n and every other completeness count is 0. Scope F is typed null/0/1, not string. Numeric diagnostic fields follow §4.3.4; only the explicitly registered count/level/unbounded fields may be null.
+
+The two mandatory analyst-content aliases and deterministic method/spec/code/environment bindings remain in each artifact's deterministic_result as before; signed-release/manifest hashes stay in payload.provenance. The balance_diagnostics object does not contain run IDs, file hashes, approval fields or new provenance states. The two audit/projection files do not hash each other; compare their typed objects during existing validation/freeze.
+
+#### 4.3.6 Rejection, scope and sensitivity separation
+
+Missing/null required source or source timestamp: `MISSING_REQUIRED_BASELINE_DATA`. Unknown category, wrong-domain or nonfinite source: `INVALID_BALANCE_SOURCE_VALUE`. Declared structural N/A on a required randomized source: `STRUCTURAL_NA_IN_RANDOMIZED_BALANCE` (do not additionally label its associated null as ordinary missing). Post-T0 source timestamp: `POST_T0_BALANCE_SOURCE`. An arm of any scope with n<2: `INSUFFICIENT_BALANCE_ARM_SIZE`. Invalid catalogue/order/encoding/diagnostic schema: `BALANCE_CATALOGUE_OR_ENCODING_MISMATCH`. Unequal authoritative/projection objects: `BASELINE_BALANCE_PROJECTION_MISMATCH`. Numeric representation failure is as above.
+
+Report all detected reason codes lexicographically without duplicates in the existing data/design validation failure record; preserve predecessor bytes and the last valid lifecycle state. No authoritative successful randomization audit or primary estimation may proceed on invalid input. Existing assignment/quota/primary/provenance failures remain unchanged. SMD magnitude or a valid zero-variance status is not one of these failures and supplies no deployment gate.
+
+The optional §2.5 Lin basis remains full-rank with omitted categorical reference levels, **mismatch** coding and standardized load. This section intentionally shares its seven source fields but not its statistical design matrix. No sensitivity fit, additional HTE test, new field or extra hypothesis is required in Slice 1.
 
 ### 4.4 Temporal audit
 
@@ -249,7 +328,7 @@ Later subgroup estimates use subgroup N_f with the same exact rule. Compute the 
 - For SE>0, zero_se_status=NOT_ZERO and test_statistic=estimate/SE. If a nonfinite statistic arises from finite underflow, store it as null with NUMERIC_LIMIT diagnostic and the corresponding limiting p-value; all other nonfinite/negative variance or invalid inputs fail estimation. Negative zero is treated as zero.
 - Do not clip the authoritative estimate or interval to `[-1,1]`; render the calculated values.
 
-These conventions also apply to the later interaction normal p-value, using its own estimate and SE. Normative golden expected values are in Golden_Fixtures_v0.2.5.yaml. The primary method ID is `OIDL-BLOCKED-ITT-NEYMAN-NORMAL`, method version `0.3.0` (formula unchanged; exact count aggregation and mathematical-zero outputs specified).
+These conventions also apply to the later interaction normal p-value, using its own estimate and SE. Normative golden expected values are in Golden_Fixtures_v0.2.6.yaml. The primary method ID is `OIDL-BLOCKED-ITT-NEYMAN-NORMAL`, method version `0.3.0` (formula unchanged; exact count aggregation and mathematical-zero outputs specified).
 
 ### 5.4 Primary reported fields
 
@@ -490,12 +569,14 @@ The primary ITT estimate is unchanged. Serious deviations may block causal claim
 
 ### 13.1 Authoritative calculation precision
 
-- Count-based statistics first use the exact rational aggregation in §5.2.1, then one correctly rounded binary64 conversion. Remaining statistical operations use full binary64 precision under their frozen formulas; no blanket double-precision reduction may override mathematical-zero semantics.
+- Primary and later count-based effect estimates governed by §5.2.1 use its exact rational aggregation, then one correctly rounded binary64 conversion. Their remaining operations use full binary64 precision under their frozen formulas; no blanket double-precision reduction may override mathematical-zero semantics. Baseline SMD diagnostics instead use only their separately frozen §4.3 formulas, exact moments and once-rounded expressions; they are not block-weighted effect estimates.
 - Policy and threshold comparisons use unrounded estimates and bounds.
 - SVU value calculations use full statistical precision and fixed approved cost/value inputs.
 - No decision may be based on a displayed rounded number.
 
 ### 13.2 Structured artifacts
+
+The baseline-balance component uses the exact lossless numeric and ordered schema rules in §4.3, not decimal truncation. The following existing rules continue to apply to other structured statistical artifacts.
 
 Store at least:
 

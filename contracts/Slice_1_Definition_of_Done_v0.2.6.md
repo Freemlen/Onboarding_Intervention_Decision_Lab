@@ -1,10 +1,10 @@
-# Slice 1 Definition of Done v0.2.5
+# Slice 1 Definition of Done v0.2.6
 
 ## Truth-Sequestered Randomized Causal Core
 
 **Project:** Onboarding Intervention Decision Lab  
 **Slice/run profile:** `SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE`  
-**Version:** `0.2.5`  
+**Version:** `0.2.6`  
 **Status:** `FINAL_PRE_IMPLEMENTATION`
 
 “Blind” in the retained capability ID refers to sequestered individual/realized truth, not to intentionally public aggregate design targets. A run's separate immutable exposure class states whether it is genuinely pre-exposure or a post-unblind reanalysis.
@@ -48,7 +48,7 @@ Exact CLI/framework syntax is engineering discretion. Inputs, outputs, scopes an
 | cohort generate | Committed DGP/profile; raw seed injected only in authorized custody boundary | Complete screened snapshot, observed data, exact Slice 1 oracle payload and manifests; fail on any quota, calibration, lifecycle or generation-contract violation; never widen a bracket/window or reroll |
 | dataset release (existing generation-to-release step) | Finalized separate packages/manifests/sidecars; public committed inputs; existing custodian approval | Dataset-grounded scan with both aliases and LOCAL_BYTES_VERIFIED creation record; then signed release and successful Oracle §2.5.2 cross-authentication before ANALYST_PACKAGE_RELEASED; no oracle mount to the scanner and no new gate/artifact |
 | analyst validate | Analyst payload, public contracts, unchanged scan and signed release bindings only | First reverify release/scan authentication; then cohort/eligibility/timestamp/outcome reconciliation, leakage and integrity validation; reject unverified release, scan mutation or binding mismatch; no oracle access |
-| design audit | Validated randomized data and public assignment commitment | Exact arrival-slot/bitstring audit; arm/block counts; SMD diagnostics; descriptive fidelity/missingness; never rerandomize or choose another estimator |
+| design audit | Validated randomized data and public assignment commitment | Exact arrival-slot/bitstring audit; arm/block counts; the exhaustive SAP §4.3 ordered SMD catalogue and identical baseline_balance projection; descriptive fidelity/missingness; never rerandomize or choose another estimator |
 | analysis primary | Validated data and SAP | Primary risks, block contributions, ITT, variance, SE, 95% limits, p-value, exact zero-SE diagnostics and provenance |
 | analysis freeze | All analyst results and approvals | Immutable analysis freeze record, calculation-only claim/decision scope, then complete archive; no descendant archive digest embedded in its own members |
 | oracle unblind | Signed Gate H, complete archive, commitments, seed-verification receipt and exposure state | Evaluator-only access after verification; record exposure; reject invalid profile/state/hash/lineage |
@@ -91,6 +91,8 @@ Outside both package roots: analyst_leakage_scan.json and dataset_release_record
 - analysis_deviations.json.
 
 Data_contract_validation.json must explicitly bind payload.provenance.analyst_leakage_scan_sha256 in addition to the exact analyst manifest and signed release hashes after successful Oracle §2.5.2 authentication. The scan itself is not rewritten. The JSON records use Oracle §2.4 run envelopes. Calculated reproducible output lives in `payload.deterministic_result`; the remaining envelope/provenance binds run identity and approvals. An empty warning/deviation list is explicit, not an omitted record. No NaN/Infinity is emitted. Mandatory dataset_package_hash and analyst_view_hash are the identical, authenticated analyst content digest under Oracle §2.5.1 and reside in deterministic_result. Volatile exact manifest/release-record hashes belong only in payload.provenance; they cannot replace the aliases or contaminate deterministic_result.
+
+For baseline diagnostics, `randomization_audit.json.payload.deterministic_result.balance_diagnostics` is authoritative; `baseline_balance.json` stores an identical object at that same relative payload path. SAP §4.3 specifies the exact seven source fields, 15 encodings, three ordered scopes (45 rows), field names, complete-input rules, formula, zero/sign arithmetic and validation failures. The catalogue is not the optional Lin design matrix and excludes blocking variables from SMD rows while preserving their mandatory counts. Both artifacts retain the unchanged downstream R5 authentication/provenance; neither hashes the other. A projection mismatch blocks validation/freeze. No p-value, causal claim, diagnostic threshold or rerandomization gate is added.
 
 ### 3.4 Freeze, authorization and comparison
 
@@ -161,7 +163,7 @@ Exact zero-SE rules use rational V_Q and tau_Q from SAP §5.2.1 before any binar
 | V_Q=0, tau_Q nonzero exactly | 0 | null | [estimate,estimate] | ZERO_SE_NONZERO_ESTIMATE |
 | SE>0 | erfc(abs(estimate)/(sqrt(2)*SE)) | estimate/SE | estimate +/- z*SE | NOT_ZERO |
 
-These are computational conventions for the registered normal approximation, not exact tests or proof of certainty. Counts/flags/nulls/timestamps and failure types match fixtures exactly. Floating expected golden results must agree within absolute 1e-12; DGP calibration targets use their own 1e-10 tolerance. This tolerance is for nonzero numeric fixture comparison, never for zero classification or changing a decision threshold. A required mathematical zero must be canonical numeric 0 exactly; p=1, null test_statistic, ZERO_SE_ZERO_ESTIMATE and both zero CI endpoints match exactly, not within 1e-12.
+These are computational conventions for the registered normal approximation, not exact tests or proof of certainty. Counts/flags/nulls/timestamps and failure types match fixtures exactly. Primary-estimator and other pre-existing non-balance floating expected golden results must agree within absolute 1e-12; DGP calibration targets use their own 1e-10 tolerance. Baseline-balance fixtures instead require the exact correctly rounded binary64 values and categorical outputs specified in SAP §4.3. This tolerance is for nonzero numeric fixture comparison, never for zero classification or changing a decision threshold. A required mathematical zero must be canonical numeric 0 exactly; p=1, null test_statistic, ZERO_SE_ZERO_ESTIMATE and both zero CI endpoints match exactly, not within 1e-12.
 
 Acceptance never requires a positive/significant estimate, proximity to +1.33 pp before unblinding, an interval excluding zero, or a preferred later policy.
 
@@ -169,9 +171,11 @@ Acceptance never requires a positive/significant estimate, proximity to +1.33 pp
 
 ### 7.1 Golden mathematical and boundary fixtures
 
-Implement all primary-statistics and boundary fixtures in Golden_Fixtures_v0.2.5.yaml: equal/unequal block weighting; positive/negative/zero contrasts; one zero-variance block; all-zero and all-one outcomes; zero-SE positive/negative/nonzero contrasts; cancelling constant block effects; empty and singleton block-arm rejection. Small fixtures test the estimator component, not the full canonical quota validator. Include the complete sixteen-canonical-block NON_DYADIC_CANONICAL_CANCELLATION fixture, permutations and arm swap, plus GENERAL_UNEQUAL_ALLOCATION_CANCELLATION; exact rational aggregation and exact zero output must hold for all.
+Implement all primary-statistics and boundary fixtures in Golden_Fixtures_v0.2.6.yaml: equal/unequal block weighting; positive/negative/zero contrasts; one zero-variance block; all-zero and all-one outcomes; zero-SE positive/negative/nonzero contrasts; cancelling constant block effects; empty and singleton block-arm rejection. Small fixtures test the estimator component, not the full canonical quota validator. Include the complete sixteen-canonical-block NON_DYADIC_CANONICAL_CANCELLATION fixture, permutations and arm swap, plus GENERAL_UNEQUAL_ALLOCATION_CANCELLATION; exact rational aggregation and exact zero output must hold for all.
 
 Corresponding timing fixtures cover future-help anchoring, post-settlement reversal, noncallable registration support and structurally absent callbacks. Additional explicit-input fixtures cover repeated failure at the second terminal disposition, ties, excluded statuses, absent events, and reminder suppression by a protection signal at/before R+36h. Verify the same hard-restriction predicate in contact stopping, including equality and missing-input behavior. Compare exact integer timestamps and typed null/status expectations. Golden inputs are explicit fabricated records, not seed-derived canonical samples.
+
+Implement every balance_diagnostic_fixture, balance_scope_fixture and balance_failure_fixture in Golden_Fixtures_v0.2.6.yaml under SAP §4.3. Cover binary and positive language-match coding, every categorical level in frozen order, ordered experience without numeric scoring, raw numeric counts/load, exact balance, all zero-variance branches, complete randomized denominators, exclusion-only structural N/A, invalid randomized missing/N/A/late/nonfinite sources, and equality of the two existing audit projections. Require exact correctly rounded binary64 values and exact zeros/statuses/order for these new fixtures. Small balance-unit inputs are not canonical-cohort quota tests. Primary inference fixtures and their original tolerance are unchanged.
 
 ### 7.2 Contract and visibility tests
 
@@ -181,13 +185,13 @@ Public design targets and their transparent arithmetic must **not** trigger a fa
 
 ### 7.3 Invariance and reproducibility
 
-Row order, input file enumeration and categorical label enumeration cannot alter results. Swapping arms changes effect sign and swaps risks, leaving variance/SE unchanged. Pure block-label renaming is an estimator-unit test only; canonical assignment validation still enforces frozen block IDs. Identical seed/config/code/environment/profile produce identical data payload digests and deterministic result subobjects. Rendering cannot recalculate or change structured numbers.
+Row order and input file enumeration cannot alter results. Encounter/enumeration order of categorical labels cannot alter the frozen catalogue ordering or encodings; their literal labels cannot be renamed. Balance sign/status and numeric output follow exact SAP §4.3 arithmetic. Swapping arms changes effect sign and swaps risks, leaving variance/SE unchanged. Pure block-label renaming is an estimator-unit test only; canonical assignment validation still enforces frozen block IDs. Identical seed/config/code/environment/profile produce identical data payload digests and deterministic result subobjects. Rendering cannot recalculate or change structured numbers.
 
 ### 7.4 Governance and package DAG
 
 Reject skipped states, absent approvals, unblind before closed archive, analysis overwrites, profile downgrade or missing profile artifacts. Verify that new run IDs preserve prior-exposure classification. Early truth disclosure must fail the run and append an incident. A reanalysis still needs valid custody/approval gates but cannot be relabeled blind.
 
-Reject self-containing package manifests/digest sidecars, unlisted payload files, symlinks/path traversal and changed manifest bytes even when the payload digest is unchanged. Verify exact data manifest hashes through release records and exact archive manifest hash through unblind authorization. Governance metadata remains byte-committed, not normalized away. Implement every pre_release_scan_provenance_fixture in Golden_Fixtures_v0.2.5.yaml. In particular test valid local scan followed by valid signed authentication; wrong signed scan hash; wrong local analyst content alias; post-signing scan mutation; and downstream acceptance attempted before release authentication. Local verification must succeed without a release record but must not authorize analyst use. No scan field may be backfilled after release, and the release never contains its own hash. Check exact signed scope/profile/schema/exposure bindings and the existing conceptual lock L before the release transition.
+Reject self-containing package manifests/digest sidecars, unlisted payload files, symlinks/path traversal and changed manifest bytes even when the payload digest is unchanged. Verify exact data manifest hashes through release records and exact archive manifest hash through unblind authorization. Governance metadata remains byte-committed, not normalized away. Implement every pre_release_scan_provenance_fixture in Golden_Fixtures_v0.2.6.yaml. In particular test valid local scan followed by valid signed authentication; wrong signed scan hash; wrong local analyst content alias; post-signing scan mutation; and downstream acceptance attempted before release authentication. Local verification must succeed without a release record but must not authorize analyst use. No scan field may be backfilled after release, and the release never contains its own hash. Check exact signed scope/profile/schema/exposure bindings and the existing conceptual lock L before the release transition.
 
 ### 7.5 Post-unblind oracle consistency
 

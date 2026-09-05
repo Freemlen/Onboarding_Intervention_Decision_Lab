@@ -9,3 +9,7 @@ dist/
 .checkpoint-tmp/
 # Retain the user's historical backup outside the frozen runtime release.
 /contracts_v0.2.2_backup/
+
+# User-supplied release transport; only installed contracts are normative.
+/Onboarding_Intervention_Decision_Lab_Contracts_v0.2.6.zip
+/Onboarding_Intervention_Decision_Lab_Contracts_v0.2.6.zip:Zone.Identifier

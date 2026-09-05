@@ -1,25 +1,21 @@
-# Onboarding Intervention Decision Lab — v0.2.5
+# Onboarding Intervention Decision Lab — Contracts v0.2.6
 
-Start with **Contract_Bundle_v0.2.5.md**. The eleven normative files are a consolidated, self-contained authority. No prior bundle, review, evidence package, architecture/research background or conversation supplies missing implementation rules.
+Start with **Contract_Bundle_v0.2.6.md**. Its eleven listed files are the sole normative authority. All implementation behavior is self-contained; no previous bundle, review, architecture, research report or conversation supplies a missing rule.
 
-## This repair
+This release repairs **R6 — Balance-diagnostic covariate set and encoding**. SAP §4.3 freezes seven existing baseline source fields, fifteen encodings per scope, three scopes, full denominators and complete-input rules, exact numeric/zero/sign conventions and structured outputs. The optional Lin basis is separate and unchanged. The primary method is still version 0.3.0; the SAP is version 0.4.0 and the newly explicit balance method is version 1.0.0.
 
-R5 is ACCEPTED and CLOSED. The dataset-grounded analyst_leakage_scan.json retains both frozen analyst-content aliases. Its immutable creation record is locally byte-verified before a signed release exists; the subsequent signed release binds its exact hash and externally authenticates the unchanged record before downstream use. No mutable scan status, future/self hash, additional package, receipt, governance state or approval gate is introduced.
+## Normative contents
 
-Research/run-schema, Architecture-document, Slice 1 and fixture identities are **0.2.5**. Oracle protocol is **0.4.0**. DGP, SAP, Decision and Guardrail semantics stay **0.3.0**; their mechanisms and all protected scientific/business/architectural behavior are unchanged.
+Contract Bundle; standalone Architecture; ResearchSpec Markdown/YAML twins; DGP; SAP; Decision; Guardrail; Oracle; Slice 1 Definition of Done; Golden Fixtures. Consult the index for exact paths and versions.
 
-## Reading order and release contents
+## Informative evidence
 
-Contract Bundle → Architecture → ResearchSpec Markdown/YAML → Oracle 2.5–2.5.2 and 5–6 → Slice 1 → Golden Fixtures. The complete DGP, SAP, Decision and Guardrail contracts remain included and normative within their existing scopes.
+Finding_Resolution_Matrix_v0.2.6.md explains the source evidence and accepted minimum repair. CHANGELOG_v0.2.6.md records versions and invariants. Final_Consistency_and_Regression_Audit_v0.2.6.md and validation_results.json state what was checked and what was not. The golden catalogue retains 69 prior cases and adds 28 diagnostic cases.
 
-Finding_Resolution_Matrix_v0.2.5.md, CHANGELOG_v0.2.5.md, Final_Consistency_and_Regression_Audit_v0.2.5.md, validation_results.json and this README are informative. SHA256SUMS.txt binds all other sixteen regular release files; the transport ZIP is outside that set. Runtime contract_set_hash separately binds the eleven normative files.
+SHA256SUMS.txt covers every release file except itself. Hash exact UTF-8/LF file bytes; do not reserialize a file before verifying. The transport ZIP is outside this member set.
 
-## Verification and limitations
+## Implementation handoff
 
-The targeted report records 48 passing checks and 0 failures, including twelve new R5 protocol fixtures, re-evaluated R1–R4 numerical/projection/hash cases and the acyclic dependency graph. ResearchSpec reconstruction matches 23 roots and 1,168 typed scalar values. The catalogue retains 57 previous cases and adds 12, for 69 total.
+Use the existing immutable contract/benchmark rebinding procedure before continuing the stopped design audit. Preserve old committed contracts, approval records, runs and exposure lineage; do not silently relabel an already committed run or overwrite its hashes. No reseeding is authorized. Resume only under the newly approved contract identity and existing human gates. This bundle does not certify completed implementation checkpoints.
 
-No product implementation, canonical/hidden generation, raw-seed access, real leakage-scanner execution or actual approval-enforcement test was performed. Runtime acceptance and human approval remain mandatory. Existing v0.2.4 commitments cannot be rewritten or relabeled; use the already prescribed linked-new-run rule and retain prior exposure classification when binding this release.
-
-# GO FOR SLICE 1 IMPLEMENTATION
-
-Codex no longer needs to select methodological, causal, statistical, timing, DGP, oracle, provenance, governance or business behavior. The explicit R5 release sequence replaces the formerly underspecified creation/authentication rule; permitted engineering discretion remains unchanged.
+**GO FOR SLICE 1 IMPLEMENTATION.** Contract-readiness only; all runtime acceptance, isolation, provenance, fixture, hidden-seed and human-approval requirements remain mandatory. The release contains no application code and no canonical raw seed.

@@ -1,9 +1,9 @@
-# Architecture v0.2.5 — Standalone Local Contract
+# Architecture v0.2.6 — Standalone Local Contract
 
 **Project:** Onboarding Intervention Decision Lab  
-**Version:** 0.2.5  
+**Version:** 0.2.6  
 **Status:** FINAL_PRE_IMPLEMENTATION  
-**Authority:** The eleven-file set in Contract_Bundle_v0.2.5.md. This is a complete architecture contract, not a delta requiring another document.
+**Authority:** The eleven-file set in Contract_Bundle_v0.2.6.md. This is a complete architecture contract, not a delta requiring another document.
 
 ## 1. Product and architectural boundary
 
@@ -82,7 +82,7 @@ The full decision object keeps recommended_policy, evidence_status and operation
 
 ## 8. Tests and completion
 
-Golden_Fixtures_v0.2.5.yaml supplies exact fabricated estimator/boundary/clock/governance cases. They are not canonical data or simulation-performance evidence. Slice 1 §7 adds quota, temporal, projection, sequence, leakage, independence, profile, lineage and hash-DAG acceptance. Hidden null/adverse/serious-breach fixtures remain scoped exactly by DGP/Oracle/Slice 1; do not infer a canonical seed from them.
+Golden_Fixtures_v0.2.6.yaml supplies exact fabricated estimator/boundary/clock/governance cases. They are not canonical data or simulation-performance evidence. Slice 1 §7 adds quota, temporal, projection, sequence, leakage, independence, profile, lineage and hash-DAG acceptance. Hidden null/adverse/serious-breach fixtures remain scoped exactly by DGP/Oracle/Slice 1; do not infer a canonical seed from them.
 
 Remaining engineering discretion is limited to physical package/module layout, CLI syntax, pinned libraries and permitted serialization details. Frozen formulas, durations, denominators, thresholds, scopes, visibility and approval rules are not implementation choices. Unsupported or inconsistent input fails with explicit provenance rather than initiating a new design.
 

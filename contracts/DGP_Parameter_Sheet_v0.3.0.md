@@ -4,7 +4,7 @@
 **DGP ID:** `OIDL-SEQUENTIAL-DGP-001`  
 **Version:** `0.3.0`  
 **Status:** `FINAL_PRE_IMPLEMENTATION`  
-**Linked ResearchSpec:** `ResearchSpec_v0.2.5`  
+**Linked ResearchSpec:** `ResearchSpec_v0.2.6`  
 **Authoritative benchmark term:** **truth-sequestered synthetic benchmark**
 
 > **Universal label:** Every numerical quantity in this document is a `SYNTHETIC_ASSUMPTION`, except mathematical constants and deterministic identities. Nothing here is an estimate, benchmark, forecast, prevalence, effect size, cost, CLV, ROI, conversion rate, operational fact, or control description for any real firm.

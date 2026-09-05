@@ -1,0 +1,3905 @@
+fixture_contract_version: 0.2.6
+normative: true
+scope: Explicit fabricated inputs, no canonical or hidden seed; tests mathematical/contract behavior, not repeated-simulation
+  performance.
+float_absolute_tolerance: 1.0e-12
+integer_boolean_null_status_tolerance: EXACT
+normal_ci_z: 1.959963984540054
+primary_estimator_fixtures:
+- id: EQUAL_BLOCKS_POSITIVE
+  test_scope: ESTIMATOR_UNIT_ONLY_NOT_CANONICAL_QUOTA_TEST
+  blocks:
+  - block_id: TEST_B1
+    n1: 4
+    x1: 3
+    n0: 4
+    x0: 1
+    expected_weight_fraction: 1/2
+  - block_id: TEST_B2
+    n1: 4
+    x1: 2
+    n0: 4
+    x0: 2
+    expected_weight_fraction: 1/2
+  expected:
+    N: 16
+    mu1: 0.625
+    mu0: 0.375
+    estimate_fraction: 1/4
+    estimate: 0.25
+    variance_fraction: 7/96
+    variance: 0.07291666666666667
+    se: 0.27003086243366087
+    ci_lower: -0.27925076508426516
+    ci_upper: 0.7792507650842652
+    p_value: 0.3545394797735015
+    test_statistic: 0.9258200997725514
+    zero_se_status: NOT_ZERO
+- id: UNEQUAL_BLOCK_WEIGHTS
+  test_scope: ESTIMATOR_UNIT_ONLY_NOT_CANONICAL_QUOTA_TEST
+  blocks:
+  - block_id: TEST_B1
+    n1: 2
+    x1: 2
+    n0: 2
+    x0: 0
+    expected_weight_fraction: 1/4
+  - block_id: TEST_B2
+    n1: 6
+    x1: 3
+    n0: 6
+    x0: 3
+    expected_weight_fraction: 3/4
+  expected:
+    N: 16
+    mu1: 0.625
+    mu0: 0.375
+    estimate_fraction: 1/4
+    estimate: 0.25
+    variance_fraction: 9/160
+    variance: 0.05625
+    se: 0.23717082451262844
+    ci_lower: -0.21484627422842117
+    ci_upper: 0.7148462742284212
+    p_value: 0.29184054514378854
+    test_statistic: 1.0540925533894598
+    zero_se_status: NOT_ZERO
+- id: ZERO_EFFECT_NONZERO_SE
+  test_scope: ESTIMATOR_UNIT_ONLY_NOT_CANONICAL_QUOTA_TEST
+  blocks:
+  - block_id: TEST_B1
+    n1: 4
+    x1: 2
+    n0: 4
+    x0: 2
+    expected_weight_fraction: 1/2
+  - block_id: TEST_B2
+    n1: 4
+    x1: 1
+    n0: 4
+    x0: 1
+    expected_weight_fraction: 1/2
+  expected:
+    N: 16
+    mu1: 0.375
+    mu0: 0.375
+    estimate_fraction: '0'
+    estimate: 0
+    variance_fraction: 7/96
+    variance: 0.07291666666666667
+    se: 0.27003086243366087
+    ci_lower: -0.5292507650842652
+    ci_upper: 0.5292507650842652
+    p_value: 1
+    test_statistic: 0
+    zero_se_status: NOT_ZERO
+- id: NEGATIVE_EFFECT
+  test_scope: ESTIMATOR_UNIT_ONLY_NOT_CANONICAL_QUOTA_TEST
+  blocks:
+  - block_id: TEST_B1
+    n1: 4
+    x1: 1
+    n0: 4
+    x0: 3
+    expected_weight_fraction: 1/2
+  - block_id: TEST_B2
+    n1: 4
+    x1: 2
+    n0: 4
+    x0: 2
+    expected_weight_fraction: 1/2
+  expected:
+    N: 16
+    mu1: 0.375
+    mu0: 0.625
+    estimate_fraction: -1/4
+    estimate: -0.25
+    variance_fraction: 7/96
+    variance: 0.07291666666666667
+    se: 0.27003086243366087
+    ci_lower: -0.7792507650842652
+    ci_upper: 0.27925076508426516
+    p_value: 0.3545394797735015
+    test_statistic: -0.9258200997725514
+    zero_se_status: NOT_ZERO
+- id: ONE_ZERO_VARIANCE_BLOCK
+  test_scope: ESTIMATOR_UNIT_ONLY_NOT_CANONICAL_QUOTA_TEST
+  blocks:
+  - block_id: TEST_B1
+    n1: 3
+    x1: 0
+    n0: 3
+    x0: 0
+    expected_weight_fraction: 1/2
+  - block_id: TEST_B2
+    n1: 3
+    x1: 2
+    n0: 3
+    x0: 1
+    expected_weight_fraction: 1/2
+  expected:
+    N: 12
+    mu1: 0.3333333333333333
+    mu0: 0.16666666666666666
+    estimate_fraction: 1/6
+    estimate: 0.16666666666666666
+    variance_fraction: 1/18
+    variance: 0.05555555555555555
+    se: 0.23570226039551584
+    ci_lower: -0.295301274783226
+    ci_upper: 0.6286346081165592
+    p_value: 0.47950012218695354
+    test_statistic: 0.7071067811865475
+    zero_se_status: NOT_ZERO
+- id: ALL_ZERO
+  test_scope: ESTIMATOR_UNIT_ONLY_NOT_CANONICAL_QUOTA_TEST
+  blocks:
+  - block_id: TEST_B1
+    n1: 2
+    x1: 0
+    n0: 2
+    x0: 0
+    expected_weight_fraction: 2/5
+  - block_id: TEST_B2
+    n1: 3
+    x1: 0
+    n0: 3
+    x0: 0
+    expected_weight_fraction: 3/5
+  expected:
+    N: 10
+    mu1: 0
+    mu0: 0
+    estimate_fraction: '0'
+    estimate: 0
+    variance_fraction: '0'
+    variance: 0
+    se: 0
+    ci_lower: 0
+    ci_upper: 0
+    p_value: 1
+    test_statistic: null
+    zero_se_status: ZERO_SE_ZERO_ESTIMATE
+- id: ALL_ONE
+  test_scope: ESTIMATOR_UNIT_ONLY_NOT_CANONICAL_QUOTA_TEST
+  blocks:
+  - block_id: TEST_B1
+    n1: 2
+    x1: 2
+    n0: 2
+    x0: 2
+    expected_weight_fraction: 2/5
+  - block_id: TEST_B2
+    n1: 3
+    x1: 3
+    n0: 3
+    x0: 3
+    expected_weight_fraction: 3/5
+  expected:
+    N: 10
+    mu1: 1.0
+    mu0: 1.0
+    estimate_fraction: '0'
+    estimate: 0
+    variance_fraction: '0'
+    variance: 0
+    se: 0
+    ci_lower: 0
+    ci_upper: 0
+    p_value: 1
+    test_statistic: null
+    zero_se_status: ZERO_SE_ZERO_ESTIMATE
+- id: ZERO_SE_POSITIVE
+  test_scope: ESTIMATOR_UNIT_ONLY_NOT_CANONICAL_QUOTA_TEST
+  blocks:
+  - block_id: TEST_B1
+    n1: 2
+    x1: 2
+    n0: 2
+    x0: 0
+    expected_weight_fraction: 2/5
+  - block_id: TEST_B2
+    n1: 3
+    x1: 3
+    n0: 3
+    x0: 0
+    expected_weight_fraction: 3/5
+  expected:
+    N: 10
+    mu1: 1.0
+    mu0: 0
+    estimate_fraction: '1'
+    estimate: 1.0
+    variance_fraction: '0'
+    variance: 0
+    se: 0
+    ci_lower: 1.0
+    ci_upper: 1.0
+    p_value: 0
+    test_statistic: null
+    zero_se_status: ZERO_SE_NONZERO_ESTIMATE
+- id: ZERO_SE_NEGATIVE
+  test_scope: ESTIMATOR_UNIT_ONLY_NOT_CANONICAL_QUOTA_TEST
+  blocks:
+  - block_id: TEST_B1
+    n1: 2
+    x1: 0
+    n0: 2
+    x0: 2
+    expected_weight_fraction: 2/5
+  - block_id: TEST_B2
+    n1: 3
+    x1: 0
+    n0: 3
+    x0: 3
+    expected_weight_fraction: 3/5
+  expected:
+    N: 10
+    mu1: 0
+    mu0: 1.0
+    estimate_fraction: '-1'
+    estimate: -1.0
+    variance_fraction: '0'
+    variance: 0
+    se: 0
+    ci_lower: -1.0
+    ci_upper: -1.0
+    p_value: 0
+    test_statistic: null
+    zero_se_status: ZERO_SE_NONZERO_ESTIMATE
+- id: ZERO_SE_CANCELLING_BLOCK_EFFECTS
+  test_scope: ESTIMATOR_UNIT_ONLY_NOT_CANONICAL_QUOTA_TEST
+  blocks:
+  - block_id: TEST_B1
+    n1: 2
+    x1: 2
+    n0: 2
+    x0: 0
+    expected_weight_fraction: 1/2
+  - block_id: TEST_B2
+    n1: 2
+    x1: 0
+    n0: 2
+    x0: 2
+    expected_weight_fraction: 1/2
+  expected:
+    N: 8
+    mu1: 0.5
+    mu0: 0.5
+    estimate_fraction: '0'
+    estimate: 0
+    variance_fraction: '0'
+    variance: 0
+    se: 0
+    ci_lower: 0
+    ci_upper: 0
+    p_value: 1
+    test_statistic: null
+    zero_se_status: ZERO_SE_ZERO_ESTIMATE
+- id: NON_DYADIC_CANONICAL_CANCELLATION
+  test_scope: ESTIMATOR_UNIT_ONLY_WITH_CANONICAL_BLOCK_COUNTS_NOT_CANONICAL_REALIZATION
+  source_note: Exact explicit count table from independent v0.2.3 review R3; reproduced completely here so the
+    review is not an implementation input.
+  blocks:
+  - block_id: F0|NORMAL|P1
+    n1: 3500
+    x1: 0
+    n0: 3500
+    x0: 3500
+  - block_id: F0|NORMAL|P2
+    n1: 3500
+    x1: 0
+    n0: 3500
+    x0: 3500
+  - block_id: F0|NORMAL|P3
+    n1: 3500
+    x1: 0
+    n0: 3500
+    x0: 3500
+  - block_id: F0|NORMAL|P4
+    n1: 3500
+    x1: 3500
+    n0: 3500
+    x0: 0
+  - block_id: F0|PAYMENT_CONSTRAINED|P1
+    n1: 875
+    x1: 0
+    n0: 875
+    x0: 875
+  - block_id: F0|PAYMENT_CONSTRAINED|P2
+    n1: 875
+    x1: 875
+    n0: 875
+    x0: 0
+  - block_id: F0|PAYMENT_CONSTRAINED|P3
+    n1: 875
+    x1: 875
+    n0: 875
+    x0: 0
+  - block_id: F0|PAYMENT_CONSTRAINED|P4
+    n1: 875
+    x1: 875
+    n0: 875
+    x0: 0
+  - block_id: F1|NORMAL|P1
+    n1: 1500
+    x1: 1500
+    n0: 1500
+    x0: 0
+  - block_id: F1|NORMAL|P2
+    n1: 1500
+    x1: 1500
+    n0: 1500
+    x0: 0
+  - block_id: F1|NORMAL|P3
+    n1: 1500
+    x1: 1500
+    n0: 1500
+    x0: 0
+  - block_id: F1|NORMAL|P4
+    n1: 1500
+    x1: 1500
+    n0: 1500
+    x0: 0
+  - block_id: F1|PAYMENT_CONSTRAINED|P1
+    n1: 375
+    x1: 0
+    n0: 375
+    x0: 375
+  - block_id: F1|PAYMENT_CONSTRAINED|P2
+    n1: 375
+    x1: 0
+    n0: 375
+    x0: 375
+  - block_id: F1|PAYMENT_CONSTRAINED|P3
+    n1: 375
+    x1: 0
+    n0: 375
+    x0: 375
+  - block_id: F1|PAYMENT_CONSTRAINED|P4
+    n1: 375
+    x1: 375
+    n0: 375
+    x0: 0
+  expected:
+    N: 50000
+    mu1: 0.5
+    mu0: 0.5
+    estimate_fraction: '0'
+    estimate: 0
+    variance_fraction: '0'
+    variance: 0
+    se: 0
+    ci_lower: 0
+    ci_upper: 0
+    p_value: 1
+    test_statistic: null
+    zero_se_status: ZERO_SE_ZERO_ESTIMATE
+  additional_exact_checks:
+    n1_total: 25000
+    n0_total: 25000
+    x1_total: 12500
+    x0_total: 12500
+    mathematical_weighted_contrast: -2*(7/50)+2*(7/200)+4*(3/50)-2*(3/200)=0
+    canonical_estimate_json_token: '0'
+    all_block_order_permutations_same_exact_zero: true
+  nonconforming_binary64_demonstration:
+    lexical_sequential_estimate: -2.7755575615628914e-17
+    incorrect_p_value: 0
+    explanation: A float residual does not authorize the nonzero branch. This value is a regression counterexample,
+      not an accepted alternative.
+- id: GENERAL_UNEQUAL_ALLOCATION_CANCELLATION
+  test_scope: ESTIMATOR_UNIT_ONLY_NOT_CANONICAL_QUOTA_TEST
+  blocks:
+  - block_id: TEST_B1
+    n1: 2
+    x1: 2
+    n0: 4
+    x0: 0
+  - block_id: TEST_B2
+    n1: 9
+    x1: 9
+    n0: 5
+    x0: 0
+  - block_id: TEST_B3
+    n1: 3
+    x1: 0
+    n0: 17
+    x0: 17
+  expected:
+    N: 40
+    mu1: 0.5
+    mu0: 0.5
+    estimate_fraction: '0'
+    estimate: 0
+    variance_fraction: '0'
+    variance: 0
+    se: 0
+    ci_lower: 0
+    ci_upper: 0
+    p_value: 1
+    test_statistic: null
+    zero_se_status: ZERO_SE_ZERO_ESTIMATE
+  additional_exact_checks:
+    note: Do not replace the general blocked estimator with pooled-success-count equality when arm allocation
+      ratios differ.
+    canonical_estimate_json_token: '0'
+primary_failure_fixtures:
+- id: EMPTY_ARM
+  blocks:
+  - block_id: TEST_B1
+    n1: 0
+    x1: 0
+    n0: 2
+    x0: 1
+  expected_failure: BLOCK_ARM_N_LT_2
+  authoritative_result_emitted: false
+- id: SINGLETON_ARM
+  blocks:
+  - block_id: TEST_B1
+    n1: 1
+    x1: 1
+    n0: 2
+    x0: 1
+  expected_failure: BLOCK_ARM_N_LT_2
+  authoritative_result_emitted: false
+timing_fixtures:
+- id: FUTURE_HELP_ANCHOR_REPAIRED
+  units: integer microseconds after registration
+  input:
+    T0: 43200000000
+    H: 604800000000
+    package_exposure_ts: 50400000000
+    first_substantive_help_ts: 144000000000
+    E: 1
+    J: 1
+    F: 1
+    resolution_occurs: true
+    funding_occurs: true
+    final_status: SUCCESSFUL_SETTLED_NONREVERSED_BY_HORIZON
+    dirichlet:
+    - 0.1
+    - 0.2
+    - 0.1
+    - 0.6
+  expected:
+    verification_anchor: 144000000000
+    resolved_verification_ts: 190080000000
+    funding_anchor: 190080000000
+    funding_initiation_ts: 282240000000
+    settlement_ts: 328320000000
+    qualifying_success_ts: 328320000000
+    reversal_ts: null
+- id: MAIN_REVERSAL_AFTER_SETTLEMENT
+  input:
+    funding_initiation_ts: 216000000000
+    settlement_ts: 360000000000
+    H: 604800000000
+    status_time_u: 0.25
+    final_status: REVERSED_BY_HORIZON
+  expected:
+    reversal_ts: 421200000001
+    qualifying_success_ts: null
+    primary_outcome: 0
+- id: NO_CALLING_WINDOW
+  input:
+    registration_utc: '2000-01-01T08:00:00.000000Z'
+    local_utc_offset_hours: 0
+    telephone_permitted: true
+    email_permitted: true
+  expected:
+    permitted_calling_window_available: false
+    eligible_at_t0: false
+    primary_exclusion_reason: NO_PERMITTED_CALLING_WINDOW
+    registration_shift: null
+    day_shift_load_index: null
+- id: CALLING_WINDOW_AVAILABLE
+  input:
+    registration_utc: '2000-01-01T10:00:00.000000Z'
+    local_utc_offset_hours: 0
+  expected:
+    permitted_calling_window_available: true
+    available_next_day_interval: 09:00 to 09:45 local
+completeness_fixtures:
+- id: NO_CALLBACK_STRUCTURAL_NA
+  input:
+    callback_completed: false
+    callback_start_ts: null
+    callback_completion_ts: null
+  expected:
+    timestamp_applicability: STRUCTURAL_NOT_APPLICABLE
+    required_denominator: 0
+    coverage: null
+    field_completeness_pass: true
+- id: MISSING_COMPLETED_CALLBACK_TIME
+  input:
+    callback_completed: true
+    callback_start_ts: null
+    callback_completion_ts: null
+  expected:
+    timestamp_applicability: MISSING_OR_INVALID
+    required_denominator: 1
+    coverage: 0.0
+    field_completeness_pass: false
+    full_readiness_without_other_failures: UNCERTAIN
+- id: UNKNOWN_CALLBACK_PARENT
+  input:
+    callback_completed: null
+    callback_completion_ts: null
+  expected:
+    timestamp_applicability: APPLICABILITY_UNKNOWN
+    required_denominator: 1
+    coverage: 0.0
+    field_completeness_pass: false
+- id: NO_REQUIRED_UNREACHABLE_EMAILS
+  input:
+    known_required_followup_denominator: 0
+    known_conforming_followup_numerator: 0
+  expected:
+    rate: null
+    status: STRUCTURAL_NOT_APPLICABLE
+    metric_pass: true
+- id: MISSING_HARM_STATUS
+  input:
+    one_required_guardrail_status_missing: true
+  expected:
+    full_evidence_status: GUARDRAIL_BLOCKED
+    risk_difference: null
+    upper_bound: null
+    missing_treated_as_zero: false
+policy_bound_fixture:
+  test_scope: FULL_SYSTEM_LATER_SLICE
+  family:
+  - TARGETED_MINUS_NONE
+  - BROAD_MINUS_NONE
+  - BROAD_MINUS_TARGETED
+  oriented_statement_count: 6
+  alpha: 0.05
+  critical_value: 2.3939797998185095
+  contrast_estimate: 10.0
+  contrast_se: 2.0
+  expected_lcb: 5.212040400362981
+  expected_ucb: 14.78795959963702
+  expected_reverse_lcb: -14.78795959963702
+  zero_bound_passes: false
+governance_fixtures:
+- id: PROFILE_DOWNGRADE
+  input:
+    committed_profile: FULL_DECISION_SYSTEM
+    requested_profile: SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE
+  expected_failure: IMMUTABLE_RUN_PROFILE_MISMATCH
+- id: NEW_ID_AFTER_EXPOSURE
+  input:
+    same_lineage: true
+    new_run_id: true
+    prior_event_kind: AUTHORIZED_UNBLIND
+  expected:
+    analysis_exposure_class: POST_UNBLIND_REANALYSIS
+    fresh_blind_claim_allowed: false
+- id: EARLY_EXPOSURE
+  input:
+    analyst_sequestered_truth_disclosed: true
+    valid_unblind_approval: false
+  expected:
+    run_execution_status: FAILED
+    registry_event_kind: EARLY_EXPOSURE_INCIDENT
+- id: PUBLIC_TARGET_ONLY
+  input:
+    only_public_calibration_target_disclosed: true
+  expected:
+    analyst_exposure_event: false
+    aggregate_blindness_claim_allowed: false
+- id: SLICE1_POLICY_ORACLE_COMPONENT
+  input:
+    profile: SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE
+    extra_oracle_component: policy_feasibility
+  expected_failure: OUT_OF_PROFILE_ORACLE_COMPONENT
+package_hash_fixture:
+  member_content_utf8:
+    payload/a.txt: 'a
+
+      '
+    payload/b.txt: 'b
+
+      '
+  expected_sorted_members:
+  - path: payload/a.txt
+    sha256: 87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7
+  - path: payload/b.txt
+    sha256: 0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f
+  canonical_preimage_utf8: '[{"path":"payload/a.txt","sha256":"87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7"},{"path":"payload/b.txt","sha256":"0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f"}]'
+  expected_package_sha256: 8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5
+  manifest_is_member: false
+  digest_sidecar_is_member: false
+  self_inclusion_failure: PACKAGE_MEMBER_SET_VIOLATION
+  changed_manifest_same_payload_requires_failure: EXACT_MANIFEST_HASH_MISMATCH
+exact_mathematical_zero_tolerance: EXACT canonical numeric 0; never float_absolute_tolerance; all zero-SE statuses,
+  p=1 and nulls exact
+arithmetic_contract_id: OIDL-COUNT-RATIONAL-AGGREGATION-v1
+repeated_failure_fixtures:
+- id: REPEATED_FAILURE_REVIEW_TWO_FAILED
+  test_scope: EXPLICIT_LIFECYCLE_PROJECTION_UNIT
+  input:
+    T0: 43200000000
+    H: 604800000000
+    generated_repeated_failure_flag: true
+    deposits:
+    - path_role: EXTRA
+      deposit_ordinal: 1
+      final_status: FAILED
+      initiation_ts: 115200000000
+      settlement_ts: null
+      failure_ts: 360000000000
+      reversal_ts: null
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+    - path_role: EXTRA
+      deposit_ordinal: 2
+      final_status: FAILED
+      initiation_ts: 403200000000
+      settlement_ts: null
+      failure_ts: 504000000000
+      reversal_ts: null
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+  expected:
+    repeated_failure: true
+    repeated_failure_ts: 504000000000
+    repeated_failure_reason_code: SECOND_FAILED_OR_REVERSED_DEPOSIT
+    repeated_failure_trigger_deposit_ordinal: 2
+    occurrence_event_count: 1
+    event_type: REPEATED_FAILED_OR_REVERSED_DEPOSITS
+    summary_event_ts: 604800000000
+- id: REPEATED_FAILURE_REVERSAL_NOT_SETTLEMENT
+  test_scope: EXPLICIT_LIFECYCLE_PROJECTION_UNIT
+  input:
+    T0: 43200000000
+    H: 604800000000
+    generated_repeated_failure_flag: true
+    deposits:
+    - path_role: MAIN
+      deposit_ordinal: 1
+      final_status: REVERSED_BY_HORIZON
+      initiation_ts: 72000000000
+      settlement_ts: 86400000000
+      failure_ts: null
+      reversal_ts: 576000000000
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+    - path_role: EXTRA
+      deposit_ordinal: 2
+      final_status: FAILED
+      initiation_ts: 115200000000
+      settlement_ts: null
+      failure_ts: 360000000000
+      reversal_ts: null
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+  expected:
+    repeated_failure: true
+    repeated_failure_ts: 576000000000
+    repeated_failure_reason_code: SECOND_FAILED_OR_REVERSED_DEPOSIT
+    repeated_failure_trigger_deposit_ordinal: 1
+    occurrence_event_count: 1
+    event_type: REPEATED_FAILED_OR_REVERSED_DEPOSITS
+    summary_event_ts: 604800000000
+- id: REPEATED_FAILURE_TIE_MAIN_BEFORE_EXTRA
+  test_scope: EXPLICIT_LIFECYCLE_PROJECTION_UNIT
+  input:
+    T0: 43200000000
+    H: 604800000000
+    generated_repeated_failure_flag: true
+    deposits:
+    - path_role: EXTRA
+      deposit_ordinal: 2
+      final_status: FAILED
+      initiation_ts: 115200000000
+      settlement_ts: null
+      failure_ts: 360000000000
+      reversal_ts: null
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+    - path_role: MAIN
+      deposit_ordinal: 1
+      final_status: REVERSED_BY_HORIZON
+      initiation_ts: 72000000000
+      settlement_ts: 216000000000
+      failure_ts: null
+      reversal_ts: 360000000000
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+  expected:
+    repeated_failure: true
+    repeated_failure_ts: 360000000000
+    repeated_failure_reason_code: SECOND_FAILED_OR_REVERSED_DEPOSIT
+    repeated_failure_trigger_deposit_ordinal: 2
+    occurrence_event_count: 1
+    event_type: REPEATED_FAILED_OR_REVERSED_DEPOSITS
+    summary_event_ts: 604800000000
+- id: REPEATED_FAILURE_TIE_EXTRA_ORDINAL
+  test_scope: EXPLICIT_LIFECYCLE_PROJECTION_UNIT
+  input:
+    T0: 43200000000
+    H: 604800000000
+    generated_repeated_failure_flag: true
+    deposits:
+    - path_role: EXTRA
+      deposit_ordinal: 2
+      final_status: FAILED
+      initiation_ts: 115200000000
+      settlement_ts: null
+      failure_ts: 360000000000
+      reversal_ts: null
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+    - path_role: EXTRA
+      deposit_ordinal: 1
+      final_status: FAILED
+      initiation_ts: 115200000000
+      settlement_ts: null
+      failure_ts: 360000000000
+      reversal_ts: null
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+  expected:
+    repeated_failure: true
+    repeated_failure_ts: 360000000000
+    repeated_failure_reason_code: SECOND_FAILED_OR_REVERSED_DEPOSIT
+    repeated_failure_trigger_deposit_ordinal: 2
+    occurrence_event_count: 1
+    event_type: REPEATED_FAILED_OR_REVERSED_DEPOSITS
+    summary_event_ts: 604800000000
+- id: REPEATED_FAILURE_LATER_THIRD_DOES_NOT_MOVE
+  test_scope: EXPLICIT_LIFECYCLE_PROJECTION_UNIT
+  input:
+    T0: 43200000000
+    H: 604800000000
+    generated_repeated_failure_flag: true
+    deposits:
+    - path_role: MAIN
+      deposit_ordinal: 1
+      final_status: FAILED
+      initiation_ts: 72000000000
+      settlement_ts: null
+      failure_ts: 540000000000
+      reversal_ts: null
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+    - path_role: EXTRA
+      deposit_ordinal: 2
+      final_status: FAILED
+      initiation_ts: 115200000000
+      settlement_ts: null
+      failure_ts: 360000000000
+      reversal_ts: null
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+    - path_role: EXTRA
+      deposit_ordinal: 3
+      final_status: FAILED
+      initiation_ts: 403200000000
+      settlement_ts: null
+      failure_ts: 504000000000
+      reversal_ts: null
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+  expected:
+    repeated_failure: true
+    repeated_failure_ts: 504000000000
+    repeated_failure_reason_code: SECOND_FAILED_OR_REVERSED_DEPOSIT
+    repeated_failure_trigger_deposit_ordinal: 3
+    occurrence_event_count: 1
+    event_type: REPEATED_FAILED_OR_REVERSED_DEPOSITS
+    summary_event_ts: 604800000000
+- id: REPEATED_FAILURE_FINAL_H_BOUNDARY
+  test_scope: EXPLICIT_LIFECYCLE_PROJECTION_UNIT
+  input:
+    T0: 43200000000
+    H: 604800000000
+    generated_repeated_failure_flag: true
+    deposits:
+    - path_role: MAIN
+      deposit_ordinal: 1
+      final_status: REVERSED_BY_HORIZON
+      initiation_ts: 72000000000
+      settlement_ts: 216000000000
+      failure_ts: null
+      reversal_ts: 604800000000
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+    - path_role: EXTRA
+      deposit_ordinal: 2
+      final_status: FAILED
+      initiation_ts: 115200000000
+      settlement_ts: null
+      failure_ts: 360000000000
+      reversal_ts: null
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+  expected:
+    repeated_failure: true
+    repeated_failure_ts: 604800000000
+    repeated_failure_reason_code: SECOND_FAILED_OR_REVERSED_DEPOSIT
+    repeated_failure_trigger_deposit_ordinal: 1
+    occurrence_event_count: 1
+    event_type: REPEATED_FAILED_OR_REVERSED_DEPOSITS
+    summary_event_ts: 604800000000
+- id: REPEATED_FAILURE_SINGLE_QUALIFYING_FALSE
+  test_scope: EXPLICIT_LIFECYCLE_PROJECTION_UNIT
+  input:
+    T0: 43200000000
+    H: 604800000000
+    generated_repeated_failure_flag: false
+    deposits:
+    - path_role: MAIN
+      deposit_ordinal: 1
+      final_status: FAILED
+      initiation_ts: 72000000000
+      settlement_ts: null
+      failure_ts: 540000000000
+      reversal_ts: null
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+    - path_role: EXTRA
+      deposit_ordinal: 2
+      final_status: PENDING_AT_HORIZON
+      initiation_ts: 115200000000
+      settlement_ts: null
+      failure_ts: null
+      reversal_ts: null
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+  expected:
+    repeated_failure: false
+    repeated_failure_ts: null
+    repeated_failure_reason_code: null
+    repeated_failure_trigger_deposit_ordinal: null
+    occurrence_event_count: 0
+    event_type: null
+    summary_event_ts: 604800000000
+- id: REPEATED_FAILURE_NONQUALIFYING_STATUSES
+  test_scope: EXPLICIT_LIFECYCLE_PROJECTION_UNIT
+  input:
+    T0: 43200000000
+    H: 604800000000
+    generated_repeated_failure_flag: false
+    deposits:
+    - path_role: MAIN
+      deposit_ordinal: 1
+      final_status: SUCCESSFUL_SETTLED_NONREVERSED_BY_HORIZON
+      initiation_ts: 396000000000
+      settlement_ts: 576000000000
+      failure_ts: null
+      reversal_ts: null
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+    - path_role: EXTRA
+      deposit_ordinal: 2
+      final_status: PENDING_AT_HORIZON
+      initiation_ts: 115200000000
+      settlement_ts: null
+      failure_ts: null
+      reversal_ts: null
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+    - path_role: EXTRA
+      deposit_ordinal: 3
+      final_status: INVALID_OR_THIRD_PARTY
+      initiation_ts: 180000000000
+      settlement_ts: null
+      failure_ts: null
+      reversal_ts: null
+      rejection_ts: 360000000000
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: false
+  expected:
+    repeated_failure: false
+    repeated_failure_ts: null
+    repeated_failure_reason_code: null
+    repeated_failure_trigger_deposit_ordinal: null
+    occurrence_event_count: 0
+    event_type: null
+    summary_event_ts: 604800000000
+- id: REPEATED_FAILURE_NO_DEPOSITS
+  test_scope: EXPLICIT_LIFECYCLE_PROJECTION_UNIT
+  input:
+    T0: 43200000000
+    H: 604800000000
+    generated_repeated_failure_flag: false
+    deposits: []
+  expected:
+    repeated_failure: false
+    repeated_failure_ts: null
+    repeated_failure_reason_code: null
+    repeated_failure_trigger_deposit_ordinal: null
+    occurrence_event_count: 0
+    event_type: null
+    summary_event_ts: 604800000000
+repeated_failure_failure_fixtures:
+- id: REPEATED_FAILURE_FLAG_LOG_MISMATCH
+  input_base_fixture: REPEATED_FAILURE_REVIEW_TWO_FAILED
+  mutation:
+    input.generated_repeated_failure_flag: false
+  expected_failure: GENERATION_OR_EVENT_CONTRACT_FAILURE
+- id: REPEATED_FAILURE_TRUE_MISSING_TIMESTAMP
+  input_base_fixture: REPEATED_FAILURE_REVIEW_TWO_FAILED
+  mutation:
+    observed_summary.repeated_failure_ts: null
+  expected:
+    classification: MISSING_OR_INVALID
+    structural_na: false
+    generation_conforms: false
+    full_guardrail_gate_pass: false
+- id: REPEATED_FAILURE_FALSE_NONNULL_REASON
+  input_base_fixture: REPEATED_FAILURE_NO_DEPOSITS
+  mutation:
+    observed_summary.repeated_failure_reason_code: SECOND_FAILED_OR_REVERSED_DEPOSIT
+  expected:
+    classification: INCONSISTENT_STRUCTURAL_NA
+    generation_conforms: false
+reminder_restriction_fixtures:
+- id: PROTECTION_BEFORE_REMINDER_SUPPRESSED
+  test_scope: EXPLICIT_STATE_PREDICATE_UNIT_NO_GENERATOR_OR_NEW_DRAW
+  input:
+    T0: 43200000000
+    H: 604800000000
+    evaluation_ts: 129600000000
+    randomized: true
+    kyc_source_state_at_t0: NO_OBSERVED_KYC_FRICTION
+    product_protection: true
+    product_protection_ts: 108000000000
+    product_protection_reason_code: APPROPRIATENESS_OR_PRODUCT_PROTECTION_SIGNAL
+    unwanted_contact_or_optout: false
+    unwanted_contact_or_optout_ts: null
+    unwanted_contact_or_optout_reason_code: null
+    audit_stop_ts: null
+    audit_restriction_ts: null
+    serious_audit_complete: true
+    serious_breach_codes: []
+    deposits: []
+  expected:
+    hard_restriction_by_t: true
+    proactive_stop_by_t: true
+    active_settled_deposit_by_t: false
+    emit_generic_reminder: false
+    reminder_ts: null
+- id: PROTECTION_AT_REMINDER_SUPPRESSED
+  test_scope: EXPLICIT_STATE_PREDICATE_UNIT_NO_GENERATOR_OR_NEW_DRAW
+  input:
+    T0: 43200000000
+    H: 604800000000
+    evaluation_ts: 129600000000
+    randomized: true
+    kyc_source_state_at_t0: NO_OBSERVED_KYC_FRICTION
+    product_protection: true
+    product_protection_ts: 129600000000
+    product_protection_reason_code: APPROPRIATENESS_OR_PRODUCT_PROTECTION_SIGNAL
+    unwanted_contact_or_optout: false
+    unwanted_contact_or_optout_ts: null
+    unwanted_contact_or_optout_reason_code: null
+    audit_stop_ts: null
+    audit_restriction_ts: null
+    serious_audit_complete: true
+    serious_breach_codes: []
+    deposits: []
+  expected:
+    hard_restriction_by_t: true
+    proactive_stop_by_t: true
+    active_settled_deposit_by_t: false
+    emit_generic_reminder: false
+    reminder_ts: null
+- id: PROTECTION_AFTER_REMINDER_NOT_RETROACTIVE
+  test_scope: EXPLICIT_STATE_PREDICATE_UNIT_NO_GENERATOR_OR_NEW_DRAW
+  input:
+    T0: 43200000000
+    H: 604800000000
+    evaluation_ts: 129600000000
+    randomized: true
+    kyc_source_state_at_t0: NO_OBSERVED_KYC_FRICTION
+    product_protection: true
+    product_protection_ts: 129600000001
+    product_protection_reason_code: APPROPRIATENESS_OR_PRODUCT_PROTECTION_SIGNAL
+    unwanted_contact_or_optout: false
+    unwanted_contact_or_optout_ts: null
+    unwanted_contact_or_optout_reason_code: null
+    audit_stop_ts: null
+    audit_restriction_ts: null
+    serious_audit_complete: true
+    serious_breach_codes: []
+    deposits: []
+  expected:
+    hard_restriction_by_t: false
+    proactive_stop_by_t: false
+    active_settled_deposit_by_t: false
+    emit_generic_reminder: true
+    reminder_ts: 129600000000
+- id: NO_SIGNAL_UNFUNDED_REMINDER
+  test_scope: EXPLICIT_STATE_PREDICATE_UNIT_NO_GENERATOR_OR_NEW_DRAW
+  input:
+    T0: 43200000000
+    H: 604800000000
+    evaluation_ts: 129600000000
+    randomized: true
+    kyc_source_state_at_t0: NO_OBSERVED_KYC_FRICTION
+    product_protection: false
+    product_protection_ts: null
+    product_protection_reason_code: null
+    unwanted_contact_or_optout: false
+    unwanted_contact_or_optout_ts: null
+    unwanted_contact_or_optout_reason_code: null
+    audit_stop_ts: null
+    audit_restriction_ts: null
+    serious_audit_complete: true
+    serious_breach_codes: []
+    deposits: []
+  expected:
+    hard_restriction_by_t: false
+    proactive_stop_by_t: false
+    active_settled_deposit_by_t: false
+    emit_generic_reminder: true
+    reminder_ts: 129600000000
+- id: OPTOUT_ALONE_NOT_HARD_RESTRICTION
+  test_scope: EXPLICIT_STATE_PREDICATE_UNIT_NO_GENERATOR_OR_NEW_DRAW
+  input:
+    T0: 43200000000
+    H: 604800000000
+    evaluation_ts: 129600000000
+    randomized: true
+    kyc_source_state_at_t0: NO_OBSERVED_KYC_FRICTION
+    product_protection: false
+    product_protection_ts: null
+    product_protection_reason_code: null
+    unwanted_contact_or_optout: true
+    unwanted_contact_or_optout_ts: 108000000000
+    unwanted_contact_or_optout_reason_code: UNWANTED_CONTACT_OR_OPTOUT
+    audit_stop_ts: null
+    audit_restriction_ts: null
+    serious_audit_complete: true
+    serious_breach_codes: []
+    deposits: []
+  expected:
+    hard_restriction_by_t: false
+    proactive_stop_by_t: true
+    active_settled_deposit_by_t: false
+    emit_generic_reminder: true
+    reminder_ts: 129600000000
+- id: PRESSURE_BREACH_ALONE_NOT_RESTRICTION
+  test_scope: EXPLICIT_STATE_PREDICATE_UNIT_NO_GENERATOR_OR_NEW_DRAW
+  input:
+    T0: 43200000000
+    H: 604800000000
+    evaluation_ts: 129600000000
+    randomized: true
+    kyc_source_state_at_t0: NO_OBSERVED_KYC_FRICTION
+    product_protection: false
+    product_protection_ts: null
+    product_protection_reason_code: null
+    unwanted_contact_or_optout: false
+    unwanted_contact_or_optout_ts: null
+    unwanted_contact_or_optout_reason_code: null
+    audit_stop_ts: null
+    audit_restriction_ts: null
+    serious_audit_complete: true
+    serious_breach_codes:
+    - DEPOSIT_OR_TRADING_PRESSURE
+    deposits: []
+  expected:
+    hard_restriction_by_t: false
+    proactive_stop_by_t: false
+    active_settled_deposit_by_t: false
+    emit_generic_reminder: true
+    reminder_ts: 129600000000
+- id: EXPLICIT_AUDIT_RESTRICTION_SUPPRESSES
+  test_scope: EXPLICIT_STATE_PREDICATE_UNIT_NO_GENERATOR_OR_NEW_DRAW
+  input:
+    T0: 43200000000
+    H: 604800000000
+    evaluation_ts: 129600000000
+    randomized: true
+    kyc_source_state_at_t0: NO_OBSERVED_KYC_FRICTION
+    product_protection: false
+    product_protection_ts: null
+    product_protection_reason_code: null
+    unwanted_contact_or_optout: false
+    unwanted_contact_or_optout_ts: null
+    unwanted_contact_or_optout_reason_code: null
+    audit_stop_ts: null
+    audit_restriction_ts: 108000000000
+    serious_audit_complete: true
+    serious_breach_codes: []
+    deposits: []
+  expected:
+    hard_restriction_by_t: true
+    proactive_stop_by_t: true
+    active_settled_deposit_by_t: false
+    emit_generic_reminder: false
+    reminder_ts: null
+- id: EXPLICIT_AUDIT_STOP_ONLY
+  test_scope: EXPLICIT_STATE_PREDICATE_UNIT_NO_GENERATOR_OR_NEW_DRAW
+  input:
+    T0: 43200000000
+    H: 604800000000
+    evaluation_ts: 129600000000
+    randomized: true
+    kyc_source_state_at_t0: NO_OBSERVED_KYC_FRICTION
+    product_protection: false
+    product_protection_ts: null
+    product_protection_reason_code: null
+    unwanted_contact_or_optout: false
+    unwanted_contact_or_optout_ts: null
+    unwanted_contact_or_optout_reason_code: null
+    audit_stop_ts: 108000000000
+    audit_restriction_ts: null
+    serious_audit_complete: true
+    serious_breach_codes: []
+    deposits: []
+  expected:
+    hard_restriction_by_t: false
+    proactive_stop_by_t: true
+    active_settled_deposit_by_t: false
+    emit_generic_reminder: true
+    reminder_ts: 129600000000
+- id: BASELINE_RESTRICTION_EXCLUDED_NO_REMINDER
+  test_scope: EXPLICIT_STATE_PREDICATE_UNIT_NO_GENERATOR_OR_NEW_DRAW
+  input:
+    T0: 43200000000
+    H: 604800000000
+    evaluation_ts: 129600000000
+    randomized: false
+    kyc_source_state_at_t0: APPROPRIATENESS_OR_PRODUCT_RESTRICTION
+    product_protection: false
+    product_protection_ts: null
+    product_protection_reason_code: null
+    unwanted_contact_or_optout: false
+    unwanted_contact_or_optout_ts: null
+    unwanted_contact_or_optout_reason_code: null
+    audit_stop_ts: null
+    audit_restriction_ts: null
+    serious_audit_complete: true
+    serious_breach_codes: []
+    deposits: []
+  expected:
+    hard_restriction_by_t: true
+    proactive_stop_by_t: true
+    active_settled_deposit_by_t: false
+    emit_generic_reminder: false
+    reminder_ts: null
+- id: SETTLEMENT_AT_REMINDER_SUPPRESSES
+  test_scope: EXPLICIT_STATE_PREDICATE_UNIT_NO_GENERATOR_OR_NEW_DRAW
+  input:
+    T0: 43200000000
+    H: 604800000000
+    evaluation_ts: 129600000000
+    randomized: true
+    kyc_source_state_at_t0: NO_OBSERVED_KYC_FRICTION
+    product_protection: false
+    product_protection_ts: null
+    product_protection_reason_code: null
+    unwanted_contact_or_optout: false
+    unwanted_contact_or_optout_ts: null
+    unwanted_contact_or_optout_reason_code: null
+    audit_stop_ts: null
+    audit_restriction_ts: null
+    serious_audit_complete: true
+    serious_breach_codes: []
+    deposits:
+    - path_role: MAIN
+      deposit_ordinal: 1
+      final_status: SUCCESSFUL_SETTLED_NONREVERSED_BY_HORIZON
+      initiation_ts: 72000000000
+      settlement_ts: 129600000000
+      failure_ts: null
+      reversal_ts: null
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+  expected:
+    hard_restriction_by_t: false
+    proactive_stop_by_t: false
+    active_settled_deposit_by_t: true
+    emit_generic_reminder: false
+    reminder_ts: null
+- id: FUTURE_REVERSAL_NOT_EARLIER_DISPOSITION
+  test_scope: EXPLICIT_STATE_PREDICATE_UNIT_NO_GENERATOR_OR_NEW_DRAW
+  input:
+    T0: 43200000000
+    H: 604800000000
+    evaluation_ts: 129600000000
+    randomized: true
+    kyc_source_state_at_t0: NO_OBSERVED_KYC_FRICTION
+    product_protection: false
+    product_protection_ts: null
+    product_protection_reason_code: null
+    unwanted_contact_or_optout: false
+    unwanted_contact_or_optout_ts: null
+    unwanted_contact_or_optout_reason_code: null
+    audit_stop_ts: null
+    audit_restriction_ts: null
+    serious_audit_complete: true
+    serious_breach_codes: []
+    deposits:
+    - path_role: MAIN
+      deposit_ordinal: 1
+      final_status: REVERSED_BY_HORIZON
+      initiation_ts: 72000000000
+      settlement_ts: 108000000000
+      failure_ts: null
+      reversal_ts: 144000000000
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+  expected:
+    hard_restriction_by_t: false
+    proactive_stop_by_t: false
+    active_settled_deposit_by_t: true
+    emit_generic_reminder: false
+    reminder_ts: null
+- id: REVERSAL_AT_REMINDER_REOPENS_ASOF
+  test_scope: EXPLICIT_STATE_PREDICATE_UNIT_NO_GENERATOR_OR_NEW_DRAW
+  input:
+    T0: 43200000000
+    H: 604800000000
+    evaluation_ts: 129600000000
+    randomized: true
+    kyc_source_state_at_t0: NO_OBSERVED_KYC_FRICTION
+    product_protection: false
+    product_protection_ts: null
+    product_protection_reason_code: null
+    unwanted_contact_or_optout: false
+    unwanted_contact_or_optout_ts: null
+    unwanted_contact_or_optout_reason_code: null
+    audit_stop_ts: null
+    audit_restriction_ts: null
+    serious_audit_complete: true
+    serious_breach_codes: []
+    deposits:
+    - path_role: MAIN
+      deposit_ordinal: 1
+      final_status: REVERSED_BY_HORIZON
+      initiation_ts: 72000000000
+      settlement_ts: 108000000000
+      failure_ts: null
+      reversal_ts: 129600000000
+      rejection_ts: null
+      status_as_of_ts: 604800000000
+      valid_customer_attributed: true
+  expected:
+    hard_restriction_by_t: false
+    proactive_stop_by_t: false
+    active_settled_deposit_by_t: false
+    emit_generic_reminder: true
+    reminder_ts: 129600000000
+restriction_missing_input_fixtures:
+- id: TRUE_PROTECTION_WITHOUT_TIME
+  input_base_fixture: PROTECTION_BEFORE_REMINDER_SUPPRESSED
+  mutation:
+    input.product_protection_ts: null
+  expected:
+    predicate_result: NOT_EVALUABLE
+    missing_treated_as_false: false
+    generation_conforms: false
+- id: INCOMPLETE_SERIOUS_AUDIT_NOT_NO_STOP
+  input_base_fixture: NO_SIGNAL_UNFUNDED_REMINDER
+  mutation:
+    input.serious_audit_complete: false
+  expected:
+    predicate_result: NOT_EVALUABLE
+    missing_treated_as_false: false
+    generation_conforms: false
+data_hash_domain_fixture:
+  id: TWO_RUNS_SAME_DATA_DISTINCT_MANIFESTS
+  test_scope: HASH_DOMAIN_UNIT_ONLY. These abbreviated release_binding_fixture_utf8 records isolate R4 hashing
+    and are NOT valid dataset_release_record.json instances under Oracle section 2.5.2. Complete R5 provenance
+    specimens below supply scan/signature/benchmark/schema fields. No abbreviated fixture waives production release
+    authentication.
+  member_bytes_source: package_hash_fixture.member_content_utf8 in this same normative file
+  package_canonical_preimage_utf8: '[{"path":"payload/a.txt","sha256":"87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7"},{"path":"payload/b.txt","sha256":"0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f"}]'
+  expected_content_sha256: 8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5
+  source_field: analyst_package_manifest.json.payload.package_content_sha256
+  runs:
+  - run_id: FIXTURE_RUN_A
+    analyst_manifest_utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"members":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt","row_count":null,"sha256":"87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt","row_count":null,"sha256":"0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f"}],"method_id":"OIDL-PACKAGE-MEMBERS-SHA256-v1","package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","package_kind":"ANALYST","run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"run_id":"FIXTURE_RUN_A","schema_version":"0.2.6"}
+
+      '
+    expected_manifest_sha256: 9420a1bd20517096ba60dd5c94282ea49e1c1f7db948e28afc26d98d9f183c0e
+    release_binding_fixture_utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"9420a1bd20517096ba60dd5c94282ea49e1c1f7db948e28afc26d98d9f183c0e","fixture_only":true},"run_id":"FIXTURE_RUN_A","schema_version":"0.2.6"}
+
+      '
+    expected_release_binding_sha256: ea06c82ff433cc36b642ef770579155bfc23371e22745a535b6ecbc592867c14
+    result_fixture_utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"deterministic_result":{"analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","arithmetic_contract_id":"OIDL-COUNT-RATIONAL-AGGREGATION-v1","ci_lower":0,"ci_upper":0,"dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","estimate":0,"method_id":"OIDL-BLOCKED-ITT-NEYMAN-NORMAL","method_version":"0.3.0","p_value":1,"schema_version":"0.2.6","se":0,"test_statistic":null,"variance":0,"zero_se_status":"ZERO_SE_ZERO_ESTIMATE"},"provenance":{"analyst_package_manifest_sha256":"9420a1bd20517096ba60dd5c94282ea49e1c1f7db948e28afc26d98d9f183c0e","dataset_release_record_sha256":"ea06c82ff433cc36b642ef770579155bfc23371e22745a535b6ecbc592867c14"}},"run_id":"FIXTURE_RUN_A","schema_version":"0.2.6"}
+
+      '
+    expected_result_file_sha256: 8c2f8288f39577c9604a07e1d00e52fb16f6b4fef8232f61d5118410c9032f44
+    expected_dataset_package_hash: 8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5
+    expected_analyst_view_hash: 8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5
+  - run_id: FIXTURE_RUN_B
+    analyst_manifest_utf8: '{"created_at_utc":"2000-02-05T00:00:01.000000Z","payload":{"members":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt","row_count":null,"sha256":"87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt","row_count":null,"sha256":"0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f"}],"method_id":"OIDL-PACKAGE-MEMBERS-SHA256-v1","package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","package_kind":"ANALYST","run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"run_id":"FIXTURE_RUN_B","schema_version":"0.2.6"}
+
+      '
+    expected_manifest_sha256: e11960e65a42539e7cec675517fb09f1c6b13b11a29f33a781fc9aa955cb2661
+    release_binding_fixture_utf8: '{"created_at_utc":"2000-02-05T00:00:01.000000Z","payload":{"analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"e11960e65a42539e7cec675517fb09f1c6b13b11a29f33a781fc9aa955cb2661","fixture_only":true},"run_id":"FIXTURE_RUN_B","schema_version":"0.2.6"}
+
+      '
+    expected_release_binding_sha256: 2bcc2e173cb297519f74b80bf0229f93bcc1bf5f26f18846170fba528093de88
+    result_fixture_utf8: '{"created_at_utc":"2000-02-05T00:00:01.000000Z","payload":{"deterministic_result":{"analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","arithmetic_contract_id":"OIDL-COUNT-RATIONAL-AGGREGATION-v1","ci_lower":0,"ci_upper":0,"dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","estimate":0,"method_id":"OIDL-BLOCKED-ITT-NEYMAN-NORMAL","method_version":"0.3.0","p_value":1,"schema_version":"0.2.6","se":0,"test_statistic":null,"variance":0,"zero_se_status":"ZERO_SE_ZERO_ESTIMATE"},"provenance":{"analyst_package_manifest_sha256":"e11960e65a42539e7cec675517fb09f1c6b13b11a29f33a781fc9aa955cb2661","dataset_release_record_sha256":"2bcc2e173cb297519f74b80bf0229f93bcc1bf5f26f18846170fba528093de88"}},"run_id":"FIXTURE_RUN_B","schema_version":"0.2.6"}
+
+      '
+    expected_result_file_sha256: 03fa046c7848fce48c7b3e2feb8a42fc536af5010b122f194605ccda44e6d503
+    expected_dataset_package_hash: 8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5
+    expected_analyst_view_hash: 8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5
+  deterministic_result_canonical_utf8: '{"analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","arithmetic_contract_id":"OIDL-COUNT-RATIONAL-AGGREGATION-v1","ci_lower":0,"ci_upper":0,"dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","estimate":0,"method_id":"OIDL-BLOCKED-ITT-NEYMAN-NORMAL","method_version":"0.3.0","p_value":1,"schema_version":"0.2.6","se":0,"test_statistic":null,"variance":0,"zero_se_status":"ZERO_SE_ZERO_ESTIMATE"}'
+  expected_deterministic_result_sha256: 644f59f8e6d59a7b5d509331650fb4fb9e1800a294cb9d0dc392033d3fdd079b
+  expected:
+    aliases_equal: true
+    aliases_same_across_runs: true
+    manifest_hashes_differ: true
+    release_hashes_differ: true
+    whole_result_hashes_differ: true
+    deterministic_result_hashes_equal: true
+    manifest_or_release_hash_inside_deterministic_result: false
+  rejection_cases:
+  - MANIFEST_DIGEST_USED_AS_DATASET_ALIAS
+  - MANIFEST_DIGEST_USED_AS_VIEW_ALIAS
+  - HASH_OF_DIGEST_STRING_USED_AS_ALIAS
+  - VOLATILE_MANIFEST_OR_RELEASE_HASH_IN_DETERMINISTIC_RESULT
+  - ROOT_MANIFEST_OR_SIDECAR_INCLUDED_IN_MEMBER_SET
+  - UNAUTHENTICATED_ALIAS_SOURCE
+projection_fixture_scope: Explicit lifecycle/state unit fixtures isolate projection rules and are not assertions
+  that every supplied combination satisfies canonical generation quotas, timing distributions or path counts.
+  Full generated-path validation remains separately required. The R1 two-failure review fixture additionally reproduces
+  the frozen extra-lifecycle half-span arithmetic.
+pre_release_scan_provenance_fixtures:
+  test_scope: EXPLICIT_BYTE_AND_PROVENANCE_LIFECYCLE_UNIT. Fabricated text payloads isolate hashing/ordering and
+    do not satisfy canonical cohort logical schemas. Valid prior approvals/benchmark/registry, complete existing
+    leakage checks returning PASS, and the existing conceptual lock L being satisfied are explicit prerequisites
+    except where varied. No canonical/hidden seed or cohort is generated. These tests cannot substitute for actual
+    leakage, isolation or human-approval enforcement tests.
+  fixture_serialization: 'For the provided JSON specimens only: sorted keys, UTF-8, no insignificant spaces, one
+    trailing LF. Hash the literal utf8 bytes; do not use this fixture serialization to override the environment-pinned
+    production serializer. Override strings below are complete file replacements, not patches.'
+  rule_reference: Oracle section 2.5.2; scan is dataset-grounded, two aliases unchanged, no release hash at creation
+    or afterwards, exact-byte release authentication before downstream use.
+  analyst_payload_member_content_utf8:
+    payload/a.txt: 'a
+
+      '
+    payload/b.txt: 'b
+
+      '
+  oracle_payload_member_content_utf8:
+    payload/public_fixture.txt: 'fabricated oracle payload; contains no cohort or secret
+
+      '
+  base_artifacts:
+    benchmark_commitment.json:
+      utf8: '{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","created_at_utc":"2000-02-05T00:00:00.000000Z","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","parent_run_id":null,"payload":{"fixture_scope":"UPSTREAM_COMMITMENT_BINDINGS_ONLY;
+        approval/assignment/registry validity are explicit preconditions, not tested by this provenance unit fixture."},"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE","schema_version":"0.2.6"}
+
+        '
+      sha256: 9fe5b473f6033b0fa5913c44db4e6cc994b1277fdefc192a00d783592ebe5e50
+    analyst_package_manifest.json:
+      utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"members":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt","row_count":null,"sha256":"87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt","row_count":null,"sha256":"0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f"}],"method_id":"OIDL-PACKAGE-MEMBERS-SHA256-v1","package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","package_kind":"ANALYST","run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.6"}
+
+        '
+      sha256: 9c077de07ed0aadd64fa9632d464569cbd5fe0fa8764b1d15395fd4d1750674c
+    oracle_package_manifest.json:
+      utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"members":[{"logical_schema":"FABRICATED_ORACLE_TEXT_FIXTURE","path":"payload/public_fixture.txt","row_count":null,"sha256":"1d75b1a3da9be436595e1323b1511fa5b9f383757292e1e6e793e3370864ef3d"}],"method_id":"OIDL-PACKAGE-MEMBERS-SHA256-v1","package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","package_kind":"ORACLE","run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.6"}
+
+        '
+      sha256: 7d0940bed3d8a626dd15596ea7ae3e6b243c6c3f9cdf3f81e7973704dde9b4e0
+    analyst_leakage_scan.json:
+      utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_package_manifest_sha256":"9c077de07ed0aadd64fa9632d464569cbd5fe0fa8764b1d15395fd4d1750674c","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"9fe5b473f6033b0fa5913c44db4e6cc994b1277fdefc192a00d783592ebe5e50","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE","verification_phase_at_creation":"LOCAL_BYTES_VERIFIED"},"reason_codes":[],"scan_scope":"COMPLETE_FINALIZED_ANALYST_PACKAGE","scan_status":"PASS","schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","research_spec_version":"0.2.6","run_envelope_schema_version":"0.2.6"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.6"}
+
+        '
+      sha256: fb2ffbf530e8ab8253c9f7eb6be8da83c894cc50d251d805a187177c64ee0324
+    dataset_release_record.json:
+      utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"approval":{"approved_at_utc":"2000-02-05T00:00:00.000000Z","approver_id":"fixture-custodian","disposition":"APPROVED","reason":"Explicit
+        fixture approval of the recorded predecessor commitments; not a PKI signature.","role":"ORACLE_CUSTODIAN","scope":"DATASET_RELEASE"},"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_leakage_scan_sha256":"fb2ffbf530e8ab8253c9f7eb6be8da83c894cc50d251d805a187177c64ee0324","analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"9c077de07ed0aadd64fa9632d464569cbd5fe0fa8764b1d15395fd4d1750674c","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"9fe5b473f6033b0fa5913c44db4e6cc994b1277fdefc192a00d783592ebe5e50","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","oracle_commitment_id":"R5-NONRESOLVING-ORACLE-COMMITMENT","oracle_package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","oracle_package_manifest_sha256":"7d0940bed3d8a626dd15596ea7ae3e6b243c6c3f9cdf3f81e7973704dde9b4e0","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","oracle_schema_ids":["FABRICATED_ORACLE_TEXT_FIXTURE"],"research_spec_version":"0.2.6","run_envelope_schema_version":"0.2.6"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.6"}
+
+        '
+      sha256: a3a89d1978e31d2e98c3f3dd2d8604afb7d3391dd8fcf0ebec5a64bf788db9cc
+    analyst_package_hash.txt:
+      utf8: '8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5
+
+        '
+      sha256: cbf8b5c7828dbc34ed5a6034604dc77116eec175add04d7c076182c5c038c9f6
+    oracle_package_commitment_hash.txt:
+      utf8: 'e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e
+
+        '
+      sha256: f358ee2651ef92121eb389c8fb75588690eab04941528dcfce16c562ea504aa7
+  cases:
+  - id: R5_VALID_LOCAL_THEN_AUTHENTICATED_RELEASE
+    phase: COMPLETE_ORDER
+    override_artifacts: {}
+    expected:
+      creation_succeeds_without_release_record: true
+      creation_phase: LOCAL_BYTES_VERIFIED
+      scan_dataset_grounded: true
+      scan_has_both_aliases: true
+      scan_has_release_record_sha256: false
+      scan_has_deterministic_result: false
+      scan_exact_sha256_before_and_after: fb2ffbf530e8ab8253c9f7eb6be8da83c894cc50d251d805a187177c64ee0324
+      release_authenticated: true
+      governance_state_after: ANALYST_PACKAGE_RELEASED
+      scan_mutated: false
+      required_downstream_manifest_sha256: 9c077de07ed0aadd64fa9632d464569cbd5fe0fa8764b1d15395fd4d1750674c
+      required_downstream_scan_sha256: fb2ffbf530e8ab8253c9f7eb6be8da83c894cc50d251d805a187177c64ee0324
+      required_downstream_release_sha256: a3a89d1978e31d2e98c3f3dd2d8604afb7d3391dd8fcf0ebec5a64bf788db9cc
+    operation_order:
+    - FINALIZE_PACKAGES_MANIFESTS_SIDECARS
+    - LOCAL_BYTE_VERIFICATION_AND_LEAKAGE_SCAN
+    - FINALIZE_IMMUTABLE_SCAN
+    - HASH_SCAN_EXACT_BYTES
+    - SIGN_AND_FINALIZE_RELEASE
+    - HASH_RELEASE_AND_CROSS_AUTHENTICATE
+    - ENTER_ANALYST_PACKAGE_RELEASED_AFTER_EXISTING_LOCK_L
+  - id: R5_WRONG_SIGNED_SCAN_HASH
+    phase: RELEASE_AUTHENTICATION
+    override_artifacts:
+      dataset_release_record.json:
+        utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"approval":{"approved_at_utc":"2000-02-05T00:00:00.000000Z","approver_id":"fixture-custodian","disposition":"APPROVED","reason":"Explicit
+          fixture approval of the recorded predecessor commitments; not a PKI signature.","role":"ORACLE_CUSTODIAN","scope":"DATASET_RELEASE"},"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_leakage_scan_sha256":"0000000000000000000000000000000000000000000000000000000000000000","analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"9c077de07ed0aadd64fa9632d464569cbd5fe0fa8764b1d15395fd4d1750674c","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"9fe5b473f6033b0fa5913c44db4e6cc994b1277fdefc192a00d783592ebe5e50","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","oracle_commitment_id":"R5-NONRESOLVING-ORACLE-COMMITMENT","oracle_package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","oracle_package_manifest_sha256":"7d0940bed3d8a626dd15596ea7ae3e6b243c6c3f9cdf3f81e7973704dde9b4e0","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","oracle_schema_ids":["FABRICATED_ORACLE_TEXT_FIXTURE"],"research_spec_version":"0.2.6","run_envelope_schema_version":"0.2.6"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.6"}
+
+          '
+        sha256: b882c0aee996ce882eddd5e1e916662b69b246195d4a235a830f05eaf82f01a9
+    expected:
+      accepted: false
+      reason_codes:
+      - LEAKAGE_SCAN_HASH_MISMATCH
+      failure_stage: DATASET_RELEASE_AUTHENTICATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+      unblind_allowed: false
+  - id: R5_WRONG_ANALYST_CONTENT_DIGEST
+    phase: PRE_RELEASE_SCAN_CREATION
+    override_artifacts:
+      analyst_leakage_scan.json:
+        utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_package_manifest_sha256":"9c077de07ed0aadd64fa9632d464569cbd5fe0fa8764b1d15395fd4d1750674c","analyst_view_hash":"0000000000000000000000000000000000000000000000000000000000000000","benchmark_commitment_sha256":"9fe5b473f6033b0fa5913c44db4e6cc994b1277fdefc192a00d783592ebe5e50","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"0000000000000000000000000000000000000000000000000000000000000000","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE","verification_phase_at_creation":"LOCAL_BYTES_VERIFIED"},"reason_codes":[],"scan_scope":"COMPLETE_FINALIZED_ANALYST_PACKAGE","scan_status":"PASS","schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","research_spec_version":"0.2.6","run_envelope_schema_version":"0.2.6"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.6"}
+
+          '
+        sha256: 590745301ea33f449f5ae2f48c8b0e8f389ee5c23ffe3e61b48fb65998ebc522
+    expected:
+      accepted: false
+      reason_codes:
+      - SCAN_LOCAL_PROVENANCE_MISMATCH
+      failure_stage: PRE_RELEASE_SCAN_CREATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+      release_signing_allowed: false
+    release_available: false
+  - id: R5_MUTATE_SCAN_AFTER_SIGNING
+    phase: RELEASE_AUTHENTICATION
+    override_artifacts:
+      analyst_leakage_scan.json:
+        utf8: "{\"created_at_utc\":\"2000-02-05T00:00:00.000000Z\",\"payload\":{\"provenance\":{\"analysis_exposure_class\"\
+          :\"PRE_EXPOSURE_SEQUESTERED_TRUTH\",\"analyst_package_manifest_sha256\":\"9c077de07ed0aadd64fa9632d464569cbd5fe0fa8764b1d15395fd4d1750674c\"\
+          ,\"analyst_view_hash\":\"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5\",\"benchmark_commitment_sha256\"\
+          :\"9fe5b473f6033b0fa5913c44db4e6cc994b1277fdefc192a00d783592ebe5e50\",\"contract_set_hash\":\"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0\"\
+          ,\"dataset_package_hash\":\"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5\",\"exposure_lineage_id\"\
+          :\"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828\",\"parent_run_id\":null,\"prior_exposure_record_hashes\"\
+          :[],\"required_artifact_groups\":[\"CONTRACT_AND_DESIGN_VALIDATION\",\"PRIMARY_ITT\",\"DESCRIPTIVE_FIDELITY\"\
+          ,\"ANALYSIS_FREEZE\",\"CAUSAL_CLAIMS_NOT_REQUESTED\",\"DECISION_NOT_IN_SCOPE\",\"ARCHIVE_AND_UNBLIND_APPROVAL\"\
+          ,\"PRIMARY_ORACLE_COMPARISON\"],\"run_profile\":\"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE\",\"verification_phase_at_creation\"\
+          :\"LOCAL_BYTES_VERIFIED\"},\"reason_codes\":[],\"scan_scope\":\"COMPLETE_FINALIZED_ANALYST_PACKAGE\"\
+          ,\"scan_status\":\"PASS\",\"schema_bindings\":{\"analyst_member_schemas\":[{\"logical_schema\":\"FABRICATED_TEXT_FIXTURE\"\
+          ,\"path\":\"payload/a.txt\"},{\"logical_schema\":\"FABRICATED_TEXT_FIXTURE\",\"path\":\"payload/b.txt\"\
+          }],\"oracle_protocol_version\":\"0.4.0\",\"research_spec_version\":\"0.2.6\",\"run_envelope_schema_version\"\
+          :\"0.2.6\"}},\"run_id\":\"R5_EXPLICIT_PROVENANCE_FIXTURE\",\"schema_version\":\"0.2.6\"}\n "
+        sha256: 4ae198f848b74e6b993734faa72c17e9e087d169269c19cc94230aaaa556f087
+    expected:
+      accepted: false
+      reason_codes:
+      - LEAKAGE_SCAN_HASH_MISMATCH
+      - SCAN_IMMUTABILITY_VIOLATION
+      failure_stage: DATASET_RELEASE_AUTHENTICATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+      unblind_allowed: false
+    known_mutation_attempt: true
+    original_finalized_scan_sha256: fb2ffbf530e8ab8253c9f7eb6be8da83c894cc50d251d805a187177c64ee0324
+    mutation_description: Append one ASCII space after the final LF; parsed JSON is identical but exact bytes
+      differ. Signed release remains unchanged.
+  - id: R5_DOWNSTREAM_BEFORE_RELEASE_AUTHENTICATION
+    phase: DOWNSTREAM_SCAN_ACCEPTANCE
+    override_artifacts: {}
+    expected:
+      accepted: false
+      reason_codes:
+      - DATASET_RELEASE_NOT_AUTHENTICATED
+      failure_stage: DOWNSTREAM_SCAN_ACCEPTANCE
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+      unblind_allowed: false
+    release_available: false
+  - id: R5_INVALID_RELEASE_APPROVER_ROLE
+    phase: RELEASE_AUTHENTICATION
+    override_artifacts:
+      dataset_release_record.json:
+        utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"approval":{"approved_at_utc":"2000-02-05T00:00:00.000000Z","approver_id":"fixture-custodian","disposition":"APPROVED","reason":"Explicit
+          fixture approval of the recorded predecessor commitments; not a PKI signature.","role":"RESEARCH_OWNER","scope":"DATASET_RELEASE"},"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_leakage_scan_sha256":"fb2ffbf530e8ab8253c9f7eb6be8da83c894cc50d251d805a187177c64ee0324","analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"9c077de07ed0aadd64fa9632d464569cbd5fe0fa8764b1d15395fd4d1750674c","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"9fe5b473f6033b0fa5913c44db4e6cc994b1277fdefc192a00d783592ebe5e50","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","oracle_commitment_id":"R5-NONRESOLVING-ORACLE-COMMITMENT","oracle_package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","oracle_package_manifest_sha256":"7d0940bed3d8a626dd15596ea7ae3e6b243c6c3f9cdf3f81e7973704dde9b4e0","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","oracle_schema_ids":["FABRICATED_ORACLE_TEXT_FIXTURE"],"research_spec_version":"0.2.6","run_envelope_schema_version":"0.2.6"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.6"}
+
+          '
+        sha256: 28b2baf8cc3c805bcffcfa6ab73e7d53f0019e93b8a08be4667e55c1cfe94ddb
+    expected:
+      accepted: false
+      reason_codes:
+      - DATASET_RELEASE_APPROVAL_INVALID
+      failure_stage: DATASET_RELEASE_AUTHENTICATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+  - id: R5_FUTURE_RELEASE_HASH_NULL_PLACEHOLDER_FORBIDDEN
+    phase: PRE_RELEASE_SCAN_CREATION
+    override_artifacts:
+      analyst_leakage_scan.json:
+        utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_package_manifest_sha256":"9c077de07ed0aadd64fa9632d464569cbd5fe0fa8764b1d15395fd4d1750674c","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"9fe5b473f6033b0fa5913c44db4e6cc994b1277fdefc192a00d783592ebe5e50","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","dataset_release_record_sha256":null,"exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE","verification_phase_at_creation":"LOCAL_BYTES_VERIFIED"},"reason_codes":[],"scan_scope":"COMPLETE_FINALIZED_ANALYST_PACKAGE","scan_status":"PASS","schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","research_spec_version":"0.2.6","run_envelope_schema_version":"0.2.6"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.6"}
+
+          '
+        sha256: 7ee775278de711279c3f1051c208fa96f83d34175ff1cdb680ba9b7d31c4a75a
+    expected:
+      accepted: false
+      reason_codes:
+      - CIRCULAR_PROVENANCE_FIELD
+      failure_stage: PRE_RELEASE_SCAN_CREATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+    release_available: false
+  - id: R5_RELEASE_SELF_HASH_FORBIDDEN
+    phase: RELEASE_AUTHENTICATION
+    override_artifacts:
+      dataset_release_record.json:
+        utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"approval":{"approved_at_utc":"2000-02-05T00:00:00.000000Z","approver_id":"fixture-custodian","disposition":"APPROVED","reason":"Explicit
+          fixture approval of the recorded predecessor commitments; not a PKI signature.","role":"ORACLE_CUSTODIAN","scope":"DATASET_RELEASE"},"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_leakage_scan_sha256":"fb2ffbf530e8ab8253c9f7eb6be8da83c894cc50d251d805a187177c64ee0324","analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"9c077de07ed0aadd64fa9632d464569cbd5fe0fa8764b1d15395fd4d1750674c","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"9fe5b473f6033b0fa5913c44db4e6cc994b1277fdefc192a00d783592ebe5e50","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","dataset_release_record_sha256":"0000000000000000000000000000000000000000000000000000000000000000","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","oracle_commitment_id":"R5-NONRESOLVING-ORACLE-COMMITMENT","oracle_package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","oracle_package_manifest_sha256":"7d0940bed3d8a626dd15596ea7ae3e6b243c6c3f9cdf3f81e7973704dde9b4e0","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","oracle_schema_ids":["FABRICATED_ORACLE_TEXT_FIXTURE"],"research_spec_version":"0.2.6","run_envelope_schema_version":"0.2.6"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.6"}
+
+          '
+        sha256: 82437c30ac56acb8e7a81de03630db72671b193ea2372496e66543aef26318d8
+    expected:
+      accepted: false
+      reason_codes:
+      - CIRCULAR_PROVENANCE_FIELD
+      failure_stage: DATASET_RELEASE_AUTHENTICATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+  - id: R5_RELEASE_SCHEMA_PROJECTION_OMISSION
+    phase: RELEASE_AUTHENTICATION
+    override_artifacts:
+      dataset_release_record.json:
+        utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"approval":{"approved_at_utc":"2000-02-05T00:00:00.000000Z","approver_id":"fixture-custodian","disposition":"APPROVED","reason":"Explicit
+          fixture approval of the recorded predecessor commitments; not a PKI signature.","role":"ORACLE_CUSTODIAN","scope":"DATASET_RELEASE"},"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_leakage_scan_sha256":"fb2ffbf530e8ab8253c9f7eb6be8da83c894cc50d251d805a187177c64ee0324","analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"9c077de07ed0aadd64fa9632d464569cbd5fe0fa8764b1d15395fd4d1750674c","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"9fe5b473f6033b0fa5913c44db4e6cc994b1277fdefc192a00d783592ebe5e50","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","oracle_commitment_id":"R5-NONRESOLVING-ORACLE-COMMITMENT","oracle_package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","oracle_package_manifest_sha256":"7d0940bed3d8a626dd15596ea7ae3e6b243c6c3f9cdf3f81e7973704dde9b4e0","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"}],"oracle_protocol_version":"0.4.0","oracle_schema_ids":["FABRICATED_ORACLE_TEXT_FIXTURE"],"research_spec_version":"0.2.6","run_envelope_schema_version":"0.2.6"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.6"}
+
+          '
+        sha256: c648c20469ca1e93ae98e94cc35716a94d98a82b4c11dbdac482607ee9f05c73
+    expected:
+      accepted: false
+      reason_codes:
+      - DATASET_RELEASE_BINDING_MISMATCH
+      failure_stage: DATASET_RELEASE_AUTHENTICATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+  - id: R5_RELEASE_PROFILE_MISMATCH
+    phase: RELEASE_AUTHENTICATION
+    override_artifacts:
+      dataset_release_record.json:
+        utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"approval":{"approved_at_utc":"2000-02-05T00:00:00.000000Z","approver_id":"fixture-custodian","disposition":"APPROVED","reason":"Explicit
+          fixture approval of the recorded predecessor commitments; not a PKI signature.","role":"ORACLE_CUSTODIAN","scope":"DATASET_RELEASE"},"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_leakage_scan_sha256":"fb2ffbf530e8ab8253c9f7eb6be8da83c894cc50d251d805a187177c64ee0324","analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"9c077de07ed0aadd64fa9632d464569cbd5fe0fa8764b1d15395fd4d1750674c","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"9fe5b473f6033b0fa5913c44db4e6cc994b1277fdefc192a00d783592ebe5e50","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","oracle_commitment_id":"R5-NONRESOLVING-ORACLE-COMMITMENT","oracle_package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","oracle_package_manifest_sha256":"7d0940bed3d8a626dd15596ea7ae3e6b243c6c3f9cdf3f81e7973704dde9b4e0","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"FULL_DECISION_SYSTEM"},"schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","oracle_schema_ids":["FABRICATED_ORACLE_TEXT_FIXTURE"],"research_spec_version":"0.2.6","run_envelope_schema_version":"0.2.6"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.6"}
+
+          '
+        sha256: ee2f9bcf7c8588c9b33e13d582980c90e5d8cb8dd3222dfb81bea96592bc4976
+    expected:
+      accepted: false
+      reason_codes:
+      - DATASET_RELEASE_BINDING_MISMATCH
+      failure_stage: DATASET_RELEASE_AUTHENTICATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+  - id: R5_RELEASE_MANIFEST_HASH_MISMATCH
+    phase: RELEASE_AUTHENTICATION
+    override_artifacts:
+      dataset_release_record.json:
+        utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"approval":{"approved_at_utc":"2000-02-05T00:00:00.000000Z","approver_id":"fixture-custodian","disposition":"APPROVED","reason":"Explicit
+          fixture approval of the recorded predecessor commitments; not a PKI signature.","role":"ORACLE_CUSTODIAN","scope":"DATASET_RELEASE"},"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_leakage_scan_sha256":"fb2ffbf530e8ab8253c9f7eb6be8da83c894cc50d251d805a187177c64ee0324","analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"0000000000000000000000000000000000000000000000000000000000000000","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"9fe5b473f6033b0fa5913c44db4e6cc994b1277fdefc192a00d783592ebe5e50","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","oracle_commitment_id":"R5-NONRESOLVING-ORACLE-COMMITMENT","oracle_package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","oracle_package_manifest_sha256":"7d0940bed3d8a626dd15596ea7ae3e6b243c6c3f9cdf3f81e7973704dde9b4e0","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","oracle_schema_ids":["FABRICATED_ORACLE_TEXT_FIXTURE"],"research_spec_version":"0.2.6","run_envelope_schema_version":"0.2.6"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.6"}
+
+          '
+        sha256: f7d55c48665147c735b602b7a25c1e3085a5887b416ebffb9aababb5d608d86b
+    expected:
+      accepted: false
+      reason_codes:
+      - DATASET_RELEASE_BINDING_MISMATCH
+      failure_stage: DATASET_RELEASE_AUTHENTICATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+  - id: R5_ARCHIVE_PRESERVES_ORIGINAL_SCAN
+    phase: ARCHIVE_COPY
+    override_artifacts: {}
+    expected:
+      release_authenticated: true
+      archived_scan_sha256: fb2ffbf530e8ab8253c9f7eb6be8da83c894cc50d251d805a187177c64ee0324
+      archived_scan_has_release_record_sha256: false
+      archived_scan_creation_phase: LOCAL_BYTES_VERIFIED
+      scan_mutated: false
+balance_fixture_contract:
+  method_id: OIDL-PRE-T0-BALANCE-SMD
+  method_version: 1.0.0
+  rule_reference: SAP section 4.3
+  numeric_tolerance: EXACT correctly rounded binary64, ties-to-even; exact canonical zero, all integer/Boolean/null/label/status
+    fields and array order. General float_absolute_tolerance does NOT apply.
+  non_product_code: Explicit inputs and expected data only; no implementation code or canonical seed.
+  direct_fixture_scope: Single-variable cases exercise one catalogue source without changing the full-output requirement
+    of three scopes and all seven fields. Scope and failure fixtures test the full logical projection. Existing
+    canonical data/release checks are separate.
+  mutation_notation: Paths are lists of exact map keys and zero-based array indices. REMOVE deletes the key or
+    array item; REPLACE replaces its value. Other named operations are defined by each case meaning. expected_balance_diagnostics
+    paths target candidate outputs, never input data. Failure tests check detection of the named issue, not canonical
+    quotas; preserve original good input/output snapshots for each independent case.
+  data_limits: No new missing-data state is introduced. Excluded rows are omitted by valid assigned-population
+    membership; missingness within randomized rows is rejected.
+balance_diagnostic_fixtures:
+- id: R6_BINARY_BERNOULLI_DENOMINATOR
+  test_scope: SINGLE_VARIABLE_BALANCE_UNIT_NOT_CANONICAL_COHORT
+  source_field: language_service_match
+  treatment_values:
+  - 1
+  - 1
+  - 0
+  - 0
+  control_values:
+  - 1
+  - 0
+  - 0
+  - 0
+  expected_variable:
+    variable_id: language_service_match
+    source_field: language_service_match
+    source_type: BINARY
+    representation: BINARY_IDENTITY
+    n_present_treatment: 4
+    n_present_control: 4
+    n_missing_treatment: 0
+    n_missing_control: 0
+    n_invalid_treatment: 0
+    n_invalid_control: 0
+    n_structural_na_treatment: 0
+    n_structural_na_control: 0
+    diagnostics:
+    - diagnostic_id: language_service_match
+      level: null
+      count_treatment: 2
+      count_control: 1
+      mean_treatment: 0.5
+      mean_control: 0.25
+      variance_treatment: 0.25
+      variance_control: 0.1875
+      mean_difference: 0.25
+      pooled_variance: 0.21875
+      pooled_sd: 0.46770717334674267
+      smd: 0.5345224838248488
+      smd_status: NONZERO_VARIANCE
+    max_abs_smd: 0.5345224838248488
+    max_abs_smd_status: FINITE
+  expected_exact_arithmetic:
+  - diagnostic_id: language_service_match
+    mean_difference_fraction: 1/4
+    pooled_variance_fraction: 7/32
+    smd_squared_fraction: 2/7
+  tests: Binary p(1-p) convention, not unbiased binary sample variance; smd=sqrt(2/7).
+- id: R6_LANGUAGE_MATCH_POSITIVE_ORIENTATION
+  test_scope: SINGLE_VARIABLE_BALANCE_UNIT_NOT_CANONICAL_COHORT
+  source_field: language_service_match
+  treatment_values:
+  - 1
+  - 1
+  - 1
+  - 0
+  control_values:
+  - 1
+  - 0
+  - 0
+  - 0
+  expected_variable:
+    variable_id: language_service_match
+    source_field: language_service_match
+    source_type: BINARY
+    representation: BINARY_IDENTITY
+    n_present_treatment: 4
+    n_present_control: 4
+    n_missing_treatment: 0
+    n_missing_control: 0
+    n_invalid_treatment: 0
+    n_invalid_control: 0
+    n_structural_na_treatment: 0
+    n_structural_na_control: 0
+    diagnostics:
+    - diagnostic_id: language_service_match
+      level: null
+      count_treatment: 3
+      count_control: 1
+      mean_treatment: 0.75
+      mean_control: 0.25
+      variance_treatment: 0.1875
+      variance_control: 0.1875
+      mean_difference: 0.5
+      pooled_variance: 0.1875
+      pooled_sd: 0.4330127018922193
+      smd: 1.1547005383792515
+      smd_status: NONZERO_VARIANCE
+    max_abs_smd: 1.1547005383792515
+    max_abs_smd_status: FINITE
+  expected_exact_arithmetic:
+  - diagnostic_id: language_service_match
+    mean_difference_fraction: 1/2
+    pooled_variance_fraction: 3/16
+    smd_squared_fraction: 4/3
+  tests: Matching is positively coded. smd=+sqrt(4/3). Coding mismatch would reverse the sign and is rejected.
+- id: R6_CATEGORICAL_ALL_LEVELS_AND_ORDER
+  test_scope: SINGLE_VARIABLE_BALANCE_UNIT_NOT_CANONICAL_COHORT
+  source_field: acquisition_channel
+  treatment_values:
+  - ORGANIC
+  - ORGANIC
+  - PAID
+  - AFFILIATE
+  control_values:
+  - ORGANIC
+  - PAID
+  - PAID
+  - AFFILIATE
+  expected_variable:
+    variable_id: acquisition_channel
+    source_field: acquisition_channel
+    source_type: CATEGORICAL
+    representation: ALL_LEVEL_INDICATORS
+    n_present_treatment: 4
+    n_present_control: 4
+    n_missing_treatment: 0
+    n_missing_control: 0
+    n_invalid_treatment: 0
+    n_invalid_control: 0
+    n_structural_na_treatment: 0
+    n_structural_na_control: 0
+    diagnostics:
+    - diagnostic_id: acquisition_channel__ORGANIC
+      level: ORGANIC
+      count_treatment: 2
+      count_control: 1
+      mean_treatment: 0.5
+      mean_control: 0.25
+      variance_treatment: 0.25
+      variance_control: 0.1875
+      mean_difference: 0.25
+      pooled_variance: 0.21875
+      pooled_sd: 0.46770717334674267
+      smd: 0.5345224838248488
+      smd_status: NONZERO_VARIANCE
+    - diagnostic_id: acquisition_channel__PAID
+      level: PAID
+      count_treatment: 1
+      count_control: 2
+      mean_treatment: 0.25
+      mean_control: 0.5
+      variance_treatment: 0.1875
+      variance_control: 0.25
+      mean_difference: -0.25
+      pooled_variance: 0.21875
+      pooled_sd: 0.46770717334674267
+      smd: -0.5345224838248488
+      smd_status: NONZERO_VARIANCE
+    - diagnostic_id: acquisition_channel__AFFILIATE
+      level: AFFILIATE
+      count_treatment: 1
+      count_control: 1
+      mean_treatment: 0.25
+      mean_control: 0.25
+      variance_treatment: 0.1875
+      variance_control: 0.1875
+      mean_difference: 0
+      pooled_variance: 0.1875
+      pooled_sd: 0.4330127018922193
+      smd: 0
+      smd_status: NONZERO_VARIANCE
+    max_abs_smd: 0.5345224838248488
+    max_abs_smd_status: FINITE
+  expected_exact_arithmetic:
+  - diagnostic_id: acquisition_channel__ORGANIC
+    mean_difference_fraction: 1/4
+    pooled_variance_fraction: 7/32
+    smd_squared_fraction: 2/7
+  - diagnostic_id: acquisition_channel__PAID
+    mean_difference_fraction: -1/4
+    pooled_variance_fraction: 7/32
+    smd_squared_fraction: 2/7
+  - diagnostic_id: acquisition_channel__AFFILIATE
+    mean_difference_fraction: '0'
+    pooled_variance_fraction: 3/16
+    smd_squared_fraction: '0'
+  tests: All levels reported in ORGANIC,PAID,AFFILIATE order; opposite signed rows and the exact finite maximum.
+- id: R6_CATEGORICAL_ABSENT_LEVELS_RETAINED
+  test_scope: SINGLE_VARIABLE_BALANCE_UNIT_NOT_CANONICAL_COHORT
+  source_field: device_verification_route
+  treatment_values:
+  - MOBILE_APP
+  - MOBILE_APP
+  control_values:
+  - MOBILE_APP
+  - MOBILE_APP
+  expected_variable:
+    variable_id: device_verification_route
+    source_field: device_verification_route
+    source_type: CATEGORICAL
+    representation: ALL_LEVEL_INDICATORS
+    n_present_treatment: 2
+    n_present_control: 2
+    n_missing_treatment: 0
+    n_missing_control: 0
+    n_invalid_treatment: 0
+    n_invalid_control: 0
+    n_structural_na_treatment: 0
+    n_structural_na_control: 0
+    diagnostics:
+    - diagnostic_id: device_verification_route__MOBILE_APP
+      level: MOBILE_APP
+      count_treatment: 2
+      count_control: 2
+      mean_treatment: 1.0
+      mean_control: 1.0
+      variance_treatment: 0
+      variance_control: 0
+      mean_difference: 0
+      pooled_variance: 0
+      pooled_sd: 0
+      smd: 0
+      smd_status: ZERO_VARIANCE_EQUAL
+    - diagnostic_id: device_verification_route__MOBILE_WEB
+      level: MOBILE_WEB
+      count_treatment: 0
+      count_control: 0
+      mean_treatment: 0
+      mean_control: 0
+      variance_treatment: 0
+      variance_control: 0
+      mean_difference: 0
+      pooled_variance: 0
+      pooled_sd: 0
+      smd: 0
+      smd_status: ZERO_VARIANCE_EQUAL
+    - diagnostic_id: device_verification_route__DESKTOP_WEB
+      level: DESKTOP_WEB
+      count_treatment: 0
+      count_control: 0
+      mean_treatment: 0
+      mean_control: 0
+      variance_treatment: 0
+      variance_control: 0
+      mean_difference: 0
+      pooled_variance: 0
+      pooled_sd: 0
+      smd: 0
+      smd_status: ZERO_VARIANCE_EQUAL
+    max_abs_smd: 0
+    max_abs_smd_status: FINITE
+  expected_exact_arithmetic:
+  - diagnostic_id: device_verification_route__MOBILE_APP
+    mean_difference_fraction: '0'
+    pooled_variance_fraction: '0'
+    smd_squared_fraction: '0'
+  - diagnostic_id: device_verification_route__MOBILE_WEB
+    mean_difference_fraction: '0'
+    pooled_variance_fraction: '0'
+    smd_squared_fraction: '0'
+  - diagnostic_id: device_verification_route__DESKTOP_WEB
+    mean_difference_fraction: '0'
+    pooled_variance_fraction: '0'
+    smd_squared_fraction: '0'
+  tests: All three levels remain; two absent levels have ZERO_VARIANCE_EQUAL, not omitted reference rows.
+- id: R6_ORDERED_CATEGORY_NOT_NUMERIC_SCORE
+  test_scope: SINGLE_VARIABLE_BALANCE_UNIT_NOT_CANONICAL_COHORT
+  source_field: declared_experience
+  treatment_values:
+  - LOW
+  - MEDIUM
+  - MEDIUM
+  - HIGH
+  control_values:
+  - LOW
+  - LOW
+  - MEDIUM
+  - HIGH
+  expected_variable:
+    variable_id: declared_experience
+    source_field: declared_experience
+    source_type: ORDERED_CATEGORICAL
+    representation: ALL_LEVEL_INDICATORS
+    n_present_treatment: 4
+    n_present_control: 4
+    n_missing_treatment: 0
+    n_missing_control: 0
+    n_invalid_treatment: 0
+    n_invalid_control: 0
+    n_structural_na_treatment: 0
+    n_structural_na_control: 0
+    diagnostics:
+    - diagnostic_id: declared_experience__LOW
+      level: LOW
+      count_treatment: 1
+      count_control: 2
+      mean_treatment: 0.25
+      mean_control: 0.5
+      variance_treatment: 0.1875
+      variance_control: 0.25
+      mean_difference: -0.25
+      pooled_variance: 0.21875
+      pooled_sd: 0.46770717334674267
+      smd: -0.5345224838248488
+      smd_status: NONZERO_VARIANCE
+    - diagnostic_id: declared_experience__MEDIUM
+      level: MEDIUM
+      count_treatment: 2
+      count_control: 1
+      mean_treatment: 0.5
+      mean_control: 0.25
+      variance_treatment: 0.25
+      variance_control: 0.1875
+      mean_difference: 0.25
+      pooled_variance: 0.21875
+      pooled_sd: 0.46770717334674267
+      smd: 0.5345224838248488
+      smd_status: NONZERO_VARIANCE
+    - diagnostic_id: declared_experience__HIGH
+      level: HIGH
+      count_treatment: 1
+      count_control: 1
+      mean_treatment: 0.25
+      mean_control: 0.25
+      variance_treatment: 0.1875
+      variance_control: 0.1875
+      mean_difference: 0
+      pooled_variance: 0.1875
+      pooled_sd: 0.4330127018922193
+      smd: 0
+      smd_status: NONZERO_VARIANCE
+    max_abs_smd: 0.5345224838248488
+    max_abs_smd_status: FINITE
+  expected_exact_arithmetic:
+  - diagnostic_id: declared_experience__LOW
+    mean_difference_fraction: -1/4
+    pooled_variance_fraction: 7/32
+    smd_squared_fraction: 2/7
+  - diagnostic_id: declared_experience__MEDIUM
+    mean_difference_fraction: 1/4
+    pooled_variance_fraction: 7/32
+    smd_squared_fraction: 2/7
+  - diagnostic_id: declared_experience__HIGH
+    mean_difference_fraction: '0'
+    pooled_variance_fraction: 3/16
+    smd_squared_fraction: '0'
+  tests: LOW,MEDIUM,HIGH indicators in ordinal level order; not 0/1/2 scoring.
+- id: R6_CONTINUOUS_STEPS_SAMPLE_VARIANCE
+  test_scope: SINGLE_VARIABLE_BALANCE_UNIT_NOT_CANONICAL_COHORT
+  source_field: pre_t0_completed_step_count
+  treatment_values:
+  - 0
+  - 1
+  - 2
+  - 3
+  control_values:
+  - 0
+  - 0
+  - 1
+  - 1
+  expected_variable:
+    variable_id: pre_t0_completed_step_count
+    source_field: pre_t0_completed_step_count
+    source_type: CONTINUOUS
+    representation: NUMERIC_IDENTITY
+    n_present_treatment: 4
+    n_present_control: 4
+    n_missing_treatment: 0
+    n_missing_control: 0
+    n_invalid_treatment: 0
+    n_invalid_control: 0
+    n_structural_na_treatment: 0
+    n_structural_na_control: 0
+    diagnostics:
+    - diagnostic_id: pre_t0_completed_step_count
+      level: null
+      count_treatment: null
+      count_control: null
+      mean_treatment: 1.5
+      mean_control: 0.5
+      variance_treatment: 1.6666666666666667
+      variance_control: 0.3333333333333333
+      mean_difference: 1.0
+      pooled_variance: 1.0
+      pooled_sd: 1.0
+      smd: 1.0
+      smd_status: NONZERO_VARIANCE
+    max_abs_smd: 1.0
+    max_abs_smd_status: FINITE
+  expected_exact_arithmetic:
+  - diagnostic_id: pre_t0_completed_step_count
+    mean_difference_fraction: '1'
+    pooled_variance_fraction: '1'
+    smd_squared_fraction: '1'
+  tests: Numeric count, unbiased n-1 variances, unweighted pooled variance=1, smd=1.
+- id: R6_CONTINUOUS_UNEQUAL_ARM_POOLING
+  test_scope: SINGLE_VARIABLE_BALANCE_UNIT_NOT_CANONICAL_COHORT
+  source_field: pre_t0_completed_step_count
+  treatment_values:
+  - 0
+  - 2
+  control_values:
+  - 0
+  - 0
+  - 1
+  - 1
+  expected_variable:
+    variable_id: pre_t0_completed_step_count
+    source_field: pre_t0_completed_step_count
+    source_type: CONTINUOUS
+    representation: NUMERIC_IDENTITY
+    n_present_treatment: 2
+    n_present_control: 4
+    n_missing_treatment: 0
+    n_missing_control: 0
+    n_invalid_treatment: 0
+    n_invalid_control: 0
+    n_structural_na_treatment: 0
+    n_structural_na_control: 0
+    diagnostics:
+    - diagnostic_id: pre_t0_completed_step_count
+      level: null
+      count_treatment: null
+      count_control: null
+      mean_treatment: 1.0
+      mean_control: 0.5
+      variance_treatment: 2.0
+      variance_control: 0.3333333333333333
+      mean_difference: 0.5
+      pooled_variance: 1.1666666666666667
+      pooled_sd: 1.0801234497346435
+      smd: 0.4629100498862757
+      smd_status: NONZERO_VARIANCE
+    max_abs_smd: 0.4629100498862757
+    max_abs_smd_status: FINITE
+  expected_exact_arithmetic:
+  - diagnostic_id: pre_t0_completed_step_count
+    mean_difference_fraction: 1/2
+    pooled_variance_fraction: 7/6
+    smd_squared_fraction: 3/14
+  tests: Unweighted mean of arm variances even with unequal arm sizes; a degrees-of-freedom weighted pool is not
+    conforming.
+- id: R6_ZERO_VARIANCE_EQUAL
+  test_scope: SINGLE_VARIABLE_BALANCE_UNIT_NOT_CANONICAL_COHORT
+  source_field: pre_t0_completed_step_count
+  treatment_values:
+  - 2
+  - 2
+  - 2
+  control_values:
+  - 2
+  - 2
+  - 2
+  expected_variable:
+    variable_id: pre_t0_completed_step_count
+    source_field: pre_t0_completed_step_count
+    source_type: CONTINUOUS
+    representation: NUMERIC_IDENTITY
+    n_present_treatment: 3
+    n_present_control: 3
+    n_missing_treatment: 0
+    n_missing_control: 0
+    n_invalid_treatment: 0
+    n_invalid_control: 0
+    n_structural_na_treatment: 0
+    n_structural_na_control: 0
+    diagnostics:
+    - diagnostic_id: pre_t0_completed_step_count
+      level: null
+      count_treatment: null
+      count_control: null
+      mean_treatment: 2.0
+      mean_control: 2.0
+      variance_treatment: 0
+      variance_control: 0
+      mean_difference: 0
+      pooled_variance: 0
+      pooled_sd: 0
+      smd: 0
+      smd_status: ZERO_VARIANCE_EQUAL
+    max_abs_smd: 0
+    max_abs_smd_status: FINITE
+  expected_exact_arithmetic:
+  - diagnostic_id: pre_t0_completed_step_count
+    mean_difference_fraction: '0'
+    pooled_variance_fraction: '0'
+    smd_squared_fraction: '0'
+  tests: smd=0, pooled_sd=0, ZERO_VARIANCE_EQUAL with canonical numeric zeros.
+- id: R6_ZERO_VARIANCE_UNEQUAL_POSITIVE
+  test_scope: SINGLE_VARIABLE_BALANCE_UNIT_NOT_CANONICAL_COHORT
+  source_field: language_service_match
+  treatment_values:
+  - 1
+  - 1
+  control_values:
+  - 0
+  - 0
+  expected_variable:
+    variable_id: language_service_match
+    source_field: language_service_match
+    source_type: BINARY
+    representation: BINARY_IDENTITY
+    n_present_treatment: 2
+    n_present_control: 2
+    n_missing_treatment: 0
+    n_missing_control: 0
+    n_invalid_treatment: 0
+    n_invalid_control: 0
+    n_structural_na_treatment: 0
+    n_structural_na_control: 0
+    diagnostics:
+    - diagnostic_id: language_service_match
+      level: null
+      count_treatment: 2
+      count_control: 0
+      mean_treatment: 1.0
+      mean_control: 0
+      variance_treatment: 0
+      variance_control: 0
+      mean_difference: 1.0
+      pooled_variance: 0
+      pooled_sd: 0
+      smd: null
+      smd_status: ZERO_VARIANCE_UNEQUAL_POSITIVE
+    max_abs_smd: null
+    max_abs_smd_status: UNBOUNDED
+  expected_exact_arithmetic:
+  - diagnostic_id: language_service_match
+    mean_difference_fraction: '1'
+    pooled_variance_fraction: '0'
+    smd_squared_fraction: null
+  tests: smd=null and ZERO_VARIANCE_UNEQUAL_POSITIVE; max_abs_smd=null/UNBOUNDED, not a validation gate.
+- id: R6_ZERO_VARIANCE_UNEQUAL_NEGATIVE
+  test_scope: SINGLE_VARIABLE_BALANCE_UNIT_NOT_CANONICAL_COHORT
+  source_field: language_service_match
+  treatment_values:
+  - 0
+  - 0
+  control_values:
+  - 1
+  - 1
+  expected_variable:
+    variable_id: language_service_match
+    source_field: language_service_match
+    source_type: BINARY
+    representation: BINARY_IDENTITY
+    n_present_treatment: 2
+    n_present_control: 2
+    n_missing_treatment: 0
+    n_missing_control: 0
+    n_invalid_treatment: 0
+    n_invalid_control: 0
+    n_structural_na_treatment: 0
+    n_structural_na_control: 0
+    diagnostics:
+    - diagnostic_id: language_service_match
+      level: null
+      count_treatment: 0
+      count_control: 2
+      mean_treatment: 0
+      mean_control: 1.0
+      variance_treatment: 0
+      variance_control: 0
+      mean_difference: -1.0
+      pooled_variance: 0
+      pooled_sd: 0
+      smd: null
+      smd_status: ZERO_VARIANCE_UNEQUAL_NEGATIVE
+    max_abs_smd: null
+    max_abs_smd_status: UNBOUNDED
+  expected_exact_arithmetic:
+  - diagnostic_id: language_service_match
+    mean_difference_fraction: '-1'
+    pooled_variance_fraction: '0'
+    smd_squared_fraction: null
+  tests: Negative constant separation has the negative status; no NaN or Infinity.
+- id: R6_EXACT_BALANCE_POSITIVE_VARIANCE
+  test_scope: SINGLE_VARIABLE_BALANCE_UNIT_NOT_CANONICAL_COHORT
+  source_field: language_service_match
+  treatment_values:
+  - 1
+  - 0
+  - 1
+  - 0
+  control_values:
+  - 0
+  - 1
+  - 0
+  - 1
+  expected_variable:
+    variable_id: language_service_match
+    source_field: language_service_match
+    source_type: BINARY
+    representation: BINARY_IDENTITY
+    n_present_treatment: 4
+    n_present_control: 4
+    n_missing_treatment: 0
+    n_missing_control: 0
+    n_invalid_treatment: 0
+    n_invalid_control: 0
+    n_structural_na_treatment: 0
+    n_structural_na_control: 0
+    diagnostics:
+    - diagnostic_id: language_service_match
+      level: null
+      count_treatment: 2
+      count_control: 2
+      mean_treatment: 0.5
+      mean_control: 0.5
+      variance_treatment: 0.25
+      variance_control: 0.25
+      mean_difference: 0
+      pooled_variance: 0.25
+      pooled_sd: 0.5
+      smd: 0
+      smd_status: NONZERO_VARIANCE
+    max_abs_smd: 0
+    max_abs_smd_status: FINITE
+  expected_exact_arithmetic:
+  - diagnostic_id: language_service_match
+    mean_difference_fraction: '0'
+    pooled_variance_fraction: 1/4
+    smd_squared_fraction: '0'
+  tests: smd=0 with NONZERO_VARIANCE and finite zero maximum; row order cannot change this.
+- id: R6_RAW_LOAD_EXACT_MOMENTS
+  test_scope: SINGLE_VARIABLE_BALANCE_UNIT_NOT_CANONICAL_COHORT
+  source_field: day_shift_load_index
+  treatment_values:
+  - 1099511627776.0
+  - 1099511627777.0
+  - 1099511627778.0
+  control_values:
+  - 1099511627776.0
+  - 1099511627777.0
+  - 1099511627777.0
+  expected_variable:
+    variable_id: day_shift_load_index
+    source_field: day_shift_load_index
+    source_type: CONTINUOUS
+    representation: NUMERIC_IDENTITY
+    n_present_treatment: 3
+    n_present_control: 3
+    n_missing_treatment: 0
+    n_missing_control: 0
+    n_invalid_treatment: 0
+    n_invalid_control: 0
+    n_structural_na_treatment: 0
+    n_structural_na_control: 0
+    diagnostics:
+    - diagnostic_id: day_shift_load_index
+      level: null
+      count_treatment: null
+      count_control: null
+      mean_treatment: 1099511627777.0
+      mean_control: 1099511627776.6667
+      variance_treatment: 1.0
+      variance_control: 0.3333333333333333
+      mean_difference: 0.3333333333333333
+      pooled_variance: 0.6666666666666666
+      pooled_sd: 0.816496580927726
+      smd: 0.408248290463863
+      smd_status: NONZERO_VARIANCE
+    max_abs_smd: 0.408248290463863
+    max_abs_smd_status: FINITE
+  expected_exact_arithmetic:
+  - diagnostic_id: day_shift_load_index
+    mean_difference_fraction: 1/3
+    pooled_variance_fraction: 2/3
+    smd_squared_fraction: 1/6
+  tests: Exact dyadic sums/squares avoid catastrophic cancellation; difference=1/3, pooled variance=2/3, smd=sqrt(1/6).
+    Unit arithmetic input, not a claim about canonical normal draws.
+- id: R6_SHIFT_LEVEL_ORDER_NOT_ALPHABETICAL
+  test_scope: SINGLE_VARIABLE_BALANCE_UNIT_NOT_CANONICAL_COHORT
+  source_field: registration_shift
+  treatment_values:
+  - DAY
+  - EVENING
+  - NIGHT
+  - NIGHT
+  control_values:
+  - DAY
+  - DAY
+  - EVENING
+  - NIGHT
+  expected_variable:
+    variable_id: registration_shift
+    source_field: registration_shift
+    source_type: CATEGORICAL
+    representation: ALL_LEVEL_INDICATORS
+    n_present_treatment: 4
+    n_present_control: 4
+    n_missing_treatment: 0
+    n_missing_control: 0
+    n_invalid_treatment: 0
+    n_invalid_control: 0
+    n_structural_na_treatment: 0
+    n_structural_na_control: 0
+    diagnostics:
+    - diagnostic_id: registration_shift__DAY
+      level: DAY
+      count_treatment: 1
+      count_control: 2
+      mean_treatment: 0.25
+      mean_control: 0.5
+      variance_treatment: 0.1875
+      variance_control: 0.25
+      mean_difference: -0.25
+      pooled_variance: 0.21875
+      pooled_sd: 0.46770717334674267
+      smd: -0.5345224838248488
+      smd_status: NONZERO_VARIANCE
+    - diagnostic_id: registration_shift__EVENING
+      level: EVENING
+      count_treatment: 1
+      count_control: 1
+      mean_treatment: 0.25
+      mean_control: 0.25
+      variance_treatment: 0.1875
+      variance_control: 0.1875
+      mean_difference: 0
+      pooled_variance: 0.1875
+      pooled_sd: 0.4330127018922193
+      smd: 0
+      smd_status: NONZERO_VARIANCE
+    - diagnostic_id: registration_shift__NIGHT
+      level: NIGHT
+      count_treatment: 2
+      count_control: 1
+      mean_treatment: 0.5
+      mean_control: 0.25
+      variance_treatment: 0.25
+      variance_control: 0.1875
+      mean_difference: 0.25
+      pooled_variance: 0.21875
+      pooled_sd: 0.46770717334674267
+      smd: 0.5345224838248488
+      smd_status: NONZERO_VARIANCE
+    max_abs_smd: 0.5345224838248488
+    max_abs_smd_status: FINITE
+  expected_exact_arithmetic:
+  - diagnostic_id: registration_shift__DAY
+    mean_difference_fraction: -1/4
+    pooled_variance_fraction: 7/32
+    smd_squared_fraction: 2/7
+  - diagnostic_id: registration_shift__EVENING
+    mean_difference_fraction: '0'
+    pooled_variance_fraction: 3/16
+    smd_squared_fraction: '0'
+  - diagnostic_id: registration_shift__NIGHT
+    mean_difference_fraction: 1/4
+    pooled_variance_fraction: 7/32
+    smd_squared_fraction: 2/7
+  tests: DAY,EVENING,NIGHT always, independent of encounter order; no reference omitted.
+balance_scope_fixtures:
+- id: R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA
+  test_scope: BALANCE_AUDIT_PROJECTION_UNIT_NOT_CANONICAL_QUOTA_OR_FULL_DGP_TEST
+  input_interpretation: Each source_values map is an explicit logical projection of one persons_and_t0_snapshot
+    row; source_timestamps and source_applicability bind the existing logical metadata. These helper maps are
+    fixture notation, not new production columns. Existing release authentication/assignment validity are preconditions.
+    Eight randomized and two excluded fabricated rows isolate scope/denominator/schema behavior, not canonical
+    50000/5000 quotas or the shared-day generator.
+  input_rows:
+  - person_id: R6_F0_Z1_0
+    eligible_at_t0: true
+    assigned_onboarding_assistance: 1
+    kyc_friction: 0
+    registration_ts: '2000-01-01T00:00:00.000000Z'
+    t0_ts: '2000-01-01T12:00:00.000000Z'
+    source_values:
+      acquisition_channel: ORGANIC
+      device_verification_route: MOBILE_APP
+      language_service_match: 1
+      declared_experience: LOW
+      pre_t0_completed_step_count: 1
+      registration_shift: DAY
+      day_shift_load_index: 0.0
+    source_timestamps:
+      acquisition_channel: '2000-01-01T00:00:00.000000Z'
+      device_verification_route: '2000-01-01T00:00:00.000000Z'
+      language_service_match: '2000-01-01T00:00:00.000000Z'
+      declared_experience: '2000-01-01T00:00:00.000000Z'
+      pre_t0_completed_step_count: '2000-01-01T09:00:00.000000Z'
+      registration_shift: '2000-01-01T00:00:00.000000Z'
+      day_shift_load_index: '2000-01-01T00:00:00.000000Z'
+    source_applicability:
+      acquisition_channel: PRESENT_VALID
+      device_verification_route: PRESENT_VALID
+      language_service_match: PRESENT_VALID
+      declared_experience: PRESENT_VALID
+      pre_t0_completed_step_count: PRESENT_VALID
+      registration_shift: PRESENT_VALID
+      day_shift_load_index: PRESENT_VALID
+  - person_id: R6_F0_Z1_1
+    eligible_at_t0: true
+    assigned_onboarding_assistance: 1
+    kyc_friction: 0
+    registration_ts: '2000-01-01T00:00:00.000000Z'
+    t0_ts: '2000-01-01T12:00:00.000000Z'
+    source_values:
+      acquisition_channel: PAID
+      device_verification_route: MOBILE_WEB
+      language_service_match: 1
+      declared_experience: MEDIUM
+      pre_t0_completed_step_count: 2
+      registration_shift: EVENING
+      day_shift_load_index: 1.0
+    source_timestamps:
+      acquisition_channel: '2000-01-01T00:00:00.000000Z'
+      device_verification_route: '2000-01-01T00:00:00.000000Z'
+      language_service_match: '2000-01-01T00:00:00.000000Z'
+      declared_experience: '2000-01-01T00:00:00.000000Z'
+      pre_t0_completed_step_count: '2000-01-01T09:00:00.000000Z'
+      registration_shift: '2000-01-01T00:00:00.000000Z'
+      day_shift_load_index: '2000-01-01T00:00:00.000000Z'
+    source_applicability:
+      acquisition_channel: PRESENT_VALID
+      device_verification_route: PRESENT_VALID
+      language_service_match: PRESENT_VALID
+      declared_experience: PRESENT_VALID
+      pre_t0_completed_step_count: PRESENT_VALID
+      registration_shift: PRESENT_VALID
+      day_shift_load_index: PRESENT_VALID
+  - person_id: R6_F0_Z0_0
+    eligible_at_t0: true
+    assigned_onboarding_assistance: 0
+    kyc_friction: 0
+    registration_ts: '2000-01-01T00:00:00.000000Z'
+    t0_ts: '2000-01-01T12:00:00.000000Z'
+    source_values:
+      acquisition_channel: ORGANIC
+      device_verification_route: MOBILE_APP
+      language_service_match: 0
+      declared_experience: LOW
+      pre_t0_completed_step_count: 1
+      registration_shift: DAY
+      day_shift_load_index: 0.0
+    source_timestamps:
+      acquisition_channel: '2000-01-01T00:00:00.000000Z'
+      device_verification_route: '2000-01-01T00:00:00.000000Z'
+      language_service_match: '2000-01-01T00:00:00.000000Z'
+      declared_experience: '2000-01-01T00:00:00.000000Z'
+      pre_t0_completed_step_count: '2000-01-01T09:00:00.000000Z'
+      registration_shift: '2000-01-01T00:00:00.000000Z'
+      day_shift_load_index: '2000-01-01T00:00:00.000000Z'
+    source_applicability:
+      acquisition_channel: PRESENT_VALID
+      device_verification_route: PRESENT_VALID
+      language_service_match: PRESENT_VALID
+      declared_experience: PRESENT_VALID
+      pre_t0_completed_step_count: PRESENT_VALID
+      registration_shift: PRESENT_VALID
+      day_shift_load_index: PRESENT_VALID
+  - person_id: R6_F0_Z0_1
+    eligible_at_t0: true
+    assigned_onboarding_assistance: 0
+    kyc_friction: 0
+    registration_ts: '2000-01-01T00:00:00.000000Z'
+    t0_ts: '2000-01-01T12:00:00.000000Z'
+    source_values:
+      acquisition_channel: PAID
+      device_verification_route: MOBILE_WEB
+      language_service_match: 1
+      declared_experience: MEDIUM
+      pre_t0_completed_step_count: 2
+      registration_shift: EVENING
+      day_shift_load_index: 1.0
+    source_timestamps:
+      acquisition_channel: '2000-01-01T00:00:00.000000Z'
+      device_verification_route: '2000-01-01T00:00:00.000000Z'
+      language_service_match: '2000-01-01T00:00:00.000000Z'
+      declared_experience: '2000-01-01T00:00:00.000000Z'
+      pre_t0_completed_step_count: '2000-01-01T09:00:00.000000Z'
+      registration_shift: '2000-01-01T00:00:00.000000Z'
+      day_shift_load_index: '2000-01-01T00:00:00.000000Z'
+    source_applicability:
+      acquisition_channel: PRESENT_VALID
+      device_verification_route: PRESENT_VALID
+      language_service_match: PRESENT_VALID
+      declared_experience: PRESENT_VALID
+      pre_t0_completed_step_count: PRESENT_VALID
+      registration_shift: PRESENT_VALID
+      day_shift_load_index: PRESENT_VALID
+  - person_id: R6_F1_Z1_0
+    eligible_at_t0: true
+    assigned_onboarding_assistance: 1
+    kyc_friction: 1
+    registration_ts: '2000-01-01T00:00:00.000000Z'
+    t0_ts: '2000-01-01T12:00:00.000000Z'
+    source_values:
+      acquisition_channel: ORGANIC
+      device_verification_route: MOBILE_APP
+      language_service_match: 0
+      declared_experience: LOW
+      pre_t0_completed_step_count: 1
+      registration_shift: DAY
+      day_shift_load_index: 0.0
+    source_timestamps:
+      acquisition_channel: '2000-01-01T00:00:00.000000Z'
+      device_verification_route: '2000-01-01T00:00:00.000000Z'
+      language_service_match: '2000-01-01T00:00:00.000000Z'
+      declared_experience: '2000-01-01T00:00:00.000000Z'
+      pre_t0_completed_step_count: '2000-01-01T09:00:00.000000Z'
+      registration_shift: '2000-01-01T00:00:00.000000Z'
+      day_shift_load_index: '2000-01-01T00:00:00.000000Z'
+    source_applicability:
+      acquisition_channel: PRESENT_VALID
+      device_verification_route: PRESENT_VALID
+      language_service_match: PRESENT_VALID
+      declared_experience: PRESENT_VALID
+      pre_t0_completed_step_count: PRESENT_VALID
+      registration_shift: PRESENT_VALID
+      day_shift_load_index: PRESENT_VALID
+  - person_id: R6_F1_Z1_1
+    eligible_at_t0: true
+    assigned_onboarding_assistance: 1
+    kyc_friction: 1
+    registration_ts: '2000-01-01T00:00:00.000000Z'
+    t0_ts: '2000-01-01T12:00:00.000000Z'
+    source_values:
+      acquisition_channel: PAID
+      device_verification_route: MOBILE_WEB
+      language_service_match: 1
+      declared_experience: MEDIUM
+      pre_t0_completed_step_count: 2
+      registration_shift: EVENING
+      day_shift_load_index: 1.0
+    source_timestamps:
+      acquisition_channel: '2000-01-01T00:00:00.000000Z'
+      device_verification_route: '2000-01-01T00:00:00.000000Z'
+      language_service_match: '2000-01-01T00:00:00.000000Z'
+      declared_experience: '2000-01-01T00:00:00.000000Z'
+      pre_t0_completed_step_count: '2000-01-01T09:00:00.000000Z'
+      registration_shift: '2000-01-01T00:00:00.000000Z'
+      day_shift_load_index: '2000-01-01T00:00:00.000000Z'
+    source_applicability:
+      acquisition_channel: PRESENT_VALID
+      device_verification_route: PRESENT_VALID
+      language_service_match: PRESENT_VALID
+      declared_experience: PRESENT_VALID
+      pre_t0_completed_step_count: PRESENT_VALID
+      registration_shift: PRESENT_VALID
+      day_shift_load_index: PRESENT_VALID
+  - person_id: R6_F1_Z0_0
+    eligible_at_t0: true
+    assigned_onboarding_assistance: 0
+    kyc_friction: 1
+    registration_ts: '2000-01-01T00:00:00.000000Z'
+    t0_ts: '2000-01-01T12:00:00.000000Z'
+    source_values:
+      acquisition_channel: ORGANIC
+      device_verification_route: MOBILE_APP
+      language_service_match: 0
+      declared_experience: LOW
+      pre_t0_completed_step_count: 1
+      registration_shift: DAY
+      day_shift_load_index: 0.0
+    source_timestamps:
+      acquisition_channel: '2000-01-01T00:00:00.000000Z'
+      device_verification_route: '2000-01-01T00:00:00.000000Z'
+      language_service_match: '2000-01-01T00:00:00.000000Z'
+      declared_experience: '2000-01-01T00:00:00.000000Z'
+      pre_t0_completed_step_count: '2000-01-01T09:00:00.000000Z'
+      registration_shift: '2000-01-01T00:00:00.000000Z'
+      day_shift_load_index: '2000-01-01T00:00:00.000000Z'
+    source_applicability:
+      acquisition_channel: PRESENT_VALID
+      device_verification_route: PRESENT_VALID
+      language_service_match: PRESENT_VALID
+      declared_experience: PRESENT_VALID
+      pre_t0_completed_step_count: PRESENT_VALID
+      registration_shift: PRESENT_VALID
+      day_shift_load_index: PRESENT_VALID
+  - person_id: R6_F1_Z0_1
+    eligible_at_t0: true
+    assigned_onboarding_assistance: 0
+    kyc_friction: 1
+    registration_ts: '2000-01-01T00:00:00.000000Z'
+    t0_ts: '2000-01-01T12:00:00.000000Z'
+    source_values:
+      acquisition_channel: PAID
+      device_verification_route: MOBILE_WEB
+      language_service_match: 1
+      declared_experience: MEDIUM
+      pre_t0_completed_step_count: 2
+      registration_shift: EVENING
+      day_shift_load_index: 1.0
+    source_timestamps:
+      acquisition_channel: '2000-01-01T00:00:00.000000Z'
+      device_verification_route: '2000-01-01T00:00:00.000000Z'
+      language_service_match: '2000-01-01T00:00:00.000000Z'
+      declared_experience: '2000-01-01T00:00:00.000000Z'
+      pre_t0_completed_step_count: '2000-01-01T09:00:00.000000Z'
+      registration_shift: '2000-01-01T00:00:00.000000Z'
+      day_shift_load_index: '2000-01-01T00:00:00.000000Z'
+    source_applicability:
+      acquisition_channel: PRESENT_VALID
+      device_verification_route: PRESENT_VALID
+      language_service_match: PRESENT_VALID
+      declared_experience: PRESENT_VALID
+      pre_t0_completed_step_count: PRESENT_VALID
+      registration_shift: PRESENT_VALID
+      day_shift_load_index: PRESENT_VALID
+  - person_id: R6_EXCLUDED_NO_WINDOW
+    eligible_at_t0: false
+    assigned_onboarding_assistance: null
+    kyc_friction: 0
+    registration_ts: '2000-01-01T00:00:00.000000Z'
+    t0_ts: '2000-01-01T12:00:00.000000Z'
+    source_values:
+      acquisition_channel: ORGANIC
+      device_verification_route: MOBILE_APP
+      language_service_match: 1
+      declared_experience: LOW
+      pre_t0_completed_step_count: 1
+      registration_shift: null
+      day_shift_load_index: null
+    source_timestamps:
+      acquisition_channel: '2000-01-01T00:00:00.000000Z'
+      device_verification_route: '2000-01-01T00:00:00.000000Z'
+      language_service_match: '2000-01-01T00:00:00.000000Z'
+      declared_experience: '2000-01-01T00:00:00.000000Z'
+      pre_t0_completed_step_count: '2000-01-01T09:00:00.000000Z'
+      registration_shift: null
+      day_shift_load_index: null
+    source_applicability:
+      acquisition_channel: PRESENT_VALID
+      device_verification_route: PRESENT_VALID
+      language_service_match: PRESENT_VALID
+      declared_experience: PRESENT_VALID
+      pre_t0_completed_step_count: PRESENT_VALID
+      registration_shift: STRUCTURAL_NOT_APPLICABLE
+      day_shift_load_index: STRUCTURAL_NOT_APPLICABLE
+    primary_exclusion_reason: NO_PERMITTED_CALLING_WINDOW
+  - person_id: R6_EXCLUDED_MANUAL_REVIEW
+    eligible_at_t0: false
+    assigned_onboarding_assistance: null
+    kyc_friction: null
+    registration_ts: '2000-01-01T00:00:00.000000Z'
+    t0_ts: '2000-01-01T12:00:00.000000Z'
+    source_values:
+      acquisition_channel: ORGANIC
+      device_verification_route: MOBILE_APP
+      language_service_match: 1
+      declared_experience: LOW
+      pre_t0_completed_step_count: null
+      registration_shift: DAY
+      day_shift_load_index: 0.0
+    source_timestamps:
+      acquisition_channel: '2000-01-01T00:00:00.000000Z'
+      device_verification_route: '2000-01-01T00:00:00.000000Z'
+      language_service_match: '2000-01-01T00:00:00.000000Z'
+      declared_experience: '2000-01-01T00:00:00.000000Z'
+      pre_t0_completed_step_count: null
+      registration_shift: '2000-01-01T00:00:00.000000Z'
+      day_shift_load_index: '2000-01-01T00:00:00.000000Z'
+    source_applicability:
+      acquisition_channel: PRESENT_VALID
+      device_verification_route: PRESENT_VALID
+      language_service_match: PRESENT_VALID
+      declared_experience: PRESENT_VALID
+      pre_t0_completed_step_count: STRUCTURAL_NOT_APPLICABLE
+      registration_shift: PRESENT_VALID
+      day_shift_load_index: PRESENT_VALID
+    primary_exclusion_reason: MANUAL_REVIEW_OR_ENHANCED_DUE_DILIGENCE
+  expected_balance_diagnostics:
+    method_id: OIDL-PRE-T0-BALANCE-SMD
+    method_version: 1.0.0
+    population: ALL_ELIGIBLE_RANDOMIZED_PERSONS
+    time_window: IMMUTABLE_T0_SNAPSHOT_SOURCES_AT_OR_BEFORE_T0
+    treatment_value: 1
+    control_value: 0
+    unweighted: true
+    source_variable_count: 7
+    diagnostic_count_per_scope: 15
+    scope_count: 3
+    scopes:
+    - scope_id: OVERALL
+      kyc_friction_value: null
+      n_treatment: 4
+      n_control: 4
+      variables:
+      - variable_id: acquisition_channel
+        source_field: acquisition_channel
+        source_type: CATEGORICAL
+        representation: ALL_LEVEL_INDICATORS
+        n_present_treatment: 4
+        n_present_control: 4
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: acquisition_channel__ORGANIC
+          level: ORGANIC
+          count_treatment: 2
+          count_control: 2
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: acquisition_channel__PAID
+          level: PAID
+          count_treatment: 2
+          count_control: 2
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: acquisition_channel__AFFILIATE
+          level: AFFILIATE
+          count_treatment: 0
+          count_control: 0
+          mean_treatment: 0
+          mean_control: 0
+          variance_treatment: 0
+          variance_control: 0
+          mean_difference: 0
+          pooled_variance: 0
+          pooled_sd: 0
+          smd: 0
+          smd_status: ZERO_VARIANCE_EQUAL
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: device_verification_route
+        source_field: device_verification_route
+        source_type: CATEGORICAL
+        representation: ALL_LEVEL_INDICATORS
+        n_present_treatment: 4
+        n_present_control: 4
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: device_verification_route__MOBILE_APP
+          level: MOBILE_APP
+          count_treatment: 2
+          count_control: 2
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: device_verification_route__MOBILE_WEB
+          level: MOBILE_WEB
+          count_treatment: 2
+          count_control: 2
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: device_verification_route__DESKTOP_WEB
+          level: DESKTOP_WEB
+          count_treatment: 0
+          count_control: 0
+          mean_treatment: 0
+          mean_control: 0
+          variance_treatment: 0
+          variance_control: 0
+          mean_difference: 0
+          pooled_variance: 0
+          pooled_sd: 0
+          smd: 0
+          smd_status: ZERO_VARIANCE_EQUAL
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: language_service_match
+        source_field: language_service_match
+        source_type: BINARY
+        representation: BINARY_IDENTITY
+        n_present_treatment: 4
+        n_present_control: 4
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: language_service_match
+          level: null
+          count_treatment: 3
+          count_control: 2
+          mean_treatment: 0.75
+          mean_control: 0.5
+          variance_treatment: 0.1875
+          variance_control: 0.25
+          mean_difference: 0.25
+          pooled_variance: 0.21875
+          pooled_sd: 0.46770717334674267
+          smd: 0.5345224838248488
+          smd_status: NONZERO_VARIANCE
+        max_abs_smd: 0.5345224838248488
+        max_abs_smd_status: FINITE
+      - variable_id: declared_experience
+        source_field: declared_experience
+        source_type: ORDERED_CATEGORICAL
+        representation: ALL_LEVEL_INDICATORS
+        n_present_treatment: 4
+        n_present_control: 4
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: declared_experience__LOW
+          level: LOW
+          count_treatment: 2
+          count_control: 2
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: declared_experience__MEDIUM
+          level: MEDIUM
+          count_treatment: 2
+          count_control: 2
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: declared_experience__HIGH
+          level: HIGH
+          count_treatment: 0
+          count_control: 0
+          mean_treatment: 0
+          mean_control: 0
+          variance_treatment: 0
+          variance_control: 0
+          mean_difference: 0
+          pooled_variance: 0
+          pooled_sd: 0
+          smd: 0
+          smd_status: ZERO_VARIANCE_EQUAL
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: pre_t0_completed_step_count
+        source_field: pre_t0_completed_step_count
+        source_type: CONTINUOUS
+        representation: NUMERIC_IDENTITY
+        n_present_treatment: 4
+        n_present_control: 4
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: pre_t0_completed_step_count
+          level: null
+          count_treatment: null
+          count_control: null
+          mean_treatment: 1.5
+          mean_control: 1.5
+          variance_treatment: 0.3333333333333333
+          variance_control: 0.3333333333333333
+          mean_difference: 0
+          pooled_variance: 0.3333333333333333
+          pooled_sd: 0.5773502691896257
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: registration_shift
+        source_field: registration_shift
+        source_type: CATEGORICAL
+        representation: ALL_LEVEL_INDICATORS
+        n_present_treatment: 4
+        n_present_control: 4
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: registration_shift__DAY
+          level: DAY
+          count_treatment: 2
+          count_control: 2
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: registration_shift__EVENING
+          level: EVENING
+          count_treatment: 2
+          count_control: 2
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: registration_shift__NIGHT
+          level: NIGHT
+          count_treatment: 0
+          count_control: 0
+          mean_treatment: 0
+          mean_control: 0
+          variance_treatment: 0
+          variance_control: 0
+          mean_difference: 0
+          pooled_variance: 0
+          pooled_sd: 0
+          smd: 0
+          smd_status: ZERO_VARIANCE_EQUAL
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: day_shift_load_index
+        source_field: day_shift_load_index
+        source_type: CONTINUOUS
+        representation: NUMERIC_IDENTITY
+        n_present_treatment: 4
+        n_present_control: 4
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: day_shift_load_index
+          level: null
+          count_treatment: null
+          count_control: null
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.3333333333333333
+          variance_control: 0.3333333333333333
+          mean_difference: 0
+          pooled_variance: 0.3333333333333333
+          pooled_sd: 0.5773502691896257
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+    - scope_id: KYC_FRICTION_0
+      kyc_friction_value: 0
+      n_treatment: 2
+      n_control: 2
+      variables:
+      - variable_id: acquisition_channel
+        source_field: acquisition_channel
+        source_type: CATEGORICAL
+        representation: ALL_LEVEL_INDICATORS
+        n_present_treatment: 2
+        n_present_control: 2
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: acquisition_channel__ORGANIC
+          level: ORGANIC
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: acquisition_channel__PAID
+          level: PAID
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: acquisition_channel__AFFILIATE
+          level: AFFILIATE
+          count_treatment: 0
+          count_control: 0
+          mean_treatment: 0
+          mean_control: 0
+          variance_treatment: 0
+          variance_control: 0
+          mean_difference: 0
+          pooled_variance: 0
+          pooled_sd: 0
+          smd: 0
+          smd_status: ZERO_VARIANCE_EQUAL
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: device_verification_route
+        source_field: device_verification_route
+        source_type: CATEGORICAL
+        representation: ALL_LEVEL_INDICATORS
+        n_present_treatment: 2
+        n_present_control: 2
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: device_verification_route__MOBILE_APP
+          level: MOBILE_APP
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: device_verification_route__MOBILE_WEB
+          level: MOBILE_WEB
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: device_verification_route__DESKTOP_WEB
+          level: DESKTOP_WEB
+          count_treatment: 0
+          count_control: 0
+          mean_treatment: 0
+          mean_control: 0
+          variance_treatment: 0
+          variance_control: 0
+          mean_difference: 0
+          pooled_variance: 0
+          pooled_sd: 0
+          smd: 0
+          smd_status: ZERO_VARIANCE_EQUAL
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: language_service_match
+        source_field: language_service_match
+        source_type: BINARY
+        representation: BINARY_IDENTITY
+        n_present_treatment: 2
+        n_present_control: 2
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: language_service_match
+          level: null
+          count_treatment: 2
+          count_control: 1
+          mean_treatment: 1.0
+          mean_control: 0.5
+          variance_treatment: 0
+          variance_control: 0.25
+          mean_difference: 0.5
+          pooled_variance: 0.125
+          pooled_sd: 0.3535533905932738
+          smd: 1.4142135623730951
+          smd_status: NONZERO_VARIANCE
+        max_abs_smd: 1.4142135623730951
+        max_abs_smd_status: FINITE
+      - variable_id: declared_experience
+        source_field: declared_experience
+        source_type: ORDERED_CATEGORICAL
+        representation: ALL_LEVEL_INDICATORS
+        n_present_treatment: 2
+        n_present_control: 2
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: declared_experience__LOW
+          level: LOW
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: declared_experience__MEDIUM
+          level: MEDIUM
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: declared_experience__HIGH
+          level: HIGH
+          count_treatment: 0
+          count_control: 0
+          mean_treatment: 0
+          mean_control: 0
+          variance_treatment: 0
+          variance_control: 0
+          mean_difference: 0
+          pooled_variance: 0
+          pooled_sd: 0
+          smd: 0
+          smd_status: ZERO_VARIANCE_EQUAL
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: pre_t0_completed_step_count
+        source_field: pre_t0_completed_step_count
+        source_type: CONTINUOUS
+        representation: NUMERIC_IDENTITY
+        n_present_treatment: 2
+        n_present_control: 2
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: pre_t0_completed_step_count
+          level: null
+          count_treatment: null
+          count_control: null
+          mean_treatment: 1.5
+          mean_control: 1.5
+          variance_treatment: 0.5
+          variance_control: 0.5
+          mean_difference: 0
+          pooled_variance: 0.5
+          pooled_sd: 0.7071067811865476
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: registration_shift
+        source_field: registration_shift
+        source_type: CATEGORICAL
+        representation: ALL_LEVEL_INDICATORS
+        n_present_treatment: 2
+        n_present_control: 2
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: registration_shift__DAY
+          level: DAY
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: registration_shift__EVENING
+          level: EVENING
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: registration_shift__NIGHT
+          level: NIGHT
+          count_treatment: 0
+          count_control: 0
+          mean_treatment: 0
+          mean_control: 0
+          variance_treatment: 0
+          variance_control: 0
+          mean_difference: 0
+          pooled_variance: 0
+          pooled_sd: 0
+          smd: 0
+          smd_status: ZERO_VARIANCE_EQUAL
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: day_shift_load_index
+        source_field: day_shift_load_index
+        source_type: CONTINUOUS
+        representation: NUMERIC_IDENTITY
+        n_present_treatment: 2
+        n_present_control: 2
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: day_shift_load_index
+          level: null
+          count_treatment: null
+          count_control: null
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.5
+          variance_control: 0.5
+          mean_difference: 0
+          pooled_variance: 0.5
+          pooled_sd: 0.7071067811865476
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+    - scope_id: KYC_FRICTION_1
+      kyc_friction_value: 1
+      n_treatment: 2
+      n_control: 2
+      variables:
+      - variable_id: acquisition_channel
+        source_field: acquisition_channel
+        source_type: CATEGORICAL
+        representation: ALL_LEVEL_INDICATORS
+        n_present_treatment: 2
+        n_present_control: 2
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: acquisition_channel__ORGANIC
+          level: ORGANIC
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: acquisition_channel__PAID
+          level: PAID
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: acquisition_channel__AFFILIATE
+          level: AFFILIATE
+          count_treatment: 0
+          count_control: 0
+          mean_treatment: 0
+          mean_control: 0
+          variance_treatment: 0
+          variance_control: 0
+          mean_difference: 0
+          pooled_variance: 0
+          pooled_sd: 0
+          smd: 0
+          smd_status: ZERO_VARIANCE_EQUAL
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: device_verification_route
+        source_field: device_verification_route
+        source_type: CATEGORICAL
+        representation: ALL_LEVEL_INDICATORS
+        n_present_treatment: 2
+        n_present_control: 2
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: device_verification_route__MOBILE_APP
+          level: MOBILE_APP
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: device_verification_route__MOBILE_WEB
+          level: MOBILE_WEB
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: device_verification_route__DESKTOP_WEB
+          level: DESKTOP_WEB
+          count_treatment: 0
+          count_control: 0
+          mean_treatment: 0
+          mean_control: 0
+          variance_treatment: 0
+          variance_control: 0
+          mean_difference: 0
+          pooled_variance: 0
+          pooled_sd: 0
+          smd: 0
+          smd_status: ZERO_VARIANCE_EQUAL
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: language_service_match
+        source_field: language_service_match
+        source_type: BINARY
+        representation: BINARY_IDENTITY
+        n_present_treatment: 2
+        n_present_control: 2
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: language_service_match
+          level: null
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: declared_experience
+        source_field: declared_experience
+        source_type: ORDERED_CATEGORICAL
+        representation: ALL_LEVEL_INDICATORS
+        n_present_treatment: 2
+        n_present_control: 2
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: declared_experience__LOW
+          level: LOW
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: declared_experience__MEDIUM
+          level: MEDIUM
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: declared_experience__HIGH
+          level: HIGH
+          count_treatment: 0
+          count_control: 0
+          mean_treatment: 0
+          mean_control: 0
+          variance_treatment: 0
+          variance_control: 0
+          mean_difference: 0
+          pooled_variance: 0
+          pooled_sd: 0
+          smd: 0
+          smd_status: ZERO_VARIANCE_EQUAL
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: pre_t0_completed_step_count
+        source_field: pre_t0_completed_step_count
+        source_type: CONTINUOUS
+        representation: NUMERIC_IDENTITY
+        n_present_treatment: 2
+        n_present_control: 2
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: pre_t0_completed_step_count
+          level: null
+          count_treatment: null
+          count_control: null
+          mean_treatment: 1.5
+          mean_control: 1.5
+          variance_treatment: 0.5
+          variance_control: 0.5
+          mean_difference: 0
+          pooled_variance: 0.5
+          pooled_sd: 0.7071067811865476
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: registration_shift
+        source_field: registration_shift
+        source_type: CATEGORICAL
+        representation: ALL_LEVEL_INDICATORS
+        n_present_treatment: 2
+        n_present_control: 2
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: registration_shift__DAY
+          level: DAY
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: registration_shift__EVENING
+          level: EVENING
+          count_treatment: 1
+          count_control: 1
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.25
+          variance_control: 0.25
+          mean_difference: 0
+          pooled_variance: 0.25
+          pooled_sd: 0.5
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        - diagnostic_id: registration_shift__NIGHT
+          level: NIGHT
+          count_treatment: 0
+          count_control: 0
+          mean_treatment: 0
+          mean_control: 0
+          variance_treatment: 0
+          variance_control: 0
+          mean_difference: 0
+          pooled_variance: 0
+          pooled_sd: 0
+          smd: 0
+          smd_status: ZERO_VARIANCE_EQUAL
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+      - variable_id: day_shift_load_index
+        source_field: day_shift_load_index
+        source_type: CONTINUOUS
+        representation: NUMERIC_IDENTITY
+        n_present_treatment: 2
+        n_present_control: 2
+        n_missing_treatment: 0
+        n_missing_control: 0
+        n_invalid_treatment: 0
+        n_invalid_control: 0
+        n_structural_na_treatment: 0
+        n_structural_na_control: 0
+        diagnostics:
+        - diagnostic_id: day_shift_load_index
+          level: null
+          count_treatment: null
+          count_control: null
+          mean_treatment: 0.5
+          mean_control: 0.5
+          variance_treatment: 0.5
+          variance_control: 0.5
+          mean_difference: 0
+          pooled_variance: 0.5
+          pooled_sd: 0.7071067811865476
+          smd: 0
+          smd_status: NONZERO_VARIANCE
+        max_abs_smd: 0
+        max_abs_smd_status: FINITE
+  expected_baseline_balance_projection: Exact typed copy of expected_balance_diagnostics at payload.deterministic_result.balance_diagnostics;
+    both existing artifacts retain separate mandatory envelopes/provenance.
+  expected_diagnostic_row_count: 45
+  expected_excluded_ids_without_diagnostics:
+  - R6_EXCLUDED_NO_WINDOW
+  - R6_EXCLUDED_MANUAL_REVIEW
+  expected_missingness_indicator_count: 0
+  expected_authoritative_projection_equal: true
+balance_failure_fixtures:
+- id: R6_MISSING_RANDOMIZED_SOURCE
+  test_scope: BALANCE_VALIDATION_UNIT
+  base_fixture_id: R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA
+  mutation:
+    operation: REMOVE
+    path:
+    - input_rows
+    - 0
+    - source_values
+    - language_service_match
+  expected_reason_codes:
+  - MISSING_REQUIRED_BASELINE_DATA
+  expected_authoritative_audit_emitted: false
+  expected_primary_analysis_permitted: false
+  meaning: No complete-case deletion or missingness indicator substitutes for missing randomized baseline data.
+- id: R6_NULL_RANDOMIZED_STEP
+  test_scope: BALANCE_VALIDATION_UNIT
+  base_fixture_id: R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA
+  mutation:
+    operation: REPLACE
+    path:
+    - input_rows
+    - 0
+    - source_values
+    - pre_t0_completed_step_count
+    value: null
+  expected_reason_codes:
+  - MISSING_REQUIRED_BASELINE_DATA
+  expected_authoritative_audit_emitted: false
+  expected_primary_analysis_permitted: false
+  meaning: Ineligible KYC structural N/A does not apply to this randomized person.
+- id: R6_RANDOMIZED_STRUCTURAL_NA
+  test_scope: BALANCE_VALIDATION_UNIT
+  base_fixture_id: R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA
+  mutation:
+    operation: REPLACE_SOURCE_AND_METADATA_WITH_STRUCTURAL_NA
+    path:
+    - input_rows
+    - 0
+    - registration_shift
+    value: null
+  expected_reason_codes:
+  - STRUCTURAL_NA_IN_RANDOMIZED_BALANCE
+  expected_authoritative_audit_emitted: false
+  expected_primary_analysis_permitted: false
+  meaning: Set this source value/time null and its applicability to STRUCTURAL_NOT_APPLICABLE; no ordinary-missing
+    duplicate reason.
+- id: R6_UNKNOWN_CATEGORY
+  test_scope: BALANCE_VALIDATION_UNIT
+  base_fixture_id: R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA
+  mutation:
+    operation: REPLACE
+    path:
+    - input_rows
+    - 0
+    - source_values
+    - acquisition_channel
+    value: OTHER
+  expected_reason_codes:
+  - INVALID_BALANCE_SOURCE_VALUE
+  expected_authoritative_audit_emitted: false
+  expected_primary_analysis_permitted: false
+  meaning: No unregistered OTHER level or reference recoding.
+- id: R6_POST_T0_SOURCE
+  test_scope: BALANCE_VALIDATION_UNIT
+  base_fixture_id: R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA
+  mutation:
+    operation: REPLACE
+    path:
+    - input_rows
+    - 0
+    - source_timestamps
+    - day_shift_load_index
+    value: '2000-01-01T12:00:00.000001Z'
+  expected_reason_codes:
+  - POST_T0_BALANCE_SOURCE
+  expected_authoritative_audit_emitted: false
+  expected_primary_analysis_permitted: false
+  meaning: A late source is not pre-T0 balance input.
+- id: R6_MISSING_SOURCE_TIME
+  test_scope: BALANCE_VALIDATION_UNIT
+  base_fixture_id: R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA
+  mutation:
+    operation: REMOVE
+    path:
+    - input_rows
+    - 0
+    - source_timestamps
+    - language_service_match
+  expected_reason_codes:
+  - MISSING_REQUIRED_BASELINE_DATA
+  expected_authoritative_audit_emitted: false
+  expected_primary_analysis_permitted: false
+  meaning: Value presence alone does not establish pre-treatment availability.
+- id: R6_STEP_OUT_OF_DOMAIN
+  test_scope: BALANCE_VALIDATION_UNIT
+  base_fixture_id: R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA
+  mutation:
+    operation: REPLACE
+    path:
+    - input_rows
+    - 0
+    - source_values
+    - pre_t0_completed_step_count
+    value: 5
+  expected_reason_codes:
+  - INVALID_BALANCE_SOURCE_VALUE
+  expected_authoritative_audit_emitted: false
+  expected_primary_analysis_permitted: false
+  meaning: No clipping or accepting an unregistered step count.
+- id: R6_NONFINITE_LOAD
+  test_scope: BALANCE_VALIDATION_UNIT
+  base_fixture_id: R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA
+  mutation:
+    operation: NONFINITE_SOURCE_TEST_SENTINEL
+    path:
+    - input_rows
+    - 0
+    - source_values
+    - day_shift_load_index
+    value: POSITIVE_INFINITY
+  expected_reason_codes:
+  - INVALID_BALANCE_SOURCE_VALUE
+  expected_authoritative_audit_emitted: false
+  expected_primary_analysis_permitted: false
+  meaning: The string is fixture notation for an in-memory nonfinite numeric source, never a permitted stored
+    value or NaN/Infinity serialization.
+- id: R6_MISSING_ARM_IN_SUBGROUP
+  test_scope: BALANCE_VALIDATION_UNIT
+  base_fixture_id: R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA
+  mutation:
+    operation: REMOVE_MATCHING_ROWS
+    path:
+    - input_rows
+    value:
+      eligible_at_t0: true
+      kyc_friction: 1
+      assigned_onboarding_assistance: 0
+  expected_reason_codes:
+  - INSUFFICIENT_BALANCE_ARM_SIZE
+  expected_authoritative_audit_emitted: false
+  expected_primary_analysis_permitted: false
+  meaning: 'Small unit fixture: do not omit the missing scope/arm. Canonical count/assignment validation remains
+    separate.'
+- id: R6_OMITTED_REFERENCE_LEVEL
+  test_scope: BALANCE_VALIDATION_UNIT
+  base_fixture_id: R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA
+  mutation:
+    operation: REMOVE
+    path:
+    - expected_balance_diagnostics
+    - scopes
+    - 0
+    - variables
+    - 0
+    - diagnostics
+    - 0
+  expected_reason_codes:
+  - BALANCE_CATALOGUE_OR_ENCODING_MISMATCH
+  expected_authoritative_audit_emitted: false
+  expected_primary_analysis_permitted: false
+  meaning: Validation of a candidate output missing the ORGANIC row fails.
+- id: R6_REVERSED_LANGUAGE_SIGN
+  test_scope: BALANCE_VALIDATION_UNIT
+  base_fixture_id: R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA
+  mutation:
+    operation: NEGATE_CANDIDATE_SMD
+    path:
+    - expected_balance_diagnostics
+    - scopes
+    - 0
+    - variables
+    - 2
+    - diagnostics
+    - 0
+    - smd
+    value: null
+  expected_reason_codes:
+  - BALANCE_CATALOGUE_OR_ENCODING_MISMATCH
+  expected_authoritative_audit_emitted: false
+  expected_primary_analysis_permitted: false
+  meaning: Input unchanged; candidate output uses mismatch sign and must not be accepted.
+- id: R6_PROJECTION_MISMATCH
+  test_scope: BALANCE_VALIDATION_UNIT
+  base_fixture_id: R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA
+  mutation:
+    operation: ALTER_PROJECTION_ONLY
+    path:
+    - expected_balance_diagnostics
+    - scopes
+    - 0
+    - variables
+    - 2
+    - diagnostics
+    - 0
+    - smd
+    value: 0
+  expected_reason_codes:
+  - BASELINE_BALANCE_PROJECTION_MISMATCH
+  expected_authoritative_audit_emitted: false
+  expected_primary_analysis_permitted: false
+  meaning: Only the baseline_balance projection is changed; the authoritative randomization_audit value stays
+    positive.
+- id: R6_CATALOGUE_ORDER_CHANGED
+  test_scope: BALANCE_VALIDATION_UNIT
+  base_fixture_id: R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA
+  mutation:
+    operation: SWAP_ARRAY_ITEMS
+    path:
+    - expected_balance_diagnostics
+    - scopes
+    - 0
+    - variables
+    value:
+    - 0
+    - 1
+  expected_reason_codes:
+  - BALANCE_CATALOGUE_OR_ENCODING_MISMATCH
+  expected_authoritative_audit_emitted: false
+  expected_primary_analysis_permitted: false
+  meaning: No alphabetical/data-driven variable order.
+- id: R6_INCOMPLETE_ZERO_STATUS
+  test_scope: BALANCE_VALIDATION_UNIT
+  base_fixture_id: R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA
+  mutation:
+    operation: REPLACE
+    path:
+    - expected_balance_diagnostics
+    - scopes
+    - 0
+    - variables
+    - 1
+    - diagnostics
+    - 2
+    - smd_status
+    value: NONZERO_VARIANCE
+  expected_reason_codes:
+  - BALANCE_CATALOGUE_OR_ENCODING_MISMATCH
+  expected_authoritative_audit_emitted: false
+  expected_primary_analysis_permitted: false
+  meaning: An absent level in both arms must remain ZERO_VARIANCE_EQUAL.

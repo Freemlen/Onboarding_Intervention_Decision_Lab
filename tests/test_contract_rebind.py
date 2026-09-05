@@ -1,4 +1,4 @@
-"""v0.2.5 rebind checks only; no release workflow or authoritative run artifacts."""
+"""v0.2.6 rebind checks only; no release workflow or authoritative run artifacts."""
 
 from copy import deepcopy
 from hashlib import sha256
@@ -31,7 +31,7 @@ def test_obsolete_release_and_oracle_identities_are_rejected(verified, release_f
         parent = parent[key]
     parent[path[-1]] = obsolete
     texts = {name: raw.decode() for name, raw in release_files.items()}
-    golden = load_yaml_mapping(texts["Golden_Fixtures_v0.2.5.yaml"])
+    golden = load_yaml_mapping(texts["Golden_Fixtures_v0.2.6.yaml"])
     with pytest.raises(ContractError, match="UNSUPPORTED_OR_MISSING_VERSION_LINK"):
         validate_versions(spec, texts, golden)
 
@@ -44,24 +44,24 @@ def test_obsolete_members_cannot_be_mixed_into_rebound_release(release_files, na
         verify_release_bytes({**release_files, name: b"EXPLICIT_NON_SECRET_STALE_FIXTURE"})
 
 
-@pytest.mark.parametrize("wrong_version", ["0.3.0", "0.2.5"])
+@pytest.mark.parametrize("wrong_version", ["0.3.0", "0.2.6"])
 def test_oracle_header_requires_its_own_protocol_version(verified, release_files, wrong_version):
     texts = {name: raw.decode() for name, raw in release_files.items()}
     path = "Oracle_Benchmark_Spec_v0.4.0.md"
     texts[path] = texts[path].replace(
         "**Version:** \x600.4.0\x60", f"**Version:** \x60{wrong_version}\x60",
     )
-    golden = load_yaml_mapping(texts["Golden_Fixtures_v0.2.5.yaml"])
+    golden = load_yaml_mapping(texts["Golden_Fixtures_v0.2.6.yaml"])
     with pytest.raises(ContractError, match="LINKED_ARTIFACT_VERSION_MISMATCH"):
         validate_versions(verified.research_spec, texts, golden)
 
 
 def test_research_schema_and_method_identities_remain_distinct(verified):
-    assert RELEASE == "0.2.5"
+    assert RELEASE == "0.2.6"
     assert SEMANTIC_VERSIONS == {
-        "architecture": "0.2.5", "decision_rule": "0.3.0", "dgp": "0.3.0",
-        "golden_fixtures": "0.2.5", "guardrails": "0.3.0", "oracle_protocol": "0.4.0",
-        "research_spec": "0.2.5", "sap": "0.3.0", "slice_1": "0.2.5",
+        "architecture": "0.2.6", "decision_rule": "0.3.0", "dgp": "0.3.0",
+        "golden_fixtures": "0.2.6", "guardrails": "0.3.0", "oracle_protocol": "0.4.0",
+        "research_spec": "0.2.6", "sap": "0.4.0", "slice_1": "0.2.6",
     }
     assert verified.research_spec["specification"]["semantic_versions"] == SEMANTIC_VERSIONS
 
@@ -89,17 +89,17 @@ def test_r5_nested_fields_cannot_be_lost_or_retyped_in_research_parity(twins, fi
 def test_r5_explicit_specimen_bytes_and_schema_bindings_survive_loading(release_files, verified):
     # Read fabricated contract examples only. This neither executes nor validates
     # the release lifecycle; complete R5 acceptance belongs to Checkpoint 4.
-    golden = load_yaml_mapping(release_files["Golden_Fixtures_v0.2.5.yaml"].decode())
+    golden = load_yaml_mapping(release_files["Golden_Fixtures_v0.2.6.yaml"].decode())
     fixture = golden["pre_release_scan_provenance_fixtures"]
     for specimen in fixture["base_artifacts"].values():
         assert sha256(specimen["utf8"].encode()).hexdigest() == specimen["sha256"]
     scan = json.loads(fixture["base_artifacts"]["analyst_leakage_scan.json"]["utf8"])
     release = json.loads(fixture["base_artifacts"]["dataset_release_record.json"]["utf8"])
     for record in (scan, release):
-        assert record["schema_version"] == "0.2.5"
+        assert record["schema_version"] == "0.2.6"
         bindings = record["payload"]["schema_bindings"]
-        assert bindings["run_envelope_schema_version"] == "0.2.5"
-        assert bindings["research_spec_version"] == "0.2.5"
+        assert bindings["run_envelope_schema_version"] == "0.2.6"
+        assert bindings["research_spec_version"] == "0.2.6"
         assert bindings["oracle_protocol_version"] == "0.4.0"
         assert "deterministic_result" not in record["payload"]
         assert "dataset_release_record_sha256" not in record["payload"]["provenance"]
@@ -116,13 +116,13 @@ def test_pre_dataset_validation_records_do_not_acquire_r5_release_fields(verifie
     assert set(records) == {"contract_hashes.json", "validated_spec_manifest.json"}
     for record in records.values():
         assert set(record) == {"schema_version", "run_id", "created_at_utc", "payload"}
-        assert record["schema_version"] == "0.2.5"
+        assert record["schema_version"] == "0.2.6"
     payload = records["validated_spec_manifest.json"]["payload"]
     assert set(payload) == {
         "validation_status", "bundle_release", "contract_set_hash",
         "contract_set_hash_method_id", "research_spec",
     }
-    assert payload["bundle_release"] == "0.2.5"
+    assert payload["bundle_release"] == "0.2.6"
     assert payload["contract_set_hash"] == verified.contract_set_hash
     assert payload["contract_set_hash_method_id"] == "OIDL-PACKAGE-MEMBERS-SHA256-v1"
     assert all(set(member) == {"path", "sha256"}

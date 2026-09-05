@@ -1,11 +1,11 @@
 # Checkpoint 2 — pre-outcome population and randomization
 
-This checkpoint implements components under the frozen v0.2.5 bundle, not a
+This checkpoint implements components under the frozen v0.2.6 bundle, not a
 benchmark run or completion of Slice 1. The authoritative index remains
-[Contract Bundle v0.2.5](../contracts/Contract_Bundle_v0.2.5.md).
-Originally accepted under v0.2.4; current clause references are rebound to v0.2.5
+[Contract Bundle v0.2.6](../contracts/Contract_Bundle_v0.2.6.md).
+Originally accepted under v0.2.4; current clause references are rebound to v0.2.6
 without changing the accepted component behavior. See the
-[rebind record](contract_rebind_v0.2.5.md). The installed contract bytes are preserved.
+[rebind record](contract_rebind_v0.2.6.md). The installed contract bytes are preserved.
 
 ## Scope and artifact boundary
 

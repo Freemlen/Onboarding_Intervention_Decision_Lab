@@ -69,19 +69,19 @@ The benchmark is not committed until all items below are frozen.
 
 ### 2.1 Normative pre-implementation contract artifacts
 
-The committed normative set is exactly the eleven files in `Contract_Bundle_v0.2.5.md §2`:
+The committed normative set is exactly the eleven files in `Contract_Bundle_v0.2.6.md §2`:
 
-1. `Contract_Bundle_v0.2.5.md`
-2. `Architecture_v0.2.5.md`
-3. `ResearchSpec_v0.2.5.md`
-4. `ResearchSpec_v0.2.5.yaml`
+1. `Contract_Bundle_v0.2.6.md`
+2. `Architecture_v0.2.6.md`
+3. `ResearchSpec_v0.2.6.md`
+4. `ResearchSpec_v0.2.6.yaml`
 5. `DGP_Parameter_Sheet_v0.3.0.md`
-6. `Statistical_Analysis_Plan_v0.3.0.md`
+6. `Statistical_Analysis_Plan_v0.4.0.md`
 7. `Decision_Rule_Spec_v0.3.0.md`
 8. `Guardrail_Spec_v0.3.0.md`
 9. `Oracle_Benchmark_Spec_v0.4.0.md`
-10. `Slice_1_Definition_of_Done_v0.2.5.md`
-11. `Golden_Fixtures_v0.2.5.yaml`
+10. `Slice_1_Definition_of_Done_v0.2.6.md`
+11. `Golden_Fixtures_v0.2.6.yaml`
 
 `contract_hashes.json` enumerates exactly these relative paths and lowercase SHA-256 values in its payload. Release README, change log, finding matrix, final audit and validation results are informational, not alternative normative authority. `SHA256SUMS.txt` covers the complete release except itself, including those informational files; it is not an extra runtime contract. No earlier bundle, prior review, evidence package, Architecture v0.1 or external research document is an implementation dependency.
 
@@ -125,7 +125,7 @@ All digests are lowercase hexadecimal SHA-256. Release Markdown/YAML/text files 
 
 Per-block sequence bytes are the ASCII 0/1 labels in one-based slot order, exactly N_b characters with no delimiter or newline. Metadata must not be added to either bitstring or bare mapping.
 
-All other JSON artifact **files** use a run envelope with required `schema_version`, `run_id`, `created_at_utc`, and `payload`. Schema versions are `0.2.5` for run/envelope contracts in this release; method versions such as DGP `0.3.0` remain distinct. Named top-level commitment bindings specified in §2.6 are also required. Field content uses finite numbers or explicit null/reason status, never NaN/Infinity. Exact serialization settings are pinned by the implementation/environment manifest; exact-byte integrity is always verified using original bytes, not parser reserialization.
+All other JSON artifact **files** use a run envelope with required `schema_version`, `run_id`, `created_at_utc`, and `payload`. Schema versions are `0.2.6` for run/envelope contracts in this release; method versions such as DGP `0.3.0` remain distinct. Named top-level commitment bindings specified in §2.6 are also required. Field content uses finite numbers or explicit null/reason status, never NaN/Infinity. Exact serialization settings are pinned by the implementation/environment manifest; exact-byte integrity is always verified using original bytes, not parser reserialization.
 
 For deterministic payload comparisons, canonicalize the `payload` value to UTF-8 JSON with recursively sorted object keys and original array order, no insignificant whitespace or newline. Its number tokens are the implementation's fixed finite binary64 round-trip JSON rendering, pinned with the environment; integers remain integers. The algorithm ID is `OIDL-DETERMINISTIC-PAYLOAD-JSON-v1`. This is an engineering reproducibility hash, not a substitute for exact-byte integrity. Canonical package member-list hashing below has only strings and therefore no floating-number rendering ambiguity.
 
@@ -195,7 +195,7 @@ Required scan fields (all paths below start at the run-envelope `payload`):
 | provenance.exposure_lineage_id; provenance.analysis_exposure_class; provenance.prior_exposure_record_hashes; provenance.parent_run_id | Exact values from that commitment; parent_run_id retains its registered nullability |
 | schema_bindings | The exact map defined below, using analyst member schemas only |
 
-The root `schema_version`, `run_id` and `created_at_utc` use §2.4; run_id must match the benchmark. Required `schema_bindings` keys are `run_envelope_schema_version`=`0.2.5`, `research_spec_version`=`0.2.5`, `oracle_protocol_version`=`0.4.0`, and `analyst_member_schemas`. The last is the complete array of `{path, logical_schema}` projections of the finalized analyst manifest's member records sorted by path; values and types must match exactly. Logical schema definitions remain the existing payload members, not new schema content invented by the scan.
+The root `schema_version`, `run_id` and `created_at_utc` use §2.4; run_id must match the benchmark. Required `schema_bindings` keys are `run_envelope_schema_version`=`0.2.6`, `research_spec_version`=`0.2.6`, `oracle_protocol_version`=`0.4.0`, and `analyst_member_schemas`. The last is the complete array of `{path, logical_schema}` projections of the finalized analyst manifest's member records sorted by path; values and types must match exactly. Logical schema definitions remain the existing payload members, not new schema content invented by the scan.
 
 `dataset_release_record_sha256`, `analyst_leakage_scan_sha256`, a scan self-hash, and any field claiming `RELEASE_AUTHENTICATED` are **absent**, not null placeholders, anywhere in this scan. The absent release hash remains absent in this SAME file after release and in its archived copy. All fields and bytes, including timestamps, diagnostics and whitespace, are finalized once. Only then compute SHA-256 of the complete scan file; hold that predecessor digest for release signing outside the scan. Local byte verification alone never permits downstream analyst use or entry into ANALYST_PACKAGE_RELEASED. A FAIL scan may be retained as failure evidence but cannot authorize signing a release.
 
@@ -264,7 +264,7 @@ The dependency graph remains: analyst/oracle payloads → content digests → ro
 
 `benchmark_commitment.json` requires these top-level fields in addition to its `payload`:
 
-- schema_version = 0.2.5;
+- schema_version = 0.2.6;
 - run_id (nonempty unique local string);
 - created_at_utc (UTC with six fractional digits);
 - assignment_sequence_commitment_path;

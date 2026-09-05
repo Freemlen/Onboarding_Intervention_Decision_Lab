@@ -1,10 +1,12 @@
-# Contract Bundle v0.2.5 — Authoritative Index
+# Contract Bundle v0.2.6 — Authoritative Index
 
 **Project:** Onboarding Intervention Decision Lab  
-**Release:** 0.2.5  
+**Release:** 0.2.6  
 **Status:** FINAL_PRE_IMPLEMENTATION  
-**Schema/research contract version:** 0.2.5  
-**DGP, statistical method, policy and guardrail semantic versions:** 0.3.0  
+**Schema/research contract version:** 0.2.6  
+**DGP, primary estimator, policy and guardrail semantic versions:** 0.3.0  
+**SAP semantic version:** 0.4.0  
+**Balance diagnostic method version:** 1.0.0  
 **Oracle protocol semantic version:** 0.4.0
 
 ## 1. Authority and interpretation
@@ -21,17 +23,17 @@ One use case, one eligible cohort, one standardized treatment, randomized custom
 
 | Artifact | Contract/semantic version | Exhaustive responsibility |
 |---|---|---|
-| Contract_Bundle_v0.2.5.md | 0.2.5 | Authority, membership, scope and parity rules |
-| Architecture_v0.2.5.md | 0.2.5 | Standalone local layered-monolith boundaries and human interfaces |
-| ResearchSpec_v0.2.5.md | 0.2.5 | Human-readable lossless typed research contract |
-| ResearchSpec_v0.2.5.yaml | 0.2.5 | Same typed research contract in YAML |
+| Contract_Bundle_v0.2.6.md | 0.2.6 | Authority, membership, scope and parity rules |
+| Architecture_v0.2.6.md | 0.2.6 | Standalone local layered-monolith boundaries and human interfaces |
+| ResearchSpec_v0.2.6.md | 0.2.6 | Human-readable lossless typed research contract |
+| ResearchSpec_v0.2.6.yaml | 0.2.6 | Same typed research contract in YAML |
 | DGP_Parameter_Sheet_v0.3.0.md | 0.3.0 | Screened construction, stochastic registry, equations, calibration, clocks, lifecycle and observed projection |
-| Statistical_Analysis_Plan_v0.3.0.md | 0.3.0 | Estimators, uncertainty, boundary behavior, diagnostics, later HTE and sensitivity |
+| Statistical_Analysis_Plan_v0.4.0.md | 0.4.0 | Estimators, uncertainty, boundary behavior, diagnostics, later HTE and sensitivity |
 | Decision_Rule_Spec_v0.3.0.md | 0.3.0 | Economics, policy comparisons, readiness, actions and overrides |
 | Guardrail_Spec_v0.3.0.md | 0.3.0 | Harm definitions, denominators, bounds, safety vetoes and service projections |
 | Oracle_Benchmark_Spec_v0.4.0.md | 0.4.0 | Visibility, exact profile payloads, commitments, package DAG, gates and exposure lineage |
-| Slice_1_Definition_of_Done_v0.2.5.md | 0.2.5 | Exact first-slice capabilities, artifacts and acceptance |
-| Golden_Fixtures_v0.2.5.yaml | 0.2.5 | Fabricated mathematical/behavioral fixtures and their expected results |
+| Slice_1_Definition_of_Done_v0.2.6.md | 0.2.6 | Exact first-slice capabilities, artifacts and acceptance |
+| Golden_Fixtures_v0.2.6.yaml | 0.2.6 | Fabricated mathematical/behavioral fixtures and their expected results |
 
 The README, finding-resolution matrix, change log, final audit and validation results are informative release documentation. They cannot override a normative rule. `SHA256SUMS.txt` covers every regular release file except itself, including informative documents. The release ZIP is transport, not a member of its own checksum set. There is no recursive self-digest and no requirement to put a file's own digest into that file.
 
@@ -47,7 +49,7 @@ Normative equivalence requires reconstructing the full Markdown tree and compari
 
 The only profiles are `SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE` and `FULL_DECISION_SYSTEM`. Slice 1 implements only its Definition of Done. Committing the full policy and guardrail specifications does not require executing those later capabilities in Slice 1. Conversely, FULL cannot use the Slice 1 exception to drop unfavorable in-scope analyses. Profile and exact required artifact groups are immutable at BENCHMARK_COMMITTED.
 
-All behavior-changing specifications carry the versions in §2. Schema/research/architecture-document/Slice 1/fixture identities are 0.2.5. Oracle protocol version is 0.4.0 for the explicit scan-to-release provenance lifecycle. DGP, SAP, Decision and Guardrail semantic versions remain 0.3.0; only linked-document references are refreshed, without changing their behavior. Schema, oracle protocol and analytical method versions are distinct identifiers; do not relabel one as another. Historical public seed ID/commitment identifiers are retained unchanged and are not a stale DGP version. The DGP configuration IDs are the exact values in its §18. A later change to source construction, time allocation, draw use, calibration, statistical boundaries, comparison family, scope or commitments requires the affected semantic version and all linked release identities/hashes to change before a new run. No in-place archive replacement is allowed.
+All behavior-changing specifications carry the versions in §2. Schema/research/architecture-document/Slice 1/fixture identities are 0.2.6. Oracle protocol remains 0.4.0 with its unchanged two-stage scan-to-release provenance lifecycle. SAP advances to 0.4.0 solely to freeze the existing baseline-balance diagnostic capability (OIDL-PRE-T0-BALANCE-SMD, version 1.0.0). The primary estimator/method remains 0.3.0. DGP, Decision and Guardrail remain 0.3.0; outside the diagnostic repair only release/linked-document references are refreshed, without changing behavior. Schema, oracle protocol and analytical method versions are distinct identifiers; do not relabel one as another. Historical public seed ID/commitment identifiers are retained unchanged and are not a stale DGP version. The DGP configuration IDs are the exact values in its §18. A later change to source construction, time allocation, draw use, calibration, statistical boundaries, comparison family, scope or commitments requires the affected semantic version and all linked release identities/hashes to change before a new run. No in-place archive replacement is allowed.
 
 This release preserves the original randomization-sequence serialization algorithm ID `OIDL-CANONICAL-JSON-SHA256-v1`. New explicit package and deterministic-result hashing domains have their own IDs in Oracle §2. They are not alternative assignment hashes.
 
@@ -70,3 +72,5 @@ Human approval remains required. The method and business/protection approvers ma
 ## 7. Consolidated repair invariants
 
 DGP §11.3 fixes repeated-failure threshold time/reason/trigger from existing lifecycles; DGP §7.5.1 fixes shared hard-restriction and contact-stop predicates without subtype sampling. SAP §5.2.1 fixes exact integer/rational aggregation, mathematical zero and subsequent binary64 conversion without a new estimator or epsilon. Oracle §2.5.1 maps both mandatory data-hash names to the same authenticated analyst package-content commitment and fixes deterministic-result/envelope placement. These are base-contract rules, not an amendment layer. Earlier findings and reviews have no normative role.
+
+SAP §4.3 is the exhaustive ordered balance catalogue: seven existing source fields, fifteen scalar/indicator rows per scope, three scopes and identical randomization_audit/baseline_balance projections. It is separate from the optional Lin design matrix. Blocking variables remain in exact count/sequence checks, not additional SMD rows. Diagnostic source validity is enforced without changing eligibility, DGP, assignment, primary inference, governance or business rules.

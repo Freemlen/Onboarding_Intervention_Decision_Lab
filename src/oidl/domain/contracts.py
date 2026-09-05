@@ -1,4 +1,4 @@
-"""Pure v0.2.5 validation (Bundle §§2–4; Oracle §§2.1, 2.4–2.6)."""
+"""Pure v0.2.6 validation (Bundle §§2–4; Oracle §§2.1, 2.4–2.6)."""
 
 from dataclasses import dataclass
 from hashlib import sha256
@@ -9,6 +9,7 @@ import re
 import yaml
 
 from .release_identity import (
+    BALANCE_METHOD_ID, BALANCE_METHOD_VERSION,
     LINKED_CONTRACTS, NORMATIVE_PATHS, RELEASE, RELEASE_HASHES, SEMANTIC_VERSIONS,
 )
 
@@ -236,10 +237,10 @@ def validate_versions(spec: dict, texts: dict[str, str], fixtures: dict) -> None
     """Check release/schema identity and independently versioned linked methods."""
     identity = spec.get("specification")
     expected = {
-        "document_id": "ResearchSpec_v0.2.5",
+        "document_id": "ResearchSpec_v0.2.6",
         "version": RELEASE,
         "bundle_release": RELEASE,
-        "human_readable_twin": "ResearchSpec_v0.2.5.md",
+        "human_readable_twin": "ResearchSpec_v0.2.6.md",
         "required_linked_contracts": LINKED_CONTRACTS,
         "semantic_versions": SEMANTIC_VERSIONS,
     }
@@ -249,10 +250,10 @@ def validate_versions(spec: dict, texts: dict[str, str], fixtures: dict) -> None
     ):
         raise ContractError("RELEASE_IDENTITY", "UNSUPPORTED_OR_MISSING_VERSION_LINK")
     headers = {
-        "Contract_Bundle_v0.2.5.md": ("Release", RELEASE),
-        "Architecture_v0.2.5.md": ("Version", RELEASE),
-        "Slice_1_Definition_of_Done_v0.2.5.md": ("Version", RELEASE),
-        "Statistical_Analysis_Plan_v0.3.0.md": ("SAP version", "0.3.0"),
+        "Contract_Bundle_v0.2.6.md": ("Release", RELEASE),
+        "Architecture_v0.2.6.md": ("Version", RELEASE),
+        "Slice_1_Definition_of_Done_v0.2.6.md": ("Version", RELEASE),
+        "Statistical_Analysis_Plan_v0.4.0.md": ("SAP version", "0.4.0"),
         "Oracle_Benchmark_Spec_v0.4.0.md": ("Version", "0.4.0"),
         **{f"{name}_v0.3.0.md": ("Version", "0.3.0") for name in (
             "DGP_Parameter_Sheet", "Decision_Rule_Spec", "Guardrail_Spec",
@@ -266,6 +267,17 @@ def validate_versions(spec: dict, texts: dict[str, str], fixtures: dict) -> None
             raise ContractError("RELEASE_IDENTITY", "LINKED_ARTIFACT_VERSION_MISMATCH")
     if fixtures.get("fixture_contract_version") != RELEASE or fixtures.get("normative") is not True:
         raise ContractError("RELEASE_IDENTITY", "FIXTURE_CONTRACT_VERSION_MISMATCH")
+
+
+    # SAP §4.3 and ResearchSpec randomization.balance_diagnostics: identity only.
+    # Pinned release hashes authenticate the catalogue/schema; no SMD is calculated.
+    randomization = spec.get("randomization")
+    balance = randomization.get("balance_diagnostics") if type(randomization) is dict else None
+    for binding in (balance, fixtures.get("balance_fixture_contract")):
+        if (type(binding) is not dict
+                or binding.get("method_id") != BALANCE_METHOD_ID
+                or binding.get("method_version") != BALANCE_METHOD_VERSION):
+            raise ContractError("RELEASE_IDENTITY", "BALANCE_METHOD_VERSION_MISMATCH")
 
 
 @dataclass(frozen=True)
@@ -302,9 +314,9 @@ def verify_release_bytes(files: dict[str, bytes]) -> VerifiedRelease:
             raise ContractError("RELEASE_INTEGRITY", "FILE_SHA256_MISMATCH")
     texts = {path: release_text(files[path]) for path in sorted(manifest)}
     spec = load_research_twins(
-        texts["ResearchSpec_v0.2.5.md"], texts["ResearchSpec_v0.2.5.yaml"],
+        texts["ResearchSpec_v0.2.6.md"], texts["ResearchSpec_v0.2.6.yaml"],
     )
-    fixtures = load_yaml_mapping(texts["Golden_Fixtures_v0.2.5.yaml"])
+    fixtures = load_yaml_mapping(texts["Golden_Fixtures_v0.2.6.yaml"])
     validate_versions(spec, texts, fixtures)
     return VerifiedRelease(
         canonical_json(spec), tuple((path, manifest[path]) for path in sorted(NORMATIVE_PATHS)),

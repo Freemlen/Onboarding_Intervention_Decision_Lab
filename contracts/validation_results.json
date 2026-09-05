@@ -1,406 +1,924 @@
 {
-  "release": "0.2.5",
-  "audit_kind": "TARGETED_R5_CONTRACT_REPAIR_AND_R1_R4_REGRESSION",
-  "source_release": "0.2.4",
-  "r5_disposition": "ACCEPT",
-  "canonical_seed_requested_inferred_accessed_or_used": false,
-  "canonical_cohort_generated": false,
-  "application_implementation_written_or_executed": false,
-  "actual_leakage_scanner_runtime_executed": false,
-  "actual_human_signature_or_governance_enforcement_executed": false,
-  "hidden_seed_replay_executed": false,
-  "md_yaml_root_sections": 23,
-  "md_yaml_scalar_leaves": 1168,
-  "normative_artifacts": 11,
-  "normative_fixture_cases": 69,
-  "new_R5_fixture_cases": 12,
+  "release": "0.2.6",
+  "task": "Targeted R6 contract repair and R1-R5 regression; no general review",
+  "source_bundle": "Onboarding_Intervention_Decision_Lab_Contracts_v0.2.5.zip",
+  "source_bundle_sha256": "bf74e9d6826136be6a8a9023f43ab7d38dcef7551d41235ce14604d1b9d8e662",
+  "canonical_seed_requested": false,
+  "canonical_seed_used": false,
+  "product_implementation_written": false,
+  "user_implementation_tested": false,
   "checks": [
     {
-      "id": "SOURCE_V024_INTEGRITY",
+      "id": "SOURCE_RELEASE_INTEGRITY",
       "status": "PASS",
-      "category": "BYTE_HASH_CHECK",
+      "category": "EXACT_BYTE_CHECK",
       "detail": {
-        "verified_members": 16,
-        "errors": [],
-        "zip_sha256": "d21b5cabe36e4ffb394a6a8f38977494d9714302102deb525406f3ed7a9963bf"
+        "manifest_members_verified": 16,
+        "source_zip_sha256": "bf74e9d6826136be6a8a9023f43ab7d38dcef7551d41235ce14604d1b9d8e662"
       }
     },
     {
-      "id": "R5_INDEPENDENT_SOURCE_VERIFICATION",
+      "id": "RESEARCHSPEC_LOSSLESS_TYPED_PARITY",
       "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
-      "detail": "Verified exact v0.2.4 Oracle 2.5/2.5.1/5, ResearchSpec placement and Slice 1 1.4/3.2. Only pre-dataset exemption existed. Disposition ACCEPT."
-    },
-    {
-      "id": "STRICT_YAML_PARSE_AND_DUPLICATE_REJECTION",
-      "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
-      "detail": "Both normative YAML files loaded with duplicate-key rejection; explicit duplicate-key specimen rejected."
-    },
-    {
-      "id": "LOSSLESS_MD_YAML_INDEPENDENT_RECONSTRUCTION",
-      "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
+      "category": "INDEPENDENT_RECONSTRUCTION",
       "detail": {
-        "roots": 23,
-        "scalar_leaves": 1168
+        "root_fields": 23,
+        "typed_scalar_leaves": 1392,
+        "differences": 0
       }
     },
     {
-      "id": "UNCHANGED_BEHAVIOR_DGP_Parameter_Sheet",
+      "id": "R6_EXHAUSTIVE_SELECTION_AND_SCOPE",
       "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
-      "detail": "Exact whole-text equality after only linked release/Oracle filename refresh; semantic identity 0.3.0 retained."
-    },
-    {
-      "id": "UNCHANGED_BEHAVIOR_Statistical_Analysis_Plan",
-      "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
-      "detail": "Exact whole-text equality after only linked release/Oracle filename refresh; semantic identity 0.3.0 retained."
-    },
-    {
-      "id": "UNCHANGED_BEHAVIOR_Decision_Rule_Spec",
-      "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
-      "detail": "Exact whole-text equality after only linked release/Oracle filename refresh; semantic identity 0.3.0 retained."
-    },
-    {
-      "id": "UNCHANGED_BEHAVIOR_Guardrail_Spec",
-      "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
-      "detail": "Exact whole-text equality after only linked release/Oracle filename refresh; semantic identity 0.3.0 retained."
-    },
-    {
-      "id": "FROZEN_RESEARCH_AND_GOVERNANCE_PRESERVED",
-      "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
+      "category": "STATIC_CROSS_ARTIFACT_CHECK",
       "detail": {
-        "unchanged_nonprovenance_roots_after_link_only_refresh": 20,
-        "differing_roots": [],
-        "states_gates_profiles_exposure_unchanged": true
+        "source_variables": 7,
+        "all_existing_DGP_fields": true,
+        "diagnostics_per_scope": 15,
+        "scopes": 3,
+        "total_rows": 45,
+        "new_DGP_covariates": 0,
+        "blocking_variables_in_SMD_catalogue": false
       }
     },
     {
-      "id": "ORACLE_TRUTH_PAYLOAD_AND_VISIBILITY_UNCHANGED",
+      "id": "R3_PRIMARY_INFERENCE_AND_M1_BASIS_PRESERVED",
       "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
-      "detail": "Entire Oracle section 1 byte-identical, including exact eight Slice 1 components and secret/evaluator boundary."
+      "category": "EXACT_TEXT_COMPARISON",
+      "detail": "SAP §§5–12 and §§14–16 exact after linked-reference updates; §2.5 basis and M1 rationale unchanged; primary method stays 0.3.0."
     },
     {
-      "id": "R4_HASH_DOMAINS_UNCHANGED",
+      "id": "PRESERVED_DGP_Parameter_Sheet",
       "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
-      "detail": "Both aliases retain source, preimage, algorithm, method ID and placement; only producer-versus-consumer authentication wording changes."
-    },
-    {
-      "id": "NO_SUPERSEDED_UNCONDITIONAL_ALIAS_RULE",
-      "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
-      "detail": "Old conflicting sentence replaced in base Oracle; typed twins reference complete two-stage lifecycle."
-    },
-    {
-      "id": "LINKED_VERSIONS_AND_NORMATIVE_MEMBERS",
-      "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
+      "category": "EXACT_TEXT_COMPARISON",
       "detail": {
-        "research_spec": "0.2.5",
-        "architecture": "0.2.5",
-        "dgp": "0.3.0",
-        "sap": "0.3.0",
-        "decision_rule": "0.3.0",
-        "guardrails": "0.3.0",
-        "oracle_protocol": "0.4.0",
-        "slice_1": "0.2.5",
-        "golden_fixtures": "0.2.5"
+        "file": "DGP_Parameter_Sheet_v0.3.0.md",
+        "whole_text_identical_after_release_and_link_rebind": true
       }
     },
     {
-      "id": "ALL_EXISTING_NONVERSION_FIXTURES_RETAINED",
+      "id": "PRESERVED_Decision_Rule_Spec",
       "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
+      "category": "EXACT_TEXT_COMPARISON",
       "detail": {
-        "groups_compared": 19,
-        "differences": [],
-        "prior_cases": 57
+        "file": "Decision_Rule_Spec_v0.3.0.md",
+        "whole_text_identical_after_release_and_link_rebind": true
       }
     },
     {
-      "id": "R3_PRIMARY_RATIONAL_GOLDENS",
+      "id": "PRESERVED_Guardrail_Spec",
       "status": "PASS",
-      "category": "EXPLICIT_INPUT_MATHEMATICAL_CHECK",
+      "category": "EXACT_TEXT_COMPARISON",
       "detail": {
-        "cases": 12,
-        "maximum_numeric_absolute_error": 0,
-        "errors": []
+        "file": "Guardrail_Spec_v0.3.0.md",
+        "whole_text_identical_after_release_and_link_rebind": true
       }
     },
     {
-      "id": "R3_EMPTY_ARM",
+      "id": "PRESERVED_Oracle_Benchmark_Spec",
       "status": "PASS",
-      "category": "EXPLICIT_INPUT_MATHEMATICAL_CHECK",
-      "detail": "BLOCK_ARM_N_LT_2"
-    },
-    {
-      "id": "R3_SINGLETON_ARM",
-      "status": "PASS",
-      "category": "EXPLICIT_INPUT_MATHEMATICAL_CHECK",
-      "detail": "BLOCK_ARM_N_LT_2"
-    },
-    {
-      "id": "R3_NON_DYADIC_64_ORDER_ARM_CASES",
-      "status": "PASS",
-      "category": "EXPLICIT_INPUT_MATHEMATICAL_CHECK",
-      "detail": "32 deterministic orderings times two arm orientations; exact rational zero, p=1, null statistic, point CI at zero."
-    },
-    {
-      "id": "R3_GENERAL_UNEQUAL_SIX_PERMUTATIONS",
-      "status": "PASS",
-      "category": "EXPLICIT_INPUT_MATHEMATICAL_CHECK",
-      "detail": "All six permutations, no pooled-count shortcut."
-    },
-    {
-      "id": "R1_ALL_OCCURRENCE_GOLDENS",
-      "status": "PASS",
-      "category": "EXPLICIT_RULE_EVALUATION",
+      "category": "EXACT_TEXT_COMPARISON",
       "detail": {
-        "cases": 9,
-        "clock": "second qualifying terminal disposition",
-        "tie_break": "time, MAIN before EXTRA, deposit ordinal"
+        "file": "Oracle_Benchmark_Spec_v0.4.0.md",
+        "whole_text_identical_after_release_and_link_rebind": true
       }
     },
     {
-      "id": "R1_FLAG_LOG_MISMATCH_REJECTED",
+      "id": "PRESERVED_Architecture",
       "status": "PASS",
-      "category": "EXPLICIT_RULE_EVALUATION",
-      "detail": "Frozen generated flag cannot override the actual lifecycle projection."
-    },
-    {
-      "id": "R1_NULLABILITY_NEGATIVE_FIXTURES",
-      "status": "PASS",
-      "category": "EXPLICIT_RULE_EVALUATION",
-      "detail": "True/missing occurrence and false/non-null reason differ from required observed summary; no structural N/A excuse."
-    },
-    {
-      "id": "R2_ALL_REMINDER_RESTRICTION_GOLDENS",
-      "status": "PASS",
-      "category": "EXPLICIT_RULE_EVALUATION",
+      "category": "EXACT_TEXT_COMPARISON",
       "detail": {
-        "cases": 12,
-        "equality_optout_audit_and_reversal_boundaries": true
+        "file": "Architecture_v0.2.6.md",
+        "whole_text_identical_after_release_and_link_rebind": true
       }
     },
     {
-      "id": "R2_TRUE_PROTECTION_WITHOUT_TIME",
+      "id": "R1_R5_AND_CORE_RESEARCHSPEC_TYPED_PRESERVATION",
       "status": "PASS",
-      "category": "EXPLICIT_RULE_EVALUATION",
-      "detail": "Incomplete restriction inputs cannot be coerced to false."
+      "category": "TYPED_TREE_COMPARISON",
+      "detail": "ResearchSpec tree unchanged apart from explicit R6 diagnostic subtree, SAP semantic identity and release/linked-file rebind. Includes DGP, clocks, population, assignment, primary, HTE, policies, margins, R4 domains and R5 lifecycle."
     },
     {
-      "id": "R2_INCOMPLETE_SERIOUS_AUDIT_NOT_NO_STOP",
+      "id": "R6_BINARY_BERNOULLI_DENOMINATOR",
       "status": "PASS",
-      "category": "EXPLICIT_RULE_EVALUATION",
-      "detail": "Incomplete restriction inputs cannot be coerced to false."
-    },
-    {
-      "id": "R4_PACKAGE_CANONICAL_PREIMAGE",
-      "status": "PASS",
-      "category": "BYTE_HASH_CHECK",
-      "detail": "Sorted exact path/hash array and SHA-256 independently recomputed."
-    },
-    {
-      "id": "R4_REBASED_EXACT_BYTE_DOMAIN_FIXTURES",
-      "status": "PASS",
-      "category": "BYTE_HASH_CHECK",
-      "detail": "Rebased only envelope schema to 0.2.5 and propagated fixture hashes; aliases unchanged; deterministic-result digest same across runs, exact provenance bytes different."
-    },
-    {
-      "id": "R5_ALL_LITERAL_FILE_HASHES",
-      "status": "PASS",
-      "category": "BYTE_HASH_CHECK",
+      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
       "detail": {
-        "literal_specimens": 16
+        "diagnostic_rows": 1,
+        "exact_midpoint_rounding_certified": true,
+        "expected": [
+          [
+            "language_service_match",
+            0.5345224838248488,
+            "NONZERO_VARIANCE"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "R6_LANGUAGE_MATCH_POSITIVE_ORIENTATION",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "detail": {
+        "diagnostic_rows": 1,
+        "exact_midpoint_rounding_certified": true,
+        "expected": [
+          [
+            "language_service_match",
+            1.1547005383792515,
+            "NONZERO_VARIANCE"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "R6_CATEGORICAL_ALL_LEVELS_AND_ORDER",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "detail": {
+        "diagnostic_rows": 3,
+        "exact_midpoint_rounding_certified": true,
+        "expected": [
+          [
+            "acquisition_channel__ORGANIC",
+            0.5345224838248488,
+            "NONZERO_VARIANCE"
+          ],
+          [
+            "acquisition_channel__PAID",
+            -0.5345224838248488,
+            "NONZERO_VARIANCE"
+          ],
+          [
+            "acquisition_channel__AFFILIATE",
+            0,
+            "NONZERO_VARIANCE"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "R6_CATEGORICAL_ABSENT_LEVELS_RETAINED",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "detail": {
+        "diagnostic_rows": 3,
+        "exact_midpoint_rounding_certified": true,
+        "expected": [
+          [
+            "device_verification_route__MOBILE_APP",
+            0,
+            "ZERO_VARIANCE_EQUAL"
+          ],
+          [
+            "device_verification_route__MOBILE_WEB",
+            0,
+            "ZERO_VARIANCE_EQUAL"
+          ],
+          [
+            "device_verification_route__DESKTOP_WEB",
+            0,
+            "ZERO_VARIANCE_EQUAL"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "R6_ORDERED_CATEGORY_NOT_NUMERIC_SCORE",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "detail": {
+        "diagnostic_rows": 3,
+        "exact_midpoint_rounding_certified": true,
+        "expected": [
+          [
+            "declared_experience__LOW",
+            -0.5345224838248488,
+            "NONZERO_VARIANCE"
+          ],
+          [
+            "declared_experience__MEDIUM",
+            0.5345224838248488,
+            "NONZERO_VARIANCE"
+          ],
+          [
+            "declared_experience__HIGH",
+            0,
+            "NONZERO_VARIANCE"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "R6_CONTINUOUS_STEPS_SAMPLE_VARIANCE",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "detail": {
+        "diagnostic_rows": 1,
+        "exact_midpoint_rounding_certified": true,
+        "expected": [
+          [
+            "pre_t0_completed_step_count",
+            1.0,
+            "NONZERO_VARIANCE"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "R6_CONTINUOUS_UNEQUAL_ARM_POOLING",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "detail": {
+        "diagnostic_rows": 1,
+        "exact_midpoint_rounding_certified": true,
+        "expected": [
+          [
+            "pre_t0_completed_step_count",
+            0.4629100498862757,
+            "NONZERO_VARIANCE"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "R6_ZERO_VARIANCE_EQUAL",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "detail": {
+        "diagnostic_rows": 1,
+        "exact_midpoint_rounding_certified": true,
+        "expected": [
+          [
+            "pre_t0_completed_step_count",
+            0,
+            "ZERO_VARIANCE_EQUAL"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "R6_ZERO_VARIANCE_UNEQUAL_POSITIVE",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "detail": {
+        "diagnostic_rows": 1,
+        "exact_midpoint_rounding_certified": true,
+        "expected": [
+          [
+            "language_service_match",
+            null,
+            "ZERO_VARIANCE_UNEQUAL_POSITIVE"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "R6_ZERO_VARIANCE_UNEQUAL_NEGATIVE",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "detail": {
+        "diagnostic_rows": 1,
+        "exact_midpoint_rounding_certified": true,
+        "expected": [
+          [
+            "language_service_match",
+            null,
+            "ZERO_VARIANCE_UNEQUAL_NEGATIVE"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "R6_EXACT_BALANCE_POSITIVE_VARIANCE",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "detail": {
+        "diagnostic_rows": 1,
+        "exact_midpoint_rounding_certified": true,
+        "expected": [
+          [
+            "language_service_match",
+            0,
+            "NONZERO_VARIANCE"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "R6_RAW_LOAD_EXACT_MOMENTS",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "detail": {
+        "diagnostic_rows": 1,
+        "exact_midpoint_rounding_certified": true,
+        "expected": [
+          [
+            "day_shift_load_index",
+            0.408248290463863,
+            "NONZERO_VARIANCE"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "R6_SHIFT_LEVEL_ORDER_NOT_ALPHABETICAL",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "detail": {
+        "diagnostic_rows": 3,
+        "exact_midpoint_rounding_certified": true,
+        "expected": [
+          [
+            "registration_shift__DAY",
+            -0.5345224838248488,
+            "NONZERO_VARIANCE"
+          ],
+          [
+            "registration_shift__EVENING",
+            0,
+            "NONZERO_VARIANCE"
+          ],
+          [
+            "registration_shift__NIGHT",
+            0.5345224838248488,
+            "NONZERO_VARIANCE"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "R6_INPUT_ORDER_INVARIANCE",
+      "status": "PASS",
+      "category": "EXPLICIT_PERMUTATION_AND_EXACT_ARITHMETIC",
+      "detail": {
+        "distinct_treatment_control_permutations": 686,
+        "bit_value_and_status_invariance": true
+      }
+    },
+    {
+      "id": "R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA",
+      "status": "PASS",
+      "category": "FULL_LOGICAL_OUTPUT_SCHEMA_AND_MOMENT_CHECK",
+      "detail": {
+        "scopes": [
+          {
+            "id": "OVERALL",
+            "n1": 4,
+            "n0": 4
+          },
+          {
+            "id": "KYC_FRICTION_0",
+            "n1": 2,
+            "n0": 2
+          },
+          {
+            "id": "KYC_FRICTION_1",
+            "n1": 2,
+            "n0": 2
+          }
+        ],
+        "variables_per_scope": 7,
+        "rows": 45,
+        "excluded_structural_NA_ignored_not_imputed": true,
+        "missingness_indicators": 0
+      }
+    },
+    {
+      "id": "R6_MISSING_RANDOMIZED_SOURCE",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "detail": {
+        "expected_reason_codes": [
+          "MISSING_REQUIRED_BASELINE_DATA"
+        ],
+        "derived_reason_codes": [
+          "MISSING_REQUIRED_BASELINE_DATA"
+        ],
+        "authoritative_success_not_allowed": true
+      }
+    },
+    {
+      "id": "R6_NULL_RANDOMIZED_STEP",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "detail": {
+        "expected_reason_codes": [
+          "MISSING_REQUIRED_BASELINE_DATA"
+        ],
+        "derived_reason_codes": [
+          "MISSING_REQUIRED_BASELINE_DATA"
+        ],
+        "authoritative_success_not_allowed": true
+      }
+    },
+    {
+      "id": "R6_RANDOMIZED_STRUCTURAL_NA",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "detail": {
+        "expected_reason_codes": [
+          "STRUCTURAL_NA_IN_RANDOMIZED_BALANCE"
+        ],
+        "derived_reason_codes": [
+          "STRUCTURAL_NA_IN_RANDOMIZED_BALANCE"
+        ],
+        "authoritative_success_not_allowed": true
+      }
+    },
+    {
+      "id": "R6_UNKNOWN_CATEGORY",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "detail": {
+        "expected_reason_codes": [
+          "INVALID_BALANCE_SOURCE_VALUE"
+        ],
+        "derived_reason_codes": [
+          "INVALID_BALANCE_SOURCE_VALUE"
+        ],
+        "authoritative_success_not_allowed": true
+      }
+    },
+    {
+      "id": "R6_POST_T0_SOURCE",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "detail": {
+        "expected_reason_codes": [
+          "POST_T0_BALANCE_SOURCE"
+        ],
+        "derived_reason_codes": [
+          "POST_T0_BALANCE_SOURCE"
+        ],
+        "authoritative_success_not_allowed": true
+      }
+    },
+    {
+      "id": "R6_MISSING_SOURCE_TIME",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "detail": {
+        "expected_reason_codes": [
+          "MISSING_REQUIRED_BASELINE_DATA"
+        ],
+        "derived_reason_codes": [
+          "MISSING_REQUIRED_BASELINE_DATA"
+        ],
+        "authoritative_success_not_allowed": true
+      }
+    },
+    {
+      "id": "R6_STEP_OUT_OF_DOMAIN",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "detail": {
+        "expected_reason_codes": [
+          "INVALID_BALANCE_SOURCE_VALUE"
+        ],
+        "derived_reason_codes": [
+          "INVALID_BALANCE_SOURCE_VALUE"
+        ],
+        "authoritative_success_not_allowed": true
+      }
+    },
+    {
+      "id": "R6_NONFINITE_LOAD",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "detail": {
+        "expected_reason_codes": [
+          "INVALID_BALANCE_SOURCE_VALUE"
+        ],
+        "derived_reason_codes": [
+          "INVALID_BALANCE_SOURCE_VALUE"
+        ],
+        "authoritative_success_not_allowed": true
+      }
+    },
+    {
+      "id": "R6_MISSING_ARM_IN_SUBGROUP",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "detail": {
+        "expected_reason_codes": [
+          "INSUFFICIENT_BALANCE_ARM_SIZE"
+        ],
+        "derived_reason_codes": [
+          "INSUFFICIENT_BALANCE_ARM_SIZE"
+        ],
+        "authoritative_success_not_allowed": true
+      }
+    },
+    {
+      "id": "R6_OMITTED_REFERENCE_LEVEL",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "detail": {
+        "expected_reason_codes": [
+          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
+        ],
+        "derived_reason_codes": [
+          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
+        ],
+        "authoritative_success_not_allowed": true
+      }
+    },
+    {
+      "id": "R6_REVERSED_LANGUAGE_SIGN",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "detail": {
+        "expected_reason_codes": [
+          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
+        ],
+        "derived_reason_codes": [
+          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
+        ],
+        "authoritative_success_not_allowed": true
+      }
+    },
+    {
+      "id": "R6_PROJECTION_MISMATCH",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "detail": {
+        "expected_reason_codes": [
+          "BASELINE_BALANCE_PROJECTION_MISMATCH"
+        ],
+        "derived_reason_codes": [
+          "BASELINE_BALANCE_PROJECTION_MISMATCH"
+        ],
+        "authoritative_success_not_allowed": true
+      }
+    },
+    {
+      "id": "R6_CATALOGUE_ORDER_CHANGED",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "detail": {
+        "expected_reason_codes": [
+          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
+        ],
+        "derived_reason_codes": [
+          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
+        ],
+        "authoritative_success_not_allowed": true
+      }
+    },
+    {
+      "id": "R6_INCOMPLETE_ZERO_STATUS",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "detail": {
+        "expected_reason_codes": [
+          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
+        ],
+        "derived_reason_codes": [
+          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
+        ],
+        "authoritative_success_not_allowed": true
+      }
+    },
+    {
+      "id": "R3_EQUAL_BLOCKS_POSITIVE",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
+      "detail": {
+        "max_absolute_numeric_difference": 0,
+        "zero_branch_exact": true
+      }
+    },
+    {
+      "id": "R3_UNEQUAL_BLOCK_WEIGHTS",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
+      "detail": {
+        "max_absolute_numeric_difference": 0,
+        "zero_branch_exact": true
+      }
+    },
+    {
+      "id": "R3_ZERO_EFFECT_NONZERO_SE",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
+      "detail": {
+        "max_absolute_numeric_difference": 0,
+        "zero_branch_exact": true
+      }
+    },
+    {
+      "id": "R3_NEGATIVE_EFFECT",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
+      "detail": {
+        "max_absolute_numeric_difference": 0,
+        "zero_branch_exact": true
+      }
+    },
+    {
+      "id": "R3_ONE_ZERO_VARIANCE_BLOCK",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
+      "detail": {
+        "max_absolute_numeric_difference": 0,
+        "zero_branch_exact": true
+      }
+    },
+    {
+      "id": "R3_ALL_ZERO",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
+      "detail": {
+        "max_absolute_numeric_difference": 0,
+        "zero_branch_exact": true
+      }
+    },
+    {
+      "id": "R3_ALL_ONE",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
+      "detail": {
+        "max_absolute_numeric_difference": 0,
+        "zero_branch_exact": true
+      }
+    },
+    {
+      "id": "R3_ZERO_SE_POSITIVE",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
+      "detail": {
+        "max_absolute_numeric_difference": 0,
+        "zero_branch_exact": true
+      }
+    },
+    {
+      "id": "R3_ZERO_SE_NEGATIVE",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
+      "detail": {
+        "max_absolute_numeric_difference": 0,
+        "zero_branch_exact": true
+      }
+    },
+    {
+      "id": "R3_ZERO_SE_CANCELLING_BLOCK_EFFECTS",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
+      "detail": {
+        "max_absolute_numeric_difference": 0,
+        "zero_branch_exact": true
+      }
+    },
+    {
+      "id": "R3_NON_DYADIC_CANONICAL_CANCELLATION",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
+      "detail": {
+        "max_absolute_numeric_difference": 0,
+        "zero_branch_exact": true
+      }
+    },
+    {
+      "id": "R3_GENERAL_UNEQUAL_ALLOCATION_CANCELLATION",
+      "status": "PASS",
+      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
+      "detail": {
+        "max_absolute_numeric_difference": 0,
+        "zero_branch_exact": true
+      }
+    },
+    {
+      "id": "R3_CANCELLATION_AND_ARM_FAILURE_REGRESSION",
+      "status": "PASS",
+      "category": "EXPLICIT_PERMUTATION_AND_BOUNDARY_CHECK",
+      "detail": {
+        "canonical_order_arm_cases": 64,
+        "general_unequal_block_permutations": 6,
+        "empty_singleton_rejections": 2
+      }
+    },
+    {
+      "id": "R1_REPEATED_FAILURE_PROJECTION_REGRESSION",
+      "status": "PASS",
+      "category": "EXPLICIT_LIFECYCLE_PROJECTION_CHECK",
+      "detail": {
+        "occurrence_fixtures": 9,
+        "reverse_input_order_cases": 9,
+        "negative_projection_cases": 3
+      }
+    },
+    {
+      "id": "R2_RESTRICTION_REMINDER_REGRESSION",
+      "status": "PASS",
+      "category": "EXPLICIT_STATE_PREDICATE_CHECK",
+      "detail": {
+        "restriction_reminder_cases": 12,
+        "incomplete_input_rejections": 2
+      }
+    },
+    {
+      "id": "R4_LITERAL_HASH_DOMAIN_REGRESSION",
+      "status": "PASS",
+      "category": "EXACT_BYTE_AND_CANONICAL_PREIMAGE_CHECK",
+      "detail": {
+        "aliases_same_domain": true,
+        "literal_run_specimens": 6,
+        "distinct_envelopes_same_deterministic_result": true,
+        "recursive_hashes": false
+      }
+    },
+    {
+      "id": "R5_ALL_LITERAL_ARTIFACT_HASHES",
+      "status": "PASS",
+      "category": "EXACT_BYTE_CHECK",
+      "detail": {
+        "literal_file_specimens": 16,
+        "schema_rebind_propagated_through_all_digest_edges": true
       }
     },
     {
       "id": "R5_VALID_LOCAL_THEN_AUTHENTICATED_RELEASE",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_AND_PROTOCOL_FIXTURE_CHECK",
+      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
       "detail": {
-        "phase": "COMPLETE_ORDER",
         "expected_reason_codes": [],
-        "observed_reason_codes": [],
-        "scan_bytes_unchanged": true
+        "checked_reason_codes": [],
+        "phase": "COMPLETE_ORDER",
+        "approval_is_fixture_prerequisite_not_real_signature_test": true
       }
     },
     {
       "id": "R5_WRONG_SIGNED_SCAN_HASH",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_AND_PROTOCOL_FIXTURE_CHECK",
+      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
       "detail": {
-        "phase": "RELEASE_AUTHENTICATION",
         "expected_reason_codes": [
           "LEAKAGE_SCAN_HASH_MISMATCH"
         ],
-        "observed_reason_codes": [
+        "checked_reason_codes": [
           "LEAKAGE_SCAN_HASH_MISMATCH"
-        ]
+        ],
+        "phase": "RELEASE_AUTHENTICATION",
+        "approval_is_fixture_prerequisite_not_real_signature_test": true
       }
     },
     {
       "id": "R5_WRONG_ANALYST_CONTENT_DIGEST",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_AND_PROTOCOL_FIXTURE_CHECK",
+      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
       "detail": {
-        "phase": "PRE_RELEASE_SCAN_CREATION",
         "expected_reason_codes": [
           "SCAN_LOCAL_PROVENANCE_MISMATCH"
         ],
-        "observed_reason_codes": [
+        "checked_reason_codes": [
           "SCAN_LOCAL_PROVENANCE_MISMATCH"
-        ]
+        ],
+        "phase": "PRE_RELEASE_SCAN_CREATION",
+        "approval_is_fixture_prerequisite_not_real_signature_test": true
       }
     },
     {
       "id": "R5_MUTATE_SCAN_AFTER_SIGNING",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_AND_PROTOCOL_FIXTURE_CHECK",
+      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
       "detail": {
-        "phase": "RELEASE_AUTHENTICATION",
         "expected_reason_codes": [
           "LEAKAGE_SCAN_HASH_MISMATCH",
           "SCAN_IMMUTABILITY_VIOLATION"
         ],
-        "observed_reason_codes": [
+        "checked_reason_codes": [
           "LEAKAGE_SCAN_HASH_MISMATCH",
           "SCAN_IMMUTABILITY_VIOLATION"
-        ]
+        ],
+        "phase": "RELEASE_AUTHENTICATION",
+        "approval_is_fixture_prerequisite_not_real_signature_test": true
       }
     },
     {
       "id": "R5_DOWNSTREAM_BEFORE_RELEASE_AUTHENTICATION",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_AND_PROTOCOL_FIXTURE_CHECK",
+      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
       "detail": {
-        "phase": "DOWNSTREAM_SCAN_ACCEPTANCE",
         "expected_reason_codes": [
           "DATASET_RELEASE_NOT_AUTHENTICATED"
         ],
-        "observed_reason_codes": [
+        "checked_reason_codes": [
           "DATASET_RELEASE_NOT_AUTHENTICATED"
-        ]
+        ],
+        "phase": "DOWNSTREAM_SCAN_ACCEPTANCE",
+        "approval_is_fixture_prerequisite_not_real_signature_test": true
       }
     },
     {
       "id": "R5_INVALID_RELEASE_APPROVER_ROLE",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_AND_PROTOCOL_FIXTURE_CHECK",
+      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
       "detail": {
-        "phase": "RELEASE_AUTHENTICATION",
         "expected_reason_codes": [
           "DATASET_RELEASE_APPROVAL_INVALID"
         ],
-        "observed_reason_codes": [
+        "checked_reason_codes": [
           "DATASET_RELEASE_APPROVAL_INVALID"
-        ]
+        ],
+        "phase": "RELEASE_AUTHENTICATION",
+        "approval_is_fixture_prerequisite_not_real_signature_test": true
       }
     },
     {
       "id": "R5_FUTURE_RELEASE_HASH_NULL_PLACEHOLDER_FORBIDDEN",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_AND_PROTOCOL_FIXTURE_CHECK",
+      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
       "detail": {
-        "phase": "PRE_RELEASE_SCAN_CREATION",
         "expected_reason_codes": [
           "CIRCULAR_PROVENANCE_FIELD"
         ],
-        "observed_reason_codes": [
+        "checked_reason_codes": [
           "CIRCULAR_PROVENANCE_FIELD"
-        ]
+        ],
+        "phase": "PRE_RELEASE_SCAN_CREATION",
+        "approval_is_fixture_prerequisite_not_real_signature_test": true
       }
     },
     {
       "id": "R5_RELEASE_SELF_HASH_FORBIDDEN",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_AND_PROTOCOL_FIXTURE_CHECK",
+      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
       "detail": {
-        "phase": "RELEASE_AUTHENTICATION",
         "expected_reason_codes": [
           "CIRCULAR_PROVENANCE_FIELD"
         ],
-        "observed_reason_codes": [
+        "checked_reason_codes": [
           "CIRCULAR_PROVENANCE_FIELD"
-        ]
+        ],
+        "phase": "RELEASE_AUTHENTICATION",
+        "approval_is_fixture_prerequisite_not_real_signature_test": true
       }
     },
     {
       "id": "R5_RELEASE_SCHEMA_PROJECTION_OMISSION",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_AND_PROTOCOL_FIXTURE_CHECK",
+      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
       "detail": {
-        "phase": "RELEASE_AUTHENTICATION",
         "expected_reason_codes": [
           "DATASET_RELEASE_BINDING_MISMATCH"
         ],
-        "observed_reason_codes": [
+        "checked_reason_codes": [
           "DATASET_RELEASE_BINDING_MISMATCH"
-        ]
+        ],
+        "phase": "RELEASE_AUTHENTICATION",
+        "approval_is_fixture_prerequisite_not_real_signature_test": true
       }
     },
     {
       "id": "R5_RELEASE_PROFILE_MISMATCH",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_AND_PROTOCOL_FIXTURE_CHECK",
+      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
       "detail": {
-        "phase": "RELEASE_AUTHENTICATION",
         "expected_reason_codes": [
           "DATASET_RELEASE_BINDING_MISMATCH"
         ],
-        "observed_reason_codes": [
+        "checked_reason_codes": [
           "DATASET_RELEASE_BINDING_MISMATCH"
-        ]
+        ],
+        "phase": "RELEASE_AUTHENTICATION",
+        "approval_is_fixture_prerequisite_not_real_signature_test": true
       }
     },
     {
       "id": "R5_RELEASE_MANIFEST_HASH_MISMATCH",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_AND_PROTOCOL_FIXTURE_CHECK",
+      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
       "detail": {
-        "phase": "RELEASE_AUTHENTICATION",
         "expected_reason_codes": [
           "DATASET_RELEASE_BINDING_MISMATCH"
         ],
-        "observed_reason_codes": [
+        "checked_reason_codes": [
           "DATASET_RELEASE_BINDING_MISMATCH"
-        ]
+        ],
+        "phase": "RELEASE_AUTHENTICATION",
+        "approval_is_fixture_prerequisite_not_real_signature_test": true
       }
     },
     {
       "id": "R5_ARCHIVE_PRESERVES_ORIGINAL_SCAN",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_AND_PROTOCOL_FIXTURE_CHECK",
+      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
       "detail": {
-        "phase": "ARCHIVE_COPY",
         "expected_reason_codes": [],
-        "observed_reason_codes": [],
-        "original_scan_hash_preserved": "14636ef0847bf0238b93342672c6a8eb5a0a951b93a7081bab51cf1af865ccb7"
+        "checked_reason_codes": [],
+        "phase": "ARCHIVE_COPY",
+        "approval_is_fixture_prerequisite_not_real_signature_test": true
       }
     },
     {
-      "id": "R5_INTEGRITY_NOT_PARSER_EQUIVALENCE",
+      "id": "R5_R6_COMMITMENT_DAG_AND_PROJECTION",
       "status": "PASS",
-      "category": "BYTE_HASH_CHECK",
-      "detail": "Appending whitespace preserves parsed values but changes the signed exact-byte scan reference."
-    },
-    {
-      "id": "R5_DEPENDENCY_DAG_TOPOLOGICAL_CHECK",
-      "status": "PASS",
-      "category": "DEPENDENCY_GRAPH_CHECK",
+      "category": "DIRECTED_GRAPH_CHECK",
       "detail": {
-        "nodes": 16,
-        "edges": 21,
+        "nodes": 19,
         "topological_order": [
-          "conceptual_L",
           "contracts",
+          "lock_L",
           "benchmark",
           "data_bytes",
           "content_digests",
@@ -411,75 +929,53 @@
           "release_hash",
           "cross_authentication",
           "analyst_release",
-          "results",
+          "baseline_balance",
+          "randomization_audit",
+          "projection_equality",
+          "primary",
           "freeze",
           "archive",
           "gate_H"
         ],
-        "cycle_nodes": []
+        "no_scan_release_descendant_hash_dependency": true,
+        "two_balance_artifacts_do_not_hash_each_other": true,
+        "no_new_runtime_artifact": true
       }
     },
     {
-      "id": "R5_NO_NEW_RUNTIME_ARTIFACT_STATE_GATE",
+      "id": "LEGACY_FIXTURE_CATALOGUE_PRESERVATION",
       "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
-      "detail": "Existing scan and release only; two verification phases are not governance states. Original role/gate inventory retained."
-    },
-    {
-      "id": "R5_EXACT_SCAN_ARCHIVE_RULE_PRESENT",
-      "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
-      "detail": "Immutable scan retains creation metadata after authentication; signed release supplies authentication; copies in archive remain exact."
-    },
-    {
-      "id": "R5_UPSTREAM_RECORD_SCHEMA_SCOPE_EXPLICIT",
-      "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
-      "detail": "Scan/release validation schemas explicit; no fabricated estimator object, no exemption for downstream results; both data aliases retained."
-    },
-    {
-      "id": "R5_NO_ORACLE_PATHS_EXPORTED_IN_NEW_RELEASE",
-      "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
-      "detail": "Signed release exposes only schema IDs and existing opaque commitments, never oracle member paths."
-    },
-    {
-      "id": "FIXTURE_CATALOGUE_COUNT",
-      "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
+      "category": "TYPED_FIXTURE_COMPARISON",
       "detail": {
-        "prior_cases": 57,
-        "new_R5_cases": 12,
-        "total_cases": 69,
-        "legacy_list_groups": [
-          "primary_estimator_fixtures",
-          "primary_failure_fixtures",
-          "timing_fixtures",
-          "completeness_fixtures",
-          "governance_fixtures",
-          "repeated_failure_fixtures",
-          "repeated_failure_failure_fixtures",
-          "reminder_restriction_fixtures",
-          "restriction_missing_input_fixtures"
-        ]
+        "legacy_cases_retained": 69,
+        "new_R6_cases": 28,
+        "total_normative_cases": 97,
+        "legacy_explicit_math_rule_inputs_and_expectations_preserved": true,
+        "only_legacy_byte_envelopes_and_dependent_hashes_rebound": true
       }
     },
     {
-      "id": "NO_IMPLEMENTATION_OR_SECRET_FILE_IN_RELEASE",
+      "id": "RELEASE_MEMBER_VERSION_AND_REFERENCE_CHECK",
       "status": "PASS",
-      "category": "STATIC_CONTRACT_CHECK",
-      "detail": "Release comprises documents, typed fixtures, validation data and checksums only; no program or secret artifact."
+      "category": "STATIC_CONSISTENCY_CHECK",
+      "detail": {
+        "normative_members": 11,
+        "stale_normative_release_or_SAP_references": 0,
+        "ambiguous_SMD_selector_removed": true,
+        "UTF8_LF_final_newline": true
+      }
     }
   ],
   "summary": {
-    "passed": 48,
+    "passed": 71,
     "failed": 0,
-    "total": 48
+    "total": 71
   },
   "limitations": [
-    "Checks evaluate written contracts, literal fabricated byte specimens, exact arithmetic, predicate projections and a dependency graph; they are not tests of the user implementation.",
-    "Fixture PASS leakage disposition and accountable local approval are explicit test prerequisites. Real leakage, custody, approval enforcement, canonical generation and hidden-seed replay remain required runtime acceptance tests.",
-    "No full adversarial review was repeated. R1–R4 regression combines direct whole-text/typed preservation checks with explicit-input mathematical/projection/hash reevaluation.",
-    "Informative v0.2.4 GO and validation claims are not carried forward as evidence; source verification and the listed targeted checks were run anew."
+    "Checks are of written contracts, explicit fabricated inputs, expected output schemas, exact arithmetic, literal byte specimens and dependencies, not application runtime acceptance.",
+    "No canonical cohort, hidden seed, raw canonical seed, real leakage scan, actual human approval/signature enforcement or user Checkpoint implementation was accessed, executed or certified.",
+    "R1-R5 regression combines entire-text/typed preservation with new evaluations of their existing lifecycle, arithmetic, hash and provenance fixtures; no full general adversarial review was repeated.",
+    "Older timing/completeness/governance fixture definitions are retained unchanged and compared, not all reexecuted in this targeted diagnostic repair.",
+    "The miniature scope fixture does not satisfy canonical population quotas or shared-day DGP conditions; those existing acceptance obligations are unchanged."
   ]
 }
