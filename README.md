@@ -1,28 +1,30 @@
 # Onboarding Intervention Decision Lab
 
-First implementation checkpoint only: frozen contract release **v0.2.4** loading
-and validation. This is not completion of Slice 1 or approval of a benchmark run.
+Checkpoints 1 and 2: frozen contract release **v0.2.4** validation and pure
+pre-outcome population/randomization components. This is not completion of Slice 1
+or approval of a benchmark run. See [Checkpoint 2 traceability and verified quotas](docs/checkpoint_2.md).
 
 The sole normative authority is [Contract Bundle v0.2.4](contracts/Contract_Bundle_v0.2.4.md).
 The installed release was verified before implementation: all 16 entries in
 `contracts/SHA256SUMS.txt` passed. No frozen contract bytes were edited.
 
-## Run this checkpoint
+## Run the checkpoint tests
 
 Use WSL, CPython 3.12.3, and the dependency versions in
-`requirements-dev.lock`. Runtime dependency: PyYAML 6.0.1. Tests use pytest
-7.4.4. Package version 0.0.1 identifies this initial implementation, independently
+`requirements-dev.lock`. Runtime dependencies: PyYAML 6.0.1 and NumPy 2.1.3. Tests use pytest
+7.4.4. Package version 0.0.1 identifies the implementation, independently
 of contract release/schema 0.2.4 and behavioral method versions 0.3.0.
 
+Use a repository-local virtual environment with the pinned dependencies installed.
 From the repository root:
 
 ```sh
 (cd contracts && sha256sum -c SHA256SUMS.txt)
-PYTHONPATH=src python3 -m oidl spec validate --contracts contracts
-python3 -m pytest -q
+PYTHONPATH=src .venv/bin/python -m oidl spec validate --contracts contracts
+.venv/bin/python -m pytest -q
 ```
 
-Checkpoint verification: **137 automated tests passed** on the pinned WSL runtime.
+Checkpoint verification: **274 automated tests passed**, including all 137 Checkpoint 1 tests, on the pinned WSL runtime.
 The package also builds offline with the installed pinned build backend.
 
 The test configuration keeps temporary files in the repository's ignored
@@ -36,7 +38,7 @@ an explicit run identifier and UTC timestamp with six fractional digits, plus
 a **new** output directory whose parent exists:
 
 ```sh
-PYTHONPATH=src python3 -m oidl spec validate --contracts contracts \
+PYTHONPATH=src .venv/bin/python -m oidl spec validate --contracts contracts \
   --output-dir validation-records \
   --run-id CHECKPOINT_VALIDATION_001 \
   --created-at-utc 2000-01-01T00:00:00.000000Z
@@ -75,7 +77,7 @@ They are integrity-checked but excluded from the runtime contract member list.
 SHA256SUMS.txt is excluded from its own checksums and the runtime contract set.
 The user's historical backup stays unchanged and ignored outside `contracts/`.
 
-## Implemented clauses and tests
+## Checkpoint 1 implemented clauses and tests
 
 | Normative clause | Implemented behavior / acceptance |
 |---|---|
@@ -113,27 +115,30 @@ eligible persons, separated analyst/oracle packages, eligibility/time/outcome/
 assignment checks, descriptive balance and fidelity, primary blocked ITT with
 Neyman variance/normal interval/p-value, immutable freeze, explicit scope
 dispositions, authorized overall oracle comparison, and provenance/exposure
-lineage. This checkpoint stops before those implementations.
+lineage. Checkpoint 2 implements only the pre-outcome components listed in its
+traceability document; full dataset construction and the governed workflow remain deferred.
 
 The remaining required implementation tests are tracked here by exact section,
 without claiming they have run:
 
 | Slice 1 requirement | Deferred tests |
 |---|---|
-| §§4–6 and §7.1 | Canonical quotas/design and temporal/event reconciliation; all fabricated primary estimator, rational cancellation and zero-SE boundary fixtures; timing, repeated-failure and shared restriction/reminder predicate fixtures. |
-| §7.2 | Analyst data-schema/ID/baseline/primary checks; assignment integrity; direct/aliased truth leakage and secret/path rejection; isolated analyst-only calculations and import boundaries. |
-| §7.3 | Estimator row/file/category-order and arm-swap invariance; data/result reproducibility for identical custodied inputs; rendering preserves numbers. Only contract enumeration/parity/record determinism is tested now. |
+| §§4–6 and §7.1 | Post-assignment temporal/event reconciliation; all fabricated primary estimator, rational cancellation and zero-SE boundary fixtures; timing, repeated-failure and shared restriction/reminder predicate fixtures. |
+| §7.2 | Complete analyst-package/primary checks; full direct/aliased truth leakage and secret/path rejection; isolated analyst-only calculations. Pre-outcome schema, eligibility, assignment integrity and domain/generation import separation are tested in Checkpoint 2. |
+| §7.3 | Estimator row/file/category-order and arm-swap invariance; data/result reproducibility for identical custodied inputs; rendering preserves numbers. Contract and complete pre-outcome fixture determinism/order invariance are tested now; finalized data-package reproducibility remains deferred. |
 | §7.4 | Lifecycle/approval/freeze/profile/lineage enforcement; exposure incidents; complete data/archive package DAG and manifest authentication. Only public release file safety and validation-record no-overwrite are tested now. |
 | §7.5 | Authorized oracle hash/calibration/projection checks, exact frozen output integrity and overall error decomposition/containment. |
-| §7.6 | At least five custodian-committed hidden seeds per NULL_EFFECT_V0.3 and ADVERSE_EFFECT_V0.3; serious-breach decision-veto acceptance deferred to FULL. No seed is used at this checkpoint. |
+| §7.6 | At least five custodian-committed hidden seeds per NULL_EFFECT_V0.3 and ADVERSE_EFFECT_V0.3; serious-breach decision-veto acceptance deferred to FULL. Only public noncanonical fixture input is used in Checkpoint 2; hidden/canonical inputs remain unused. |
 
 Slice 1 §0 prohibits economics/policy feasibility or selection, deployment
 actions, confirmatory HTE/subgroup effect analysis, guardrail inference/vetoes,
 Lin adjustment, a full reporting/claim engine, proprietary data, observational
 methods, ML/AI/agents, CRM/UI/API services and cloud/production infrastructure.
 These capabilities have no implementation or placeholder output here.
-No cohort, assignment sequence, estimator, oracle evaluator, governance workflow
-or canonical-seed input boundary has yet been implemented.
+The pre-outcome screened construction, assignment sequences and pure audit checks
+are implemented. Estimation, post-assignment generation, the oracle evaluator,
+governance workflow and canonical execution remain deferred.
 
-No normative ambiguity was encountered for this checkpoint. This record claims
-only contract-loading acceptance, not full Slice 1 acceptance.
+Checkpoint 2's audit-provenance ambiguity was resolved by explicit deferral of
+authoritative audit emission. No additional ambiguity was encountered. This record
+claims component acceptance only, not full Slice 1 acceptance.

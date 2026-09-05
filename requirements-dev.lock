@@ -5,3 +5,4 @@ iniconfig==1.1.1
 packaging==24.0
 pluggy==1.4.0
 setuptools==68.1.2
+numpy==2.1.3

@@ -5,9 +5,9 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "onboarding-intervention-decision-lab"
 version = "0.0.1"
-description = "First checkpoint: frozen v0.2.4 contract validation only"
+description = "Frozen v0.2.4 contract validation and pre-outcome construction"
 requires-python = ">=3.12,<3.13"
-dependencies = ["PyYAML==6.0.1"]
+dependencies = ["PyYAML==6.0.1", "numpy==2.1.3"]
 
 [project.optional-dependencies]
 test = ["pytest==7.4.4"]
