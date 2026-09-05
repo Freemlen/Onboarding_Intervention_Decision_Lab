@@ -1,36 +1,36 @@
 specification:
-  document_id: ResearchSpec_v0.2.4
+  document_id: ResearchSpec_v0.2.5
   study_id: OIDL-ONBOARDING-ASSIST-001
-  version: 0.2.4
+  version: 0.2.5
   status: FINAL_PRE_IMPLEMENTATION
-  human_readable_twin: ResearchSpec_v0.2.4.md
+  human_readable_twin: ResearchSpec_v0.2.5.md
   required_linked_contracts:
     dgp_parameter_card: DGP_Parameter_Sheet_v0.3.0
     statistical_analysis_plan: Statistical_Analysis_Plan_v0.3.0
     decision_rule: Decision_Rule_Spec_v0.3.0
     guardrails: Guardrail_Spec_v0.3.0
-    oracle_protocol: Oracle_Benchmark_Spec_v0.3.0
-    architecture: Architecture_v0.2.4
-    contract_bundle: Contract_Bundle_v0.2.4
-    slice_1: Slice_1_Definition_of_Done_v0.2.4
-    golden_fixtures: Golden_Fixtures_v0.2.4
+    oracle_protocol: Oracle_Benchmark_Spec_v0.4.0
+    architecture: Architecture_v0.2.5
+    contract_bundle: Contract_Bundle_v0.2.5
+    slice_1: Slice_1_Definition_of_Done_v0.2.5
+    golden_fixtures: Golden_Fixtures_v0.2.5
   equivalence_rule:
     normative: true
     rule: 'Markdown and YAML encode the same complete typed normative tree. Markdown is a lossless sectioned rendering
       of this tree: identical keys, ordered lists, scalar values, types, formulas, rationales and prohibitions.
       A mismatch fails release; neither form may be silently preferred. Linked-contract requirements are incorporated
       identically by reference in both twins.'
-  bundle_release: 0.2.4
+  bundle_release: 0.2.5
   semantic_versions:
-    research_spec: 0.2.4
-    architecture: 0.2.4
+    research_spec: 0.2.5
+    architecture: 0.2.5
     dgp: 0.3.0
     sap: 0.3.0
     decision_rule: 0.3.0
     guardrails: 0.3.0
-    oracle_protocol: 0.3.0
-    slice_1: 0.2.4
-    golden_fixtures: 0.2.4
+    oracle_protocol: 0.4.0
+    slice_1: 0.2.5
+    golden_fixtures: 0.2.5
 scope_and_claim_boundary:
   scope: SYNTHETIC_PORTFOLIO_BENCHMARK_ONLY
   one_use_case: true
@@ -719,7 +719,7 @@ primary_statistical_contract:
   zero_se_interpretation: Computational/limiting normal conventions, not an exact finite-sample test or proof of
     certainty.
   zero_se_rules_apply_to_later_interaction: true
-  golden_fixtures: Golden_Fixtures_v0.2.4.yaml
+  golden_fixtures: Golden_Fixtures_v0.2.5.yaml
   adjustment_basis_unchanged: true
   kyc_subtype_adjustment_rationale: KYC subtypes are intentionally omitted from the frozen Lin basis. Binary-friction
     assignment-block indicators do not represent separate subtype main effects.
@@ -1202,12 +1202,14 @@ provenance_and_claim_permissions:
       no self-containing digest.
     package_digest_method: OIDL-PACKAGE-MEMBERS-SHA256-v1
     excluded_from_own_package: Root manifest and digest sidecar; scans/approvals remain outside package roots.
-    manifest_authentication: Dataset release binds data manifest exact hashes; unblind approval binds archive manifest
-      exact hash and archive digest.
+    manifest_authentication: Dataset release binds exact data manifest hashes and immutable scan-file hash; local
+      scan creation verifies analyst bytes/manifest/sidecar without a future release record. Downstream use requires
+      signed-release cross-authentication under Oracle section 2.5.2. Gate H binds exact archive manifest and digest.
     exact_integrity_not_normalized: true
     reproducibility_projection: Only declared deterministic_result objects exclude run IDs, wall-clock/approval/exposure/archive
       metadata; exact envelopes remain integrity-committed. No arbitrary normalization masks.
-    authoritative_details: Oracle §§2.4–2.6 (especially mandatory aliases in §2.5.1) and 6.
+    authoritative_details: Oracle sections 2.4–2.6 (mandatory alias domains in 2.5.1; exhaustive two-stage scan/release
+      fields, order and rejection in 2.5.2) and 6.
     deterministic_data_representation: Inside analyst/oracle data payloads, deterministic object/map metadata and
       schemas use YAML; tabular members use pinned typed lossless serialization. Run JSON envelopes stay outside
       data payloads. Archive payloads contain exact copies of run records.
@@ -1223,8 +1225,10 @@ provenance_and_claim_permissions:
           equals analyst_package_hash.txt without its LF. Not manifest, release, ZIP or combined oracle digest.
         placement: payload.deterministic_result.dataset_package_hash for calculation/comparison results; payload.provenance.dataset_package_hash
           for records without deterministic_result.
-        authentication: Recompute bytes/member digest; match manifest and sidecar; verify exact manifest hash in
-          external dataset_release_record.json.
+        authentication: Recompute finalized analyst bytes/member digest and match manifest plus sidecar. Oracle
+          section 2.5.2 permits producer-side local verification for immutable pre-release scan creation and construction
+          of its signed release; all downstream consumption requires valid signed-release authentication of unchanged
+          scan/manifest/content bindings.
       analyst_view_hash:
         source: analyst_package_manifest.json -> payload.package_content_sha256
         preimage: UTF-8 canonical JSON array of exactly {path,sha256} per regular analyst payload file, paths relative
@@ -1236,15 +1240,99 @@ provenance_and_claim_permissions:
           equals analyst_package_hash.txt without its LF. Not manifest, release, ZIP or combined oracle digest.
         placement: payload.deterministic_result.analyst_view_hash for calculation/comparison results; payload.provenance.analyst_view_hash
           for records without deterministic_result.
-        authentication: Recompute bytes/member digest; match manifest and sidecar; verify exact manifest hash in
-          external dataset_release_record.json.
+        authentication: Recompute finalized analyst bytes/member digest and match manifest plus sidecar. Oracle
+          section 2.5.2 permits producer-side local verification for immutable pre-release scan creation and construction
+          of its signed release; all downstream consumption requires valid signed-release authentication of unchanged
+          scan/manifest/content bindings.
     volatile_predecessor_hashes:
       analyst_package_manifest_sha256: SHA-256 of whole original manifest bytes; only payload.provenance.
-      dataset_release_record_sha256: SHA-256 of whole original signed release record bytes; only payload.provenance.
-    no_recursive_result_data_binding: No result/alias or dataset release record enters the analyst payload it hashes;
-      pre-dataset commitment/approval records are not dataset-grounded results/claims and cannot bind future data.
-  placement_rule: Dataset-grounded records carry both aliases per hashing.mandatory_data_hash_domains. Run/profile/approval/exposure
-    and volatile manifest/release hashes stay in surrounding provenance; no arbitrary exclusion mask.
+      dataset_release_record_sha256: SHA-256 of whole original signed release record bytes; only payload.provenance
+        of downstream records. Absent permanently in the pre-release scan and in the release record itself; no null
+        placeholder or later backfill.
+      analyst_leakage_scan_sha256: SHA-256 of whole finalized scan-file bytes. Required in payload.provenance of
+        the signed release and downstream records attesting scan acceptance; absent in the scan itself; never in
+        deterministic_result.
+    no_recursive_result_data_binding: No result/alias/scan/release enters analyst payload. Pre-dataset commitments/spec
+      approvals cannot bind future data. The immutable dataset-grounded scan carries both aliases but no future
+      release hash; release carries both aliases and the scan hash but no self-hash. Original scan/release bytes
+      are copied unchanged into the archive.
+    pre_release_scan_provenance:
+      authoritative_contract: Oracle section 2.5.2; exact field paths, bindings, ordered actions, rejection reasons
+        and signature semantics are incorporated in full.
+      scan_artifact: analyst_leakage_scan.json
+      dataset_grounded: true
+      has_deterministic_result: false
+      mandatory_aliases:
+      - dataset_package_hash
+      - analyst_view_hash
+      alias_location: payload.provenance
+      scan_phase_field: payload.provenance.verification_phase_at_creation
+      scan_phase_literal: LOCAL_BYTES_VERIFIED
+      scan_phase_field_mutable: false
+      local_verification: Complete finalized analyst payload bytes -> member/content digest; match both aliases,
+        manifest package_content_sha256 and root digest sidecar. Bind exact manifest hash and already committed
+        run/profile/contract/schema/exposure inputs. Existing leakage obligations unchanged; scanner receives analyst/public
+        inputs only.
+      scan_release_hash_presence: ABSENT_BEFORE_AND_AFTER_RELEASE_NOT_NULL
+      scan_self_hash_presence: ABSENT
+      scan_hash_operation: SHA-256 of whole finalized original scan bytes, computed outside the scan only after
+        finalization.
+      release_record_artifact: dataset_release_record.json
+      release_record_has_both_aliases: true
+      release_record_own_hash_presence: ABSENT
+      release_record_required_bindings:
+      - both exact manifest hashes
+      - both package-content commitments
+      - exact scan-file SHA-256
+      - both analyst content aliases
+      - run ID and immutable profile/artifact groups
+      - benchmark commitment and contract-set hashes
+      - run/research/oracle protocol versions, exact analyst member-schema projection and complete oracle schema
+        IDs without oracle paths
+      - exposure lineage/class/history/parent
+      - attributable ORACLE_CUSTODIAN approval of all release fields
+      release_authentication: After signing, reverify unchanged scan bytes, PASS status, all alias/manifest/member/sidecar/release/commitment/schema/profile/exposure
+        bindings and approval. Oracle package verification remains custody-side; analyst consumers verify only its
+        signed opaque association.
+      authenticated_phase: RELEASE_AUTHENTICATED is a derived verification relationship, not a scan field or new
+        run state.
+      ordered_actions:
+      - FINALIZE_PACKAGES_MANIFESTS_SIDECARS
+      - LOCAL_BYTE_VERIFICATION_AND_LEAKAGE_SCAN
+      - FINALIZE_IMMUTABLE_SCAN
+      - HASH_SCAN_EXACT_BYTES
+      - SIGN_AND_FINALIZE_RELEASE
+      - HASH_RELEASE_AND_CROSS_AUTHENTICATE
+      - ENTER_ANALYST_PACKAGE_RELEASED_AFTER_EXISTING_LOCK_L
+      downstream_precondition: Valid release authentication; local verification or a cached status alone is insufficient.
+        Apply Oracle section 2.5.2 failures and retain last valid lifecycle state.
+      downstream_provenance: Both aliases in their registered locations; exact analyst manifest and signed release
+        hashes in payload.provenance. Records attesting acceptance of scan, including data_contract_validation.json,
+        also bind exact scan hash there.
+      post_signing_scan_mutation_allowed: false
+      new_receipt_package_gate_or_lifecycle_state: false
+      archive_rule: Copy original scan and release bytes unchanged; never add a release hash or authenticated flag
+        to scan.
+      required_failure_codes:
+      - SCAN_LOCAL_PROVENANCE_MISMATCH
+      - ANALYST_LEAKAGE_SCAN_FAILED
+      - SCAN_IMMUTABILITY_VIOLATION
+      - DATASET_RELEASE_APPROVAL_INVALID
+      - LEAKAGE_SCAN_HASH_MISMATCH
+      - DATASET_RELEASE_BINDING_MISMATCH
+      - DATASET_RELEASE_NOT_AUTHENTICATED
+      - CIRCULAR_PROVENANCE_FIELD
+      fixture_reference: Golden_Fixtures_v0.2.5.yaml pre_release_scan_provenance_fixtures
+  placement_rule: Dataset-grounded records carry both frozen aliases per hashing.mandatory_data_hash_domains. The
+    pre-release scan and signed release carry them in payload.provenance with the exact producer-side lifecycle
+    in hashing.pre_release_scan_provenance and Oracle section 2.5.2; neither has deterministic_result or a dataset_release_record_sha256.
+    Ordinary downstream records require signed-release authentication and its exact hash in surrounding provenance.
+    Run/profile/approval/exposure and volatile scan/manifest/release hashes never enter deterministic_result; no
+    arbitrary exclusion mask.
+  pre_release_record_schema_scope: For analyst_leakage_scan.json and dataset_release_record.json only, the exhaustive
+    validation/governance field schemas in Oracle section 2.5.2 replace analysis-specific every_result_and_claim_requires
+    fields. Both remain dataset-grounded with both aliases and all registered benchmark/contract/profile/exposure
+    bindings. No other downstream result or claim is exempted.
 governance:
   roles:
   - RESEARCH_OWNER
@@ -1401,6 +1489,10 @@ governance:
     authorized_generation_is_analyst_exposure: false
     public_targets_are_exposure: false
   approval_role_reference: Architecture section 5; gate records preserve each required accountable role.
+  analyst_package_release_precondition: Within the existing BENCHMARK_COMMITTED -> ANALYST_PACKAGE_RELEASED transition,
+    complete Oracle section 2.5.2 scan finalization, exact hashing, signed release and cross-authentication before
+    the existing lock-L-gated release. The two verification phases add no lifecycle state or approval gate; failure
+    retains the last valid state and blocks unblinding.
 truth_sequestered_benchmark:
   authoritative_term: TRUTH_SEQUESTERED_SYNTHETIC_BENCHMARK
   prohibited_term: VALIDATION_OF_THE_ESTIMATOR

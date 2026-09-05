@@ -184,8 +184,8 @@ def test_stream_derivation_shapes_indexing_and_independence(monkeypatch):
 
 def test_source_state_step_mapping_uses_full_person_indices(case):
     draws = pre_outcome_draws(PUBLIC_FIXTURE_SEED)
-    contract = yaml.safe_load((ROOT / "contracts/ResearchSpec_v0.2.4.yaml").read_text())
-    assert contract["specification"]["bundle_release"] == "0.2.4"
+    contract = yaml.safe_load((ROOT / "contracts/ResearchSpec_v0.2.5.yaml").read_text())
+    assert contract["specification"]["bundle_release"] == "0.2.5"
     # Independently specified cumulative bins, including each non-KYC exclusion.
     cumulative = {
         NO_FRICTION: (0.05, 0.15, 0.35, 0.70, 1.0),

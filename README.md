@@ -1,12 +1,14 @@
 # Onboarding Intervention Decision Lab
 
-Checkpoints 1–3: frozen contract release **v0.2.4** validation, pre-outcome
+Checkpoints 1–3: frozen contract release **v0.2.5** validation, pre-outcome
 population/randomization, and pure sequential journey/outcome construction.
 This is not completion of Slice 1 or approval of a benchmark run.
 See [Checkpoint 2 quotas](docs/checkpoint_2.md) and
 [Checkpoint 3 clauses, logical tables and test coverage](docs/checkpoint_3.md).
+The [v0.2.5 rebind checkpoint](docs/contract_rebind_v0.2.5.md) records the identity
+migration and R5 schema binding; accepted generation behavior is unchanged.
 
-The sole normative authority is [Contract Bundle v0.2.4](contracts/Contract_Bundle_v0.2.4.md).
+The sole normative authority is [Contract Bundle v0.2.5](contracts/Contract_Bundle_v0.2.5.md).
 The installed release was verified before implementation: all 16 entries in
 `contracts/SHA256SUMS.txt` passed. No frozen contract bytes were edited.
 
@@ -15,7 +17,8 @@ The installed release was verified before implementation: all 16 entries in
 Use WSL, CPython 3.12.3, and the dependency versions in
 `requirements-dev.lock`. Runtime dependencies: PyYAML 6.0.1 and NumPy 2.1.3. Tests use pytest
 7.4.4. Package version 0.0.1 identifies the implementation, independently
-of contract release/schema 0.2.4 and behavioral method versions 0.3.0.
+of contract release/schema 0.2.5, Oracle protocol 0.4.0, and DGP/SAP/Decision/Guardrail
+semantic versions 0.3.0.
 
 Use a repository-local virtual environment with the pinned dependencies installed.
 From the repository root:
@@ -26,7 +29,8 @@ PYTHONPATH=src .venv/bin/python -m oidl spec validate --contracts contracts
 .venv/bin/python -m pytest -q
 ```
 
-Checkpoint verification: **397 automated tests passed**, including all 274 accepted Checkpoint 1 and 2 tests, on the pinned WSL runtime.
+Rebind verification: **428 automated tests passed**, including all 397 accepted
+Checkpoint 1–3 tests and 31 migration checks, on the pinned WSL runtime.
 The package also builds offline with the installed pinned build backend.
 
 The test configuration keeps temporary files in the repository's ignored
@@ -60,21 +64,21 @@ including the full-system specifications whose calculations remain deferred.
 
 | Artifact | Version |
 |---|---|
-| Contract_Bundle_v0.2.4.md | 0.2.4 |
-| Architecture_v0.2.4.md | 0.2.4 |
-| ResearchSpec_v0.2.4.md | 0.2.4 |
-| ResearchSpec_v0.2.4.yaml | 0.2.4 |
+| Contract_Bundle_v0.2.5.md | 0.2.5 |
+| Architecture_v0.2.5.md | 0.2.5 |
+| ResearchSpec_v0.2.5.md | 0.2.5 |
+| ResearchSpec_v0.2.5.yaml | 0.2.5 |
 | DGP_Parameter_Sheet_v0.3.0.md | 0.3.0 |
 | Statistical_Analysis_Plan_v0.3.0.md | 0.3.0 |
 | Decision_Rule_Spec_v0.3.0.md | 0.3.0 |
 | Guardrail_Spec_v0.3.0.md | 0.3.0 |
-| Oracle_Benchmark_Spec_v0.3.0.md | 0.3.0 |
-| Slice_1_Definition_of_Done_v0.2.4.md | 0.2.4 |
-| Golden_Fixtures_v0.2.4.yaml | 0.2.4 |
+| Oracle_Benchmark_Spec_v0.4.0.md | 0.4.0 |
+| Slice_1_Definition_of_Done_v0.2.5.md | 0.2.5 |
+| Golden_Fixtures_v0.2.5.yaml | 0.2.5 |
 
 The other five checksummed files are informative: README.md,
-CHANGELOG_v0.2.4.md, Finding_Resolution_Matrix_v0.2.4.md,
-Final_Consistency_and_Regression_Audit_v0.2.4.md, and validation_results.json.
+CHANGELOG_v0.2.5.md, Finding_Resolution_Matrix_v0.2.5.md,
+Final_Consistency_and_Regression_Audit_v0.2.5.md, and validation_results.json.
 They are integrity-checked but excluded from the runtime contract member list.
 SHA256SUMS.txt is excluded from its own checksums and the runtime contract set.
 The user's historical backup stays unchanged and ignored outside `contracts/`.
@@ -83,7 +87,7 @@ The user's historical backup stays unchanged and ignored outside `contracts/`.
 
 | Normative clause | Implemented behavior / acceptance |
 |---|---|
-| Bundle §§2, 4; Slice 1 §2 `spec validate` | Exact release and normative membership; pinned v0.2.4 identities; required linked versions; reject missing/extra files or checksum entries, unsupported versions and missing version links. |
+| Bundle §§2, 4; Slice 1 §2 `spec validate` | Exact release and normative membership; pinned v0.2.5 identities; required linked versions; reject missing/extra files or checksum entries, unsupported versions and missing version links. |
 | Bundle §2; Oracle §§2.1, 2.4 | SHA-256 of original complete bytes for all 16 release files; compare against supplied manifest **and** compiled frozen digests. Rehashing changed input cannot authorize another release. UTF-8/LF/no-BOM checks; filesystem links/nonregular entries rejected before reading. |
 | Bundle §3 | Single typed YAML mapping; reject duplicate keys, malformed syntax/types, nonfinite numbers and cyclic values. Independently reconstruct every Markdown root and nested value. Full typed parity, ordered lists, unordered mappings, nulls, integers versus numbers, quoted numerals, empty containers and literal backtick/newline handling. |
 | Oracle §§2.1, 2.5–2.6 | Contract-set digest uses precisely eleven sorted path/hash entries, canonical UTF-8 JSON with no trailing newline. Independent preimage and fixed digest check. Informative files, manifest and run metadata do not enter this preimage. |
@@ -93,7 +97,7 @@ The user's historical backup stays unchanged and ignored outside `contracts/`.
 Expected contract-set hash:
 
 ```text
-f565320ee657ea2db367f9328cb7eac7d653df6e52e88dd5c73bfb8fa274380e
+8e098710aae46663714868b17416e450f142caed2d6d81958b291396a3bae887
 ```
 
 Release identities and digests are static constants transcribed from the verified
@@ -111,7 +115,7 @@ validation records live outside the frozen release.
 ## Slice 1 scope and deferred acceptance
 
 The complete Slice 1 is defined by
-[its frozen Definition of Done](contracts/Slice_1_Definition_of_Done_v0.2.4.md).
+[its frozen Definition of Done](contracts/Slice_1_Definition_of_Done_v0.2.5.md).
 It eventually covers the 55,000-person screened construction, 50,000 randomized
 eligible persons, separated analyst/oracle packages, eligibility/time/outcome/
 assignment checks, descriptive balance and fidelity, primary blocked ITT with
@@ -128,7 +132,7 @@ without claiming they have run:
 | §§4–6 and §7.1 | All fabricated primary estimator, rational cancellation and zero-SE boundary fixtures. Post-assignment event, anchor, reversal, repeated-failure and restriction/reminder projection fixtures pass in Checkpoint 3. |
 | §7.2 | Complete analyst-package/primary checks; full direct/aliased truth leakage and secret/path rejection; isolated analyst-only calculations. Pre-outcome schema, eligibility, assignment integrity and domain/generation import separation are tested in Checkpoint 2. |
 | §7.3 | Estimator row/file/category-order and arm-swap invariance; data/result reproducibility for identical custodied inputs; rendering preserves numbers. Contract and complete pre-outcome fixture determinism/order invariance are tested now; finalized data-package reproducibility remains deferred. |
-| §7.4 | Lifecycle/approval/freeze/profile/lineage enforcement; exposure incidents; complete data/archive package DAG and manifest authentication. Only public release file safety and validation-record no-overwrite are tested now. |
+| §7.4 | Lifecycle/approval/freeze/profile/lineage enforcement; exposure incidents; complete data/archive package DAG and manifest authentication. Oracle §2.5.2 two-phase scan/release authentication and its complete R5 fixtures also remain deferred. Only public release file safety and validation-record no-overwrite are tested now. |
 | §7.5 | Authorized oracle hash/calibration/projection checks, exact frozen output integrity and overall error decomposition/containment. |
 | §7.6 | At least five custodian-committed hidden seeds per NULL_EFFECT_V0.3 and ADVERSE_EFFECT_V0.3; serious-breach decision-veto acceptance deferred to FULL. Only public noncanonical fixture inputs are used in Checkpoints 2 and 3; hidden/canonical inputs remain unused. |
 

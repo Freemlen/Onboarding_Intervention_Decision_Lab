@@ -1,10 +1,11 @@
-# Contract Bundle v0.2.4 — Authoritative Index
+# Contract Bundle v0.2.5 — Authoritative Index
 
 **Project:** Onboarding Intervention Decision Lab  
-**Release:** 0.2.4  
+**Release:** 0.2.5  
 **Status:** FINAL_PRE_IMPLEMENTATION  
-**Schema/research contract version:** 0.2.4  
-**DGP, statistical method, policy, guardrail and oracle protocol semantic versions:** 0.3.0
+**Schema/research contract version:** 0.2.5  
+**DGP, statistical method, policy and guardrail semantic versions:** 0.3.0  
+**Oracle protocol semantic version:** 0.4.0
 
 ## 1. Authority and interpretation
 
@@ -20,17 +21,17 @@ One use case, one eligible cohort, one standardized treatment, randomized custom
 
 | Artifact | Contract/semantic version | Exhaustive responsibility |
 |---|---|---|
-| Contract_Bundle_v0.2.4.md | 0.2.4 | Authority, membership, scope and parity rules |
-| Architecture_v0.2.4.md | 0.2.4 | Standalone local layered-monolith boundaries and human interfaces |
-| ResearchSpec_v0.2.4.md | 0.2.4 | Human-readable lossless typed research contract |
-| ResearchSpec_v0.2.4.yaml | 0.2.4 | Same typed research contract in YAML |
+| Contract_Bundle_v0.2.5.md | 0.2.5 | Authority, membership, scope and parity rules |
+| Architecture_v0.2.5.md | 0.2.5 | Standalone local layered-monolith boundaries and human interfaces |
+| ResearchSpec_v0.2.5.md | 0.2.5 | Human-readable lossless typed research contract |
+| ResearchSpec_v0.2.5.yaml | 0.2.5 | Same typed research contract in YAML |
 | DGP_Parameter_Sheet_v0.3.0.md | 0.3.0 | Screened construction, stochastic registry, equations, calibration, clocks, lifecycle and observed projection |
 | Statistical_Analysis_Plan_v0.3.0.md | 0.3.0 | Estimators, uncertainty, boundary behavior, diagnostics, later HTE and sensitivity |
 | Decision_Rule_Spec_v0.3.0.md | 0.3.0 | Economics, policy comparisons, readiness, actions and overrides |
 | Guardrail_Spec_v0.3.0.md | 0.3.0 | Harm definitions, denominators, bounds, safety vetoes and service projections |
-| Oracle_Benchmark_Spec_v0.3.0.md | 0.3.0 | Visibility, exact profile payloads, commitments, package DAG, gates and exposure lineage |
-| Slice_1_Definition_of_Done_v0.2.4.md | 0.2.4 | Exact first-slice capabilities, artifacts and acceptance |
-| Golden_Fixtures_v0.2.4.yaml | 0.2.4 | Fabricated mathematical/behavioral fixtures and their expected results |
+| Oracle_Benchmark_Spec_v0.4.0.md | 0.4.0 | Visibility, exact profile payloads, commitments, package DAG, gates and exposure lineage |
+| Slice_1_Definition_of_Done_v0.2.5.md | 0.2.5 | Exact first-slice capabilities, artifacts and acceptance |
+| Golden_Fixtures_v0.2.5.yaml | 0.2.5 | Fabricated mathematical/behavioral fixtures and their expected results |
 
 The README, finding-resolution matrix, change log, final audit and validation results are informative release documentation. They cannot override a normative rule. `SHA256SUMS.txt` covers every regular release file except itself, including informative documents. The release ZIP is transport, not a member of its own checksum set. There is no recursive self-digest and no requirement to put a file's own digest into that file.
 
@@ -46,9 +47,11 @@ Normative equivalence requires reconstructing the full Markdown tree and compari
 
 The only profiles are `SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE` and `FULL_DECISION_SYSTEM`. Slice 1 implements only its Definition of Done. Committing the full policy and guardrail specifications does not require executing those later capabilities in Slice 1. Conversely, FULL cannot use the Slice 1 exception to drop unfavorable in-scope analyses. Profile and exact required artifact groups are immutable at BENCHMARK_COMMITTED.
 
-All behavior-changing specifications carry the versions in §2. Schema version 0.2.4 and method version 0.3.0 are separate identifiers; do not relabel one as the other. Historical public seed ID/commitment identifiers are retained unchanged and are not a stale DGP version. The DGP configuration IDs are the exact values in its §18. A later change to source construction, time allocation, draw use, calibration, statistical boundaries, comparison family, scope or commitments requires the affected semantic version and all linked release identities/hashes to change before a new run. No in-place archive replacement is allowed.
+All behavior-changing specifications carry the versions in §2. Schema/research/architecture-document/Slice 1/fixture identities are 0.2.5. Oracle protocol version is 0.4.0 for the explicit scan-to-release provenance lifecycle. DGP, SAP, Decision and Guardrail semantic versions remain 0.3.0; only linked-document references are refreshed, without changing their behavior. Schema, oracle protocol and analytical method versions are distinct identifiers; do not relabel one as another. Historical public seed ID/commitment identifiers are retained unchanged and are not a stale DGP version. The DGP configuration IDs are the exact values in its §18. A later change to source construction, time allocation, draw use, calibration, statistical boundaries, comparison family, scope or commitments requires the affected semantic version and all linked release identities/hashes to change before a new run. No in-place archive replacement is allowed.
 
 This release preserves the original randomization-sequence serialization algorithm ID `OIDL-CANONICAL-JSON-SHA256-v1`. New explicit package and deterministic-result hashing domains have their own IDs in Oracle §2. They are not alternative assignment hashes.
+
+Pre-release provenance has exactly two verification phases under Oracle §2.5.2: local byte verification of an immutable dataset-grounded scan with both frozen aliases, then external authentication through its signed release before downstream consumption. The scan has no future release hash and is never mutated to record authentication. The release has no self-hash. This changes neither the allowed lifecycle states nor the architecture, oracle truth contents, DGP or Slice 1 scope.
 
 ## 5. Visibility and credentials
 

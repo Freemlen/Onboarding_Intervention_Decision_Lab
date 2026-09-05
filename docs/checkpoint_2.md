@@ -1,9 +1,11 @@
 # Checkpoint 2 — pre-outcome population and randomization
 
-This checkpoint implements components under the frozen v0.2.4 bundle, not a
+This checkpoint implements components under the frozen v0.2.5 bundle, not a
 benchmark run or completion of Slice 1. The authoritative index remains
-[Contract Bundle v0.2.4](../contracts/Contract_Bundle_v0.2.4.md).
-No contract file has been changed.
+[Contract Bundle v0.2.5](../contracts/Contract_Bundle_v0.2.5.md).
+Originally accepted under v0.2.4; current clause references are rebound to v0.2.5
+without changing the accepted component behavior. See the
+[rebind record](contract_rebind_v0.2.5.md). The installed contract bytes are preserved.
 
 ## Scope and artifact boundary
 
@@ -18,7 +20,7 @@ returns **internal in-memory objects only**. There is no audit file writer, no
 intermediate audit artifact, and no construction of dataset_package_hash or
 analyst_view_hash. Authoritative randomization_audit.json remains deferred until
 the complete four-table analyst package is finalized, hashed, authenticated and
-released in the required lifecycle order (Slice 1 §§1, 3.3; Oracle §2.5.1).
+released in the required lifecycle order (Slice 1 §§1, 3.3; Oracle v0.4.0 §§2.5.1–2.5.2).
 Analyzed counts, baseline SMDs and fidelity summaries are not manufactured by
 these count/sequence checks.
 

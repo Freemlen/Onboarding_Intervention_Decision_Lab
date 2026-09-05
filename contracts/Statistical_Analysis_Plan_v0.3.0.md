@@ -3,7 +3,7 @@
 **Study:** `OIDL-ONBOARDING-ASSIST-001`  
 **SAP version:** `0.3.0`  
 **Status:** `FINAL_PRE_IMPLEMENTATION`  
-**Linked specification:** `ResearchSpec_v0.2.4`  
+**Linked specification:** `ResearchSpec_v0.2.5`  
 **Primary design:** 1:1 person-level blocked randomized assignment  
 **Primary estimand:** customer-level assignment ITT risk difference
 
@@ -249,7 +249,7 @@ Later subgroup estimates use subgroup N_f with the same exact rule. Compute the 
 - For SE>0, zero_se_status=NOT_ZERO and test_statistic=estimate/SE. If a nonfinite statistic arises from finite underflow, store it as null with NUMERIC_LIMIT diagnostic and the corresponding limiting p-value; all other nonfinite/negative variance or invalid inputs fail estimation. Negative zero is treated as zero.
 - Do not clip the authoritative estimate or interval to `[-1,1]`; render the calculated values.
 
-These conventions also apply to the later interaction normal p-value, using its own estimate and SE. Normative golden expected values are in Golden_Fixtures_v0.2.4.yaml. The primary method ID is `OIDL-BLOCKED-ITT-NEYMAN-NORMAL`, method version `0.3.0` (formula unchanged; exact count aggregation and mathematical-zero outputs specified).
+These conventions also apply to the later interaction normal p-value, using its own estimate and SE. Normative golden expected values are in Golden_Fixtures_v0.2.5.yaml. The primary method ID is `OIDL-BLOCKED-ITT-NEYMAN-NORMAL`, method version `0.3.0` (formula unchanged; exact count aggregation and mathematical-zero outputs specified).
 
 ### 5.4 Primary reported fields
 

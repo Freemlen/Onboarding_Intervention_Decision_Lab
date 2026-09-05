@@ -1,4 +1,4 @@
-fixture_contract_version: 0.2.4
+fixture_contract_version: 0.2.5
 normative: true
 scope: Explicit fabricated inputs, no canonical or hidden seed; tests mathematical/contract behavior, not repeated-simulation
   performance.
@@ -616,12 +616,10 @@ governance_fixtures:
   expected_failure: OUT_OF_PROFILE_ORACLE_COMPONENT
 package_hash_fixture:
   member_content_utf8:
-    payload/a.txt: 'a
-
-      '
-    payload/b.txt: 'b
-
-      '
+    payload/a.txt: |
+      a
+    payload/b.txt: |
+      b
   expected_sorted_members:
   - path: payload/a.txt
     sha256: 87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7
@@ -1325,44 +1323,40 @@ restriction_missing_input_fixtures:
     generation_conforms: false
 data_hash_domain_fixture:
   id: TWO_RUNS_SAME_DATA_DISTINCT_MANIFESTS
-  test_scope: HASH_DOMAIN_UNIT_ONLY_NOT_COMPLETE_RUN_OR_SIGNED_APPROVAL
+  test_scope: HASH_DOMAIN_UNIT_ONLY. These abbreviated release_binding_fixture_utf8 records isolate R4 hashing and
+    are NOT valid dataset_release_record.json instances under Oracle section 2.5.2. Complete R5 provenance specimens
+    below supply scan/signature/benchmark/schema fields. No abbreviated fixture waives production release authentication.
   member_bytes_source: package_hash_fixture.member_content_utf8 in this same normative file
   package_canonical_preimage_utf8: '[{"path":"payload/a.txt","sha256":"87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7"},{"path":"payload/b.txt","sha256":"0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f"}]'
   expected_content_sha256: 8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5
   source_field: analyst_package_manifest.json.payload.package_content_sha256
   runs:
   - run_id: FIXTURE_RUN_A
-    analyst_manifest_utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"members":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt","row_count":null,"sha256":"87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt","row_count":null,"sha256":"0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f"}],"method_id":"OIDL-PACKAGE-MEMBERS-SHA256-v1","package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","package_kind":"ANALYST","run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"run_id":"FIXTURE_RUN_A","schema_version":"0.2.4"}
-
-      '
-    expected_manifest_sha256: ca46bd4cb5a2c33bd6825172973aac3f8c98e1c552b821cf92994b21ee1a617f
-    release_binding_fixture_utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"ca46bd4cb5a2c33bd6825172973aac3f8c98e1c552b821cf92994b21ee1a617f","fixture_only":true},"run_id":"FIXTURE_RUN_A","schema_version":"0.2.4"}
-
-      '
-    expected_release_binding_sha256: 7d6e4072540ed981b60ee1e5a8e8c826011c6ae15f685da5fe6d4f3d858beccd
-    result_fixture_utf8: '{"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"deterministic_result":{"analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","arithmetic_contract_id":"OIDL-COUNT-RATIONAL-AGGREGATION-v1","ci_lower":0,"ci_upper":0,"dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","estimate":0,"method_id":"OIDL-BLOCKED-ITT-NEYMAN-NORMAL","method_version":"0.3.0","p_value":1,"schema_version":"0.2.4","se":0,"test_statistic":null,"variance":0,"zero_se_status":"ZERO_SE_ZERO_ESTIMATE"},"provenance":{"analyst_package_manifest_sha256":"ca46bd4cb5a2c33bd6825172973aac3f8c98e1c552b821cf92994b21ee1a617f","dataset_release_record_sha256":"7d6e4072540ed981b60ee1e5a8e8c826011c6ae15f685da5fe6d4f3d858beccd"}},"run_id":"FIXTURE_RUN_A","schema_version":"0.2.4"}
-
-      '
-    expected_result_file_sha256: 8e2010aa398ef8b94f014a6352a364c878961b2bbff7db6d91d2660152905212
+    analyst_manifest_utf8: |
+      {"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"members":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt","row_count":null,"sha256":"87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt","row_count":null,"sha256":"0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f"}],"method_id":"OIDL-PACKAGE-MEMBERS-SHA256-v1","package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","package_kind":"ANALYST","run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"run_id":"FIXTURE_RUN_A","schema_version":"0.2.5"}
+    expected_manifest_sha256: 0136d06929b016aecc2d7e77cf2a296987df97c920c44965477a6ff63ec04131
+    release_binding_fixture_utf8: |
+      {"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"0136d06929b016aecc2d7e77cf2a296987df97c920c44965477a6ff63ec04131","fixture_only":true},"run_id":"FIXTURE_RUN_A","schema_version":"0.2.5"}
+    expected_release_binding_sha256: d724e7a04ab97ac7f6ca6a996fd956e0665fce47bace296f4ffcdd25eff348b2
+    result_fixture_utf8: |
+      {"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"deterministic_result":{"analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","arithmetic_contract_id":"OIDL-COUNT-RATIONAL-AGGREGATION-v1","ci_lower":0,"ci_upper":0,"dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","estimate":0,"method_id":"OIDL-BLOCKED-ITT-NEYMAN-NORMAL","method_version":"0.3.0","p_value":1,"schema_version":"0.2.5","se":0,"test_statistic":null,"variance":0,"zero_se_status":"ZERO_SE_ZERO_ESTIMATE"},"provenance":{"analyst_package_manifest_sha256":"0136d06929b016aecc2d7e77cf2a296987df97c920c44965477a6ff63ec04131","dataset_release_record_sha256":"d724e7a04ab97ac7f6ca6a996fd956e0665fce47bace296f4ffcdd25eff348b2"}},"run_id":"FIXTURE_RUN_A","schema_version":"0.2.5"}
+    expected_result_file_sha256: 0718a59aa4db8f4fbb7b5752ccc15939f22b7066fe4c1d8b6e08dde8553ab92a
     expected_dataset_package_hash: 8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5
     expected_analyst_view_hash: 8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5
   - run_id: FIXTURE_RUN_B
-    analyst_manifest_utf8: '{"created_at_utc":"2000-02-05T00:00:01.000000Z","payload":{"members":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt","row_count":null,"sha256":"87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt","row_count":null,"sha256":"0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f"}],"method_id":"OIDL-PACKAGE-MEMBERS-SHA256-v1","package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","package_kind":"ANALYST","run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"run_id":"FIXTURE_RUN_B","schema_version":"0.2.4"}
-
-      '
-    expected_manifest_sha256: d440f16082ab438262e1d1caa96f4de447250e59cc02e63ce430374c1dbfbb85
-    release_binding_fixture_utf8: '{"created_at_utc":"2000-02-05T00:00:01.000000Z","payload":{"analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"d440f16082ab438262e1d1caa96f4de447250e59cc02e63ce430374c1dbfbb85","fixture_only":true},"run_id":"FIXTURE_RUN_B","schema_version":"0.2.4"}
-
-      '
-    expected_release_binding_sha256: f410052641031582c1446e9921c2fedd8b519ba031ced4aa86daa1b1608503ea
-    result_fixture_utf8: '{"created_at_utc":"2000-02-05T00:00:01.000000Z","payload":{"deterministic_result":{"analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","arithmetic_contract_id":"OIDL-COUNT-RATIONAL-AGGREGATION-v1","ci_lower":0,"ci_upper":0,"dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","estimate":0,"method_id":"OIDL-BLOCKED-ITT-NEYMAN-NORMAL","method_version":"0.3.0","p_value":1,"schema_version":"0.2.4","se":0,"test_statistic":null,"variance":0,"zero_se_status":"ZERO_SE_ZERO_ESTIMATE"},"provenance":{"analyst_package_manifest_sha256":"d440f16082ab438262e1d1caa96f4de447250e59cc02e63ce430374c1dbfbb85","dataset_release_record_sha256":"f410052641031582c1446e9921c2fedd8b519ba031ced4aa86daa1b1608503ea"}},"run_id":"FIXTURE_RUN_B","schema_version":"0.2.4"}
-
-      '
-    expected_result_file_sha256: f7345d4b663fd74b08d0b36107b10fbfc288558f278b846ba52242bf1c5dae2b
+    analyst_manifest_utf8: |
+      {"created_at_utc":"2000-02-05T00:00:01.000000Z","payload":{"members":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt","row_count":null,"sha256":"87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt","row_count":null,"sha256":"0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f"}],"method_id":"OIDL-PACKAGE-MEMBERS-SHA256-v1","package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","package_kind":"ANALYST","run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"run_id":"FIXTURE_RUN_B","schema_version":"0.2.5"}
+    expected_manifest_sha256: 82d71327b2dbf789df8e68c6bf96cc8483bb28b1f83419cb4b420f8396e434b1
+    release_binding_fixture_utf8: |
+      {"created_at_utc":"2000-02-05T00:00:01.000000Z","payload":{"analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"82d71327b2dbf789df8e68c6bf96cc8483bb28b1f83419cb4b420f8396e434b1","fixture_only":true},"run_id":"FIXTURE_RUN_B","schema_version":"0.2.5"}
+    expected_release_binding_sha256: 0e2163bb4a47667ca9eb467879ccffdcbae6217c44ca3fade4d5977ace291b71
+    result_fixture_utf8: |
+      {"created_at_utc":"2000-02-05T00:00:01.000000Z","payload":{"deterministic_result":{"analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","arithmetic_contract_id":"OIDL-COUNT-RATIONAL-AGGREGATION-v1","ci_lower":0,"ci_upper":0,"dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","estimate":0,"method_id":"OIDL-BLOCKED-ITT-NEYMAN-NORMAL","method_version":"0.3.0","p_value":1,"schema_version":"0.2.5","se":0,"test_statistic":null,"variance":0,"zero_se_status":"ZERO_SE_ZERO_ESTIMATE"},"provenance":{"analyst_package_manifest_sha256":"82d71327b2dbf789df8e68c6bf96cc8483bb28b1f83419cb4b420f8396e434b1","dataset_release_record_sha256":"0e2163bb4a47667ca9eb467879ccffdcbae6217c44ca3fade4d5977ace291b71"}},"run_id":"FIXTURE_RUN_B","schema_version":"0.2.5"}
+    expected_result_file_sha256: c8be0a23ec4990ab1f036e5aa1d4b56fb503f89e087c6bca2b4bd39a0bd0184b
     expected_dataset_package_hash: 8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5
     expected_analyst_view_hash: 8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5
-  deterministic_result_canonical_utf8: '{"analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","arithmetic_contract_id":"OIDL-COUNT-RATIONAL-AGGREGATION-v1","ci_lower":0,"ci_upper":0,"dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","estimate":0,"method_id":"OIDL-BLOCKED-ITT-NEYMAN-NORMAL","method_version":"0.3.0","p_value":1,"schema_version":"0.2.4","se":0,"test_statistic":null,"variance":0,"zero_se_status":"ZERO_SE_ZERO_ESTIMATE"}'
-  expected_deterministic_result_sha256: eb9da6520fa79f68e5c3f52abe18f81196886a4b8dab66cd7c6deae259f35528
+  deterministic_result_canonical_utf8: '{"analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","arithmetic_contract_id":"OIDL-COUNT-RATIONAL-AGGREGATION-v1","ci_lower":0,"ci_upper":0,"dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","estimate":0,"method_id":"OIDL-BLOCKED-ITT-NEYMAN-NORMAL","method_version":"0.3.0","p_value":1,"schema_version":"0.2.5","se":0,"test_statistic":null,"variance":0,"zero_se_status":"ZERO_SE_ZERO_ESTIMATE"}'
+  expected_deterministic_result_sha256: 01aeb300f9ae3e2c952f22ed495d8c49c80305319b3c0ff0252ab889935072f3
   expected:
     aliases_equal: true
     aliases_same_across_runs: true
@@ -1382,3 +1376,246 @@ projection_fixture_scope: Explicit lifecycle/state unit fixtures isolate project
   that every supplied combination satisfies canonical generation quotas, timing distributions or path counts. Full
   generated-path validation remains separately required. The R1 two-failure review fixture additionally reproduces
   the frozen extra-lifecycle half-span arithmetic.
+pre_release_scan_provenance_fixtures:
+  test_scope: EXPLICIT_BYTE_AND_PROVENANCE_LIFECYCLE_UNIT. Fabricated text payloads isolate hashing/ordering and
+    do not satisfy canonical cohort logical schemas. Valid prior approvals/benchmark/registry, complete existing
+    leakage checks returning PASS, and the existing conceptual lock L being satisfied are explicit prerequisites
+    except where varied. No canonical/hidden seed or cohort is generated. These tests cannot substitute for actual
+    leakage, isolation or human-approval enforcement tests.
+  fixture_serialization: 'For the provided JSON specimens only: sorted keys, UTF-8, no insignificant spaces, one
+    trailing LF. Hash the literal utf8 bytes; do not use this fixture serialization to override the environment-pinned
+    production serializer. Override strings below are complete file replacements, not patches.'
+  rule_reference: Oracle section 2.5.2; scan is dataset-grounded, two aliases unchanged, no release hash at creation
+    or afterwards, exact-byte release authentication before downstream use.
+  analyst_payload_member_content_utf8:
+    payload/a.txt: |
+      a
+    payload/b.txt: |
+      b
+  oracle_payload_member_content_utf8:
+    payload/public_fixture.txt: |
+      fabricated oracle payload; contains no cohort or secret
+  base_artifacts:
+    benchmark_commitment.json:
+      utf8: |
+        {"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","created_at_utc":"2000-02-05T00:00:00.000000Z","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","parent_run_id":null,"payload":{"fixture_scope":"UPSTREAM_COMMITMENT_BINDINGS_ONLY; approval/assignment/registry validity are explicit preconditions, not tested by this provenance unit fixture."},"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE","schema_version":"0.2.5"}
+      sha256: aba491cee75b898beb28786790ca33e963b5d23fd95fdf42e13400def2dd0a1c
+    analyst_package_manifest.json:
+      utf8: |
+        {"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"members":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt","row_count":null,"sha256":"87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt","row_count":null,"sha256":"0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f"}],"method_id":"OIDL-PACKAGE-MEMBERS-SHA256-v1","package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","package_kind":"ANALYST","run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.5"}
+      sha256: 77391a894f6abd8b096600a8d50b25e50cff8cc3127b7461d7052dd9175a3b6b
+    oracle_package_manifest.json:
+      utf8: |
+        {"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"members":[{"logical_schema":"FABRICATED_ORACLE_TEXT_FIXTURE","path":"payload/public_fixture.txt","row_count":null,"sha256":"1d75b1a3da9be436595e1323b1511fa5b9f383757292e1e6e793e3370864ef3d"}],"method_id":"OIDL-PACKAGE-MEMBERS-SHA256-v1","package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","package_kind":"ORACLE","run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.5"}
+      sha256: 13bfb9f3b5e46b8f7a9caed0b376535c6dc9389017140eadd4c57a96a88f17d1
+    analyst_leakage_scan.json:
+      utf8: |
+        {"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_package_manifest_sha256":"77391a894f6abd8b096600a8d50b25e50cff8cc3127b7461d7052dd9175a3b6b","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"aba491cee75b898beb28786790ca33e963b5d23fd95fdf42e13400def2dd0a1c","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE","verification_phase_at_creation":"LOCAL_BYTES_VERIFIED"},"reason_codes":[],"scan_scope":"COMPLETE_FINALIZED_ANALYST_PACKAGE","scan_status":"PASS","schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","research_spec_version":"0.2.5","run_envelope_schema_version":"0.2.5"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.5"}
+      sha256: 14636ef0847bf0238b93342672c6a8eb5a0a951b93a7081bab51cf1af865ccb7
+    dataset_release_record.json:
+      utf8: |
+        {"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"approval":{"approved_at_utc":"2000-02-05T00:00:00.000000Z","approver_id":"fixture-custodian","disposition":"APPROVED","reason":"Explicit fixture approval of the recorded predecessor commitments; not a PKI signature.","role":"ORACLE_CUSTODIAN","scope":"DATASET_RELEASE"},"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_leakage_scan_sha256":"14636ef0847bf0238b93342672c6a8eb5a0a951b93a7081bab51cf1af865ccb7","analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"77391a894f6abd8b096600a8d50b25e50cff8cc3127b7461d7052dd9175a3b6b","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"aba491cee75b898beb28786790ca33e963b5d23fd95fdf42e13400def2dd0a1c","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","oracle_commitment_id":"R5-NONRESOLVING-ORACLE-COMMITMENT","oracle_package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","oracle_package_manifest_sha256":"13bfb9f3b5e46b8f7a9caed0b376535c6dc9389017140eadd4c57a96a88f17d1","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","oracle_schema_ids":["FABRICATED_ORACLE_TEXT_FIXTURE"],"research_spec_version":"0.2.5","run_envelope_schema_version":"0.2.5"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.5"}
+      sha256: fc4c623e7a3fe7ba6b97d4328b48e381b81f9950edb51c47fcc4a27898ee26f1
+    analyst_package_hash.txt:
+      utf8: |
+        8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5
+      sha256: cbf8b5c7828dbc34ed5a6034604dc77116eec175add04d7c076182c5c038c9f6
+    oracle_package_commitment_hash.txt:
+      utf8: |
+        e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e
+      sha256: f358ee2651ef92121eb389c8fb75588690eab04941528dcfce16c562ea504aa7
+  cases:
+  - id: R5_VALID_LOCAL_THEN_AUTHENTICATED_RELEASE
+    phase: COMPLETE_ORDER
+    override_artifacts: {}
+    expected:
+      creation_succeeds_without_release_record: true
+      creation_phase: LOCAL_BYTES_VERIFIED
+      scan_dataset_grounded: true
+      scan_has_both_aliases: true
+      scan_has_release_record_sha256: false
+      scan_has_deterministic_result: false
+      scan_exact_sha256_before_and_after: 14636ef0847bf0238b93342672c6a8eb5a0a951b93a7081bab51cf1af865ccb7
+      release_authenticated: true
+      governance_state_after: ANALYST_PACKAGE_RELEASED
+      scan_mutated: false
+      required_downstream_manifest_sha256: 77391a894f6abd8b096600a8d50b25e50cff8cc3127b7461d7052dd9175a3b6b
+      required_downstream_scan_sha256: 14636ef0847bf0238b93342672c6a8eb5a0a951b93a7081bab51cf1af865ccb7
+      required_downstream_release_sha256: fc4c623e7a3fe7ba6b97d4328b48e381b81f9950edb51c47fcc4a27898ee26f1
+    operation_order:
+    - FINALIZE_PACKAGES_MANIFESTS_SIDECARS
+    - LOCAL_BYTE_VERIFICATION_AND_LEAKAGE_SCAN
+    - FINALIZE_IMMUTABLE_SCAN
+    - HASH_SCAN_EXACT_BYTES
+    - SIGN_AND_FINALIZE_RELEASE
+    - HASH_RELEASE_AND_CROSS_AUTHENTICATE
+    - ENTER_ANALYST_PACKAGE_RELEASED_AFTER_EXISTING_LOCK_L
+  - id: R5_WRONG_SIGNED_SCAN_HASH
+    phase: RELEASE_AUTHENTICATION
+    override_artifacts:
+      dataset_release_record.json:
+        utf8: |
+          {"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"approval":{"approved_at_utc":"2000-02-05T00:00:00.000000Z","approver_id":"fixture-custodian","disposition":"APPROVED","reason":"Explicit fixture approval of the recorded predecessor commitments; not a PKI signature.","role":"ORACLE_CUSTODIAN","scope":"DATASET_RELEASE"},"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_leakage_scan_sha256":"0000000000000000000000000000000000000000000000000000000000000000","analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"77391a894f6abd8b096600a8d50b25e50cff8cc3127b7461d7052dd9175a3b6b","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"aba491cee75b898beb28786790ca33e963b5d23fd95fdf42e13400def2dd0a1c","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","oracle_commitment_id":"R5-NONRESOLVING-ORACLE-COMMITMENT","oracle_package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","oracle_package_manifest_sha256":"13bfb9f3b5e46b8f7a9caed0b376535c6dc9389017140eadd4c57a96a88f17d1","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","oracle_schema_ids":["FABRICATED_ORACLE_TEXT_FIXTURE"],"research_spec_version":"0.2.5","run_envelope_schema_version":"0.2.5"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.5"}
+        sha256: 7355978ea5a21df7f534b3d2623cfd81da9fbf2c3f71deb33adc00251f0cce95
+    expected:
+      accepted: false
+      reason_codes:
+      - LEAKAGE_SCAN_HASH_MISMATCH
+      failure_stage: DATASET_RELEASE_AUTHENTICATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+      unblind_allowed: false
+  - id: R5_WRONG_ANALYST_CONTENT_DIGEST
+    phase: PRE_RELEASE_SCAN_CREATION
+    override_artifacts:
+      analyst_leakage_scan.json:
+        utf8: |
+          {"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_package_manifest_sha256":"77391a894f6abd8b096600a8d50b25e50cff8cc3127b7461d7052dd9175a3b6b","analyst_view_hash":"0000000000000000000000000000000000000000000000000000000000000000","benchmark_commitment_sha256":"aba491cee75b898beb28786790ca33e963b5d23fd95fdf42e13400def2dd0a1c","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"0000000000000000000000000000000000000000000000000000000000000000","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE","verification_phase_at_creation":"LOCAL_BYTES_VERIFIED"},"reason_codes":[],"scan_scope":"COMPLETE_FINALIZED_ANALYST_PACKAGE","scan_status":"PASS","schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","research_spec_version":"0.2.5","run_envelope_schema_version":"0.2.5"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.5"}
+        sha256: 474e535dd0cb1f8c021e37efce8751f04cc0b817a12e52d8d484ad7858f44f1c
+    expected:
+      accepted: false
+      reason_codes:
+      - SCAN_LOCAL_PROVENANCE_MISMATCH
+      failure_stage: PRE_RELEASE_SCAN_CREATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+      release_signing_allowed: false
+    release_available: false
+  - id: R5_MUTATE_SCAN_AFTER_SIGNING
+    phase: RELEASE_AUTHENTICATION
+    override_artifacts:
+      analyst_leakage_scan.json:
+        utf8: "{\"created_at_utc\":\"2000-02-05T00:00:00.000000Z\",\"payload\":{\"provenance\":{\"analysis_exposure_class\"\
+          :\"PRE_EXPOSURE_SEQUESTERED_TRUTH\",\"analyst_package_manifest_sha256\":\"77391a894f6abd8b096600a8d50b25e50cff8cc3127b7461d7052dd9175a3b6b\"\
+          ,\"analyst_view_hash\":\"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5\",\"benchmark_commitment_sha256\"\
+          :\"aba491cee75b898beb28786790ca33e963b5d23fd95fdf42e13400def2dd0a1c\",\"contract_set_hash\":\"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0\"\
+          ,\"dataset_package_hash\":\"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5\",\"exposure_lineage_id\"\
+          :\"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828\",\"parent_run_id\":null,\"prior_exposure_record_hashes\"\
+          :[],\"required_artifact_groups\":[\"CONTRACT_AND_DESIGN_VALIDATION\",\"PRIMARY_ITT\",\"DESCRIPTIVE_FIDELITY\"\
+          ,\"ANALYSIS_FREEZE\",\"CAUSAL_CLAIMS_NOT_REQUESTED\",\"DECISION_NOT_IN_SCOPE\",\"ARCHIVE_AND_UNBLIND_APPROVAL\"\
+          ,\"PRIMARY_ORACLE_COMPARISON\"],\"run_profile\":\"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE\",\"verification_phase_at_creation\"\
+          :\"LOCAL_BYTES_VERIFIED\"},\"reason_codes\":[],\"scan_scope\":\"COMPLETE_FINALIZED_ANALYST_PACKAGE\",\"\
+          scan_status\":\"PASS\",\"schema_bindings\":{\"analyst_member_schemas\":[{\"logical_schema\":\"FABRICATED_TEXT_FIXTURE\"\
+          ,\"path\":\"payload/a.txt\"},{\"logical_schema\":\"FABRICATED_TEXT_FIXTURE\",\"path\":\"payload/b.txt\"\
+          }],\"oracle_protocol_version\":\"0.4.0\",\"research_spec_version\":\"0.2.5\",\"run_envelope_schema_version\"\
+          :\"0.2.5\"}},\"run_id\":\"R5_EXPLICIT_PROVENANCE_FIXTURE\",\"schema_version\":\"0.2.5\"}\n "
+        sha256: 88ea008c55b6c99825b4b1bfc7990ef29a45c7718dd116141d1f99c3019da0de
+    expected:
+      accepted: false
+      reason_codes:
+      - LEAKAGE_SCAN_HASH_MISMATCH
+      - SCAN_IMMUTABILITY_VIOLATION
+      failure_stage: DATASET_RELEASE_AUTHENTICATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+      unblind_allowed: false
+    known_mutation_attempt: true
+    original_finalized_scan_sha256: 14636ef0847bf0238b93342672c6a8eb5a0a951b93a7081bab51cf1af865ccb7
+    mutation_description: Append one ASCII space after the final LF; parsed JSON is identical but exact bytes differ.
+      Signed release remains unchanged.
+  - id: R5_DOWNSTREAM_BEFORE_RELEASE_AUTHENTICATION
+    phase: DOWNSTREAM_SCAN_ACCEPTANCE
+    override_artifacts: {}
+    expected:
+      accepted: false
+      reason_codes:
+      - DATASET_RELEASE_NOT_AUTHENTICATED
+      failure_stage: DOWNSTREAM_SCAN_ACCEPTANCE
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+      unblind_allowed: false
+    release_available: false
+  - id: R5_INVALID_RELEASE_APPROVER_ROLE
+    phase: RELEASE_AUTHENTICATION
+    override_artifacts:
+      dataset_release_record.json:
+        utf8: |
+          {"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"approval":{"approved_at_utc":"2000-02-05T00:00:00.000000Z","approver_id":"fixture-custodian","disposition":"APPROVED","reason":"Explicit fixture approval of the recorded predecessor commitments; not a PKI signature.","role":"RESEARCH_OWNER","scope":"DATASET_RELEASE"},"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_leakage_scan_sha256":"14636ef0847bf0238b93342672c6a8eb5a0a951b93a7081bab51cf1af865ccb7","analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"77391a894f6abd8b096600a8d50b25e50cff8cc3127b7461d7052dd9175a3b6b","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"aba491cee75b898beb28786790ca33e963b5d23fd95fdf42e13400def2dd0a1c","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","oracle_commitment_id":"R5-NONRESOLVING-ORACLE-COMMITMENT","oracle_package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","oracle_package_manifest_sha256":"13bfb9f3b5e46b8f7a9caed0b376535c6dc9389017140eadd4c57a96a88f17d1","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","oracle_schema_ids":["FABRICATED_ORACLE_TEXT_FIXTURE"],"research_spec_version":"0.2.5","run_envelope_schema_version":"0.2.5"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.5"}
+        sha256: 59cb4aa42c051589322a8fcbe132422a478ff605347636613249edb34075468a
+    expected:
+      accepted: false
+      reason_codes:
+      - DATASET_RELEASE_APPROVAL_INVALID
+      failure_stage: DATASET_RELEASE_AUTHENTICATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+  - id: R5_FUTURE_RELEASE_HASH_NULL_PLACEHOLDER_FORBIDDEN
+    phase: PRE_RELEASE_SCAN_CREATION
+    override_artifacts:
+      analyst_leakage_scan.json:
+        utf8: |
+          {"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_package_manifest_sha256":"77391a894f6abd8b096600a8d50b25e50cff8cc3127b7461d7052dd9175a3b6b","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"aba491cee75b898beb28786790ca33e963b5d23fd95fdf42e13400def2dd0a1c","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","dataset_release_record_sha256":null,"exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE","verification_phase_at_creation":"LOCAL_BYTES_VERIFIED"},"reason_codes":[],"scan_scope":"COMPLETE_FINALIZED_ANALYST_PACKAGE","scan_status":"PASS","schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","research_spec_version":"0.2.5","run_envelope_schema_version":"0.2.5"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.5"}
+        sha256: dad74d7e99663e24c4932a92b59ae3f13280768311c40c43b45ad603ca22858c
+    expected:
+      accepted: false
+      reason_codes:
+      - CIRCULAR_PROVENANCE_FIELD
+      failure_stage: PRE_RELEASE_SCAN_CREATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+    release_available: false
+  - id: R5_RELEASE_SELF_HASH_FORBIDDEN
+    phase: RELEASE_AUTHENTICATION
+    override_artifacts:
+      dataset_release_record.json:
+        utf8: |
+          {"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"approval":{"approved_at_utc":"2000-02-05T00:00:00.000000Z","approver_id":"fixture-custodian","disposition":"APPROVED","reason":"Explicit fixture approval of the recorded predecessor commitments; not a PKI signature.","role":"ORACLE_CUSTODIAN","scope":"DATASET_RELEASE"},"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_leakage_scan_sha256":"14636ef0847bf0238b93342672c6a8eb5a0a951b93a7081bab51cf1af865ccb7","analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"77391a894f6abd8b096600a8d50b25e50cff8cc3127b7461d7052dd9175a3b6b","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"aba491cee75b898beb28786790ca33e963b5d23fd95fdf42e13400def2dd0a1c","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","dataset_release_record_sha256":"0000000000000000000000000000000000000000000000000000000000000000","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","oracle_commitment_id":"R5-NONRESOLVING-ORACLE-COMMITMENT","oracle_package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","oracle_package_manifest_sha256":"13bfb9f3b5e46b8f7a9caed0b376535c6dc9389017140eadd4c57a96a88f17d1","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","oracle_schema_ids":["FABRICATED_ORACLE_TEXT_FIXTURE"],"research_spec_version":"0.2.5","run_envelope_schema_version":"0.2.5"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.5"}
+        sha256: 855fd8482f32614738dfac7c270d5b10c62719a65c8bb591f4c76071353dfe42
+    expected:
+      accepted: false
+      reason_codes:
+      - CIRCULAR_PROVENANCE_FIELD
+      failure_stage: DATASET_RELEASE_AUTHENTICATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+  - id: R5_RELEASE_SCHEMA_PROJECTION_OMISSION
+    phase: RELEASE_AUTHENTICATION
+    override_artifacts:
+      dataset_release_record.json:
+        utf8: |
+          {"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"approval":{"approved_at_utc":"2000-02-05T00:00:00.000000Z","approver_id":"fixture-custodian","disposition":"APPROVED","reason":"Explicit fixture approval of the recorded predecessor commitments; not a PKI signature.","role":"ORACLE_CUSTODIAN","scope":"DATASET_RELEASE"},"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_leakage_scan_sha256":"14636ef0847bf0238b93342672c6a8eb5a0a951b93a7081bab51cf1af865ccb7","analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"77391a894f6abd8b096600a8d50b25e50cff8cc3127b7461d7052dd9175a3b6b","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"aba491cee75b898beb28786790ca33e963b5d23fd95fdf42e13400def2dd0a1c","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","oracle_commitment_id":"R5-NONRESOLVING-ORACLE-COMMITMENT","oracle_package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","oracle_package_manifest_sha256":"13bfb9f3b5e46b8f7a9caed0b376535c6dc9389017140eadd4c57a96a88f17d1","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"}],"oracle_protocol_version":"0.4.0","oracle_schema_ids":["FABRICATED_ORACLE_TEXT_FIXTURE"],"research_spec_version":"0.2.5","run_envelope_schema_version":"0.2.5"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.5"}
+        sha256: b0d354a475397084dcd588d2c6df40a413a0949fcf1d81ddf6d2e19dcfc61831
+    expected:
+      accepted: false
+      reason_codes:
+      - DATASET_RELEASE_BINDING_MISMATCH
+      failure_stage: DATASET_RELEASE_AUTHENTICATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+  - id: R5_RELEASE_PROFILE_MISMATCH
+    phase: RELEASE_AUTHENTICATION
+    override_artifacts:
+      dataset_release_record.json:
+        utf8: |
+          {"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"approval":{"approved_at_utc":"2000-02-05T00:00:00.000000Z","approver_id":"fixture-custodian","disposition":"APPROVED","reason":"Explicit fixture approval of the recorded predecessor commitments; not a PKI signature.","role":"ORACLE_CUSTODIAN","scope":"DATASET_RELEASE"},"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_leakage_scan_sha256":"14636ef0847bf0238b93342672c6a8eb5a0a951b93a7081bab51cf1af865ccb7","analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"77391a894f6abd8b096600a8d50b25e50cff8cc3127b7461d7052dd9175a3b6b","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"aba491cee75b898beb28786790ca33e963b5d23fd95fdf42e13400def2dd0a1c","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","oracle_commitment_id":"R5-NONRESOLVING-ORACLE-COMMITMENT","oracle_package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","oracle_package_manifest_sha256":"13bfb9f3b5e46b8f7a9caed0b376535c6dc9389017140eadd4c57a96a88f17d1","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"FULL_DECISION_SYSTEM"},"schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","oracle_schema_ids":["FABRICATED_ORACLE_TEXT_FIXTURE"],"research_spec_version":"0.2.5","run_envelope_schema_version":"0.2.5"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.5"}
+        sha256: 995774daee3ed1460fb1e877f91ce7d24735f759964945153a8f244cbd7a6112
+    expected:
+      accepted: false
+      reason_codes:
+      - DATASET_RELEASE_BINDING_MISMATCH
+      failure_stage: DATASET_RELEASE_AUTHENTICATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+  - id: R5_RELEASE_MANIFEST_HASH_MISMATCH
+    phase: RELEASE_AUTHENTICATION
+    override_artifacts:
+      dataset_release_record.json:
+        utf8: |
+          {"created_at_utc":"2000-02-05T00:00:00.000000Z","payload":{"approval":{"approved_at_utc":"2000-02-05T00:00:00.000000Z","approver_id":"fixture-custodian","disposition":"APPROVED","reason":"Explicit fixture approval of the recorded predecessor commitments; not a PKI signature.","role":"ORACLE_CUSTODIAN","scope":"DATASET_RELEASE"},"provenance":{"analysis_exposure_class":"PRE_EXPOSURE_SEQUESTERED_TRUTH","analyst_leakage_scan_sha256":"14636ef0847bf0238b93342672c6a8eb5a0a951b93a7081bab51cf1af865ccb7","analyst_package_content_sha256":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","analyst_package_manifest_sha256":"0000000000000000000000000000000000000000000000000000000000000000","analyst_view_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","benchmark_commitment_sha256":"aba491cee75b898beb28786790ca33e963b5d23fd95fdf42e13400def2dd0a1c","contract_set_hash":"c66082fef4ce19a16fc482045b20c4db88251aeba2bbbc76f6e578988befb0b0","dataset_package_hash":"8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5","exposure_lineage_id":"0a196aef2bd13fe9dc062a52778fa2dd4087b586b698a9bd05971112e2786828","oracle_commitment_id":"R5-NONRESOLVING-ORACLE-COMMITMENT","oracle_package_content_sha256":"e067fe3c0042f101ec8f27bec275e2aeb55b526ede3590bf0261e0f16174569e","oracle_package_manifest_sha256":"13bfb9f3b5e46b8f7a9caed0b376535c6dc9389017140eadd4c57a96a88f17d1","parent_run_id":null,"prior_exposure_record_hashes":[],"required_artifact_groups":["CONTRACT_AND_DESIGN_VALIDATION","PRIMARY_ITT","DESCRIPTIVE_FIDELITY","ANALYSIS_FREEZE","CAUSAL_CLAIMS_NOT_REQUESTED","DECISION_NOT_IN_SCOPE","ARCHIVE_AND_UNBLIND_APPROVAL","PRIMARY_ORACLE_COMPARISON"],"run_profile":"SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE"},"schema_bindings":{"analyst_member_schemas":[{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/a.txt"},{"logical_schema":"FABRICATED_TEXT_FIXTURE","path":"payload/b.txt"}],"oracle_protocol_version":"0.4.0","oracle_schema_ids":["FABRICATED_ORACLE_TEXT_FIXTURE"],"research_spec_version":"0.2.5","run_envelope_schema_version":"0.2.5"}},"run_id":"R5_EXPLICIT_PROVENANCE_FIXTURE","schema_version":"0.2.5"}
+        sha256: 66c44a14ae001f11f876b464418af67f83150a946facac5c84fd0134190c32ae
+    expected:
+      accepted: false
+      reason_codes:
+      - DATASET_RELEASE_BINDING_MISMATCH
+      failure_stage: DATASET_RELEASE_AUTHENTICATION
+      last_valid_state: BENCHMARK_COMMITTED
+      run_execution_status: FAILED
+  - id: R5_ARCHIVE_PRESERVES_ORIGINAL_SCAN
+    phase: ARCHIVE_COPY
+    override_artifacts: {}
+    expected:
+      release_authenticated: true
+      archived_scan_sha256: 14636ef0847bf0238b93342672c6a8eb5a0a951b93a7081bab51cf1af865ccb7
+      archived_scan_has_release_record_sha256: false
+      archived_scan_creation_phase: LOCAL_BYTES_VERIFIED
+      scan_mutated: false

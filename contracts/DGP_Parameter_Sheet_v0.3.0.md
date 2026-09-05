@@ -4,7 +4,7 @@
 **DGP ID:** `OIDL-SEQUENTIAL-DGP-001`  
 **Version:** `0.3.0`  
 **Status:** `FINAL_PRE_IMPLEMENTATION`  
-**Linked ResearchSpec:** `ResearchSpec_v0.2.4`  
+**Linked ResearchSpec:** `ResearchSpec_v0.2.5`  
 **Authoritative benchmark term:** **truth-sequestered synthetic benchmark**
 
 > **Universal label:** Every numerical quantity in this document is a `SYNTHETIC_ASSUMPTION`, except mathematical constants and deterministic identities. Nothing here is an estimate, benchmark, forecast, prevalence, effect size, cost, CLV, ROI, conversion rate, operational fact, or control description for any real firm.
@@ -104,7 +104,7 @@ Decimal slot indices contain no leading zeros. Sort slot indices by raw 32-byte 
 
 For each block, serialize the sequence in slot order as an ASCII bitstring of exactly `N_b` characters with no delimiter or newline and publish its lowercase SHA-256 hash before outcomes are generated or inspected. Create `assignment_sequence_commitment.json` as canonical JSON mapping all 16 exact block IDs to `{n_b, sequence_sha256}`, with block IDs sorted lexicographically and integer `n_b`; publish the SHA-256 of those exact canonical JSON bytes in `benchmark_commitment.json`. Future sequence labels and the assignment secret remain hidden. After analyst release, the observed assignment bitstring reconstructed in sequence-position order must match the published per-block and overall commitments.
 
-**Assignment payload and provenance.** `assignment_sequence_commitment.json` is the bare canonical 16-block mapping and contains no metadata. `benchmark_commitment.json` binds its relative path, exact SHA-256, and the literal `OIDL-CANONICAL-JSON-SHA256-v1`, together with schema/run/time, immutable profile, required artifact groups, and exposure lineage. Complete envelope fields, canonical bytes, and acyclic hashing are fixed in `Oracle_Benchmark_Spec_v0.3.0.md §§2,5–7`.
+**Assignment payload and provenance.** `assignment_sequence_commitment.json` is the bare canonical 16-block mapping and contains no metadata. `benchmark_commitment.json` binds its relative path, exact SHA-256, and the literal `OIDL-CANONICAL-JSON-SHA256-v1`, together with schema/run/time, immutable profile, required artifact groups, and exposure lineage. Complete envelope fields, canonical bytes, and acyclic hashing are fixed in `Oracle_Benchmark_Spec_v0.4.0.md §§2,5–7`.
 
 As eligible people reach T0, order them within their block by ascending `T0_i`, with `person_id` as tie-breaker. The person in one-based arrival position `j` receives precommitted sequence slot `j`; store `allocation_sequence_position=j`. This is complete randomization with exact 1:1 allocation inside each of the 16 analysis blocks. It can be consumed prospectively at T0 and does not require future participant identities or outcome information.
 

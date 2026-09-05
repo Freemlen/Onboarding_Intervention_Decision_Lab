@@ -3,7 +3,7 @@
 **Study:** `OIDL-ONBOARDING-ASSIST-001`  
 **Version:** `0.3.0`  
 **Status:** `FINAL_PRE_IMPLEMENTATION`  
-**Linked contracts:** `ResearchSpec_v0.2.4`, `Statistical_Analysis_Plan_v0.3.0`, `Guardrail_Spec_v0.3.0`, `Oracle_Benchmark_Spec_v0.3.0`
+**Linked contracts:** `ResearchSpec_v0.2.5`, `Statistical_Analysis_Plan_v0.3.0`, `Guardrail_Spec_v0.3.0`, `Oracle_Benchmark_Spec_v0.4.0`
 
 ## 0. Purpose
 

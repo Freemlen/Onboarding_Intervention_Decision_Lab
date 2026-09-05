@@ -1,8 +1,8 @@
-# ResearchSpec v0.2.4
+# ResearchSpec v0.2.5
 
 **Project:** Onboarding Intervention Decision Lab  
 **Status:** FINAL_PRE_IMPLEMENTATION  
-**Normative twin:** `ResearchSpec_v0.2.4.yaml`
+**Normative twin:** `ResearchSpec_v0.2.5.yaml`
 
 The sections below are a lossless human-readable rendering of the complete typed ResearchSpec tree. Field names are retained for direct lookup. Quoted values are strings; unquoted numbers, `true`/`false`, and `null` retain their machine types. Ordered items retain YAML sequence order. Requirements incorporated by linked-contract reference are the same in both twins.
 
@@ -10,35 +10,35 @@ The sections below are a lossless human-readable rendering of the complete typed
 
 **Root field:** `specification`
 
-- **`document_id`**: `"ResearchSpec_v0.2.4"`
+- **`document_id`**: `"ResearchSpec_v0.2.5"`
 - **`study_id`**: `"OIDL-ONBOARDING-ASSIST-001"`
-- **`version`**: `"0.2.4"`
+- **`version`**: `"0.2.5"`
 - **`status`**: `"FINAL_PRE_IMPLEMENTATION"`
-- **`human_readable_twin`**: `"ResearchSpec_v0.2.4.md"`
+- **`human_readable_twin`**: `"ResearchSpec_v0.2.5.md"`
 - **`required_linked_contracts`**:
   - **`dgp_parameter_card`**: `"DGP_Parameter_Sheet_v0.3.0"`
   - **`statistical_analysis_plan`**: `"Statistical_Analysis_Plan_v0.3.0"`
   - **`decision_rule`**: `"Decision_Rule_Spec_v0.3.0"`
   - **`guardrails`**: `"Guardrail_Spec_v0.3.0"`
-  - **`oracle_protocol`**: `"Oracle_Benchmark_Spec_v0.3.0"`
-  - **`architecture`**: `"Architecture_v0.2.4"`
-  - **`contract_bundle`**: `"Contract_Bundle_v0.2.4"`
-  - **`slice_1`**: `"Slice_1_Definition_of_Done_v0.2.4"`
-  - **`golden_fixtures`**: `"Golden_Fixtures_v0.2.4"`
+  - **`oracle_protocol`**: `"Oracle_Benchmark_Spec_v0.4.0"`
+  - **`architecture`**: `"Architecture_v0.2.5"`
+  - **`contract_bundle`**: `"Contract_Bundle_v0.2.5"`
+  - **`slice_1`**: `"Slice_1_Definition_of_Done_v0.2.5"`
+  - **`golden_fixtures`**: `"Golden_Fixtures_v0.2.5"`
 - **`equivalence_rule`**:
   - **`normative`**: `true`
   - **`rule`**: `"Markdown and YAML encode the same complete typed normative tree. Markdown is a lossless sectioned rendering of this tree: identical keys, ordered lists, scalar values, types, formulas, rationales and prohibitions. A mismatch fails release; neither form may be silently preferred. Linked-contract requirements are incorporated identically by reference in both twins."`
-- **`bundle_release`**: `"0.2.4"`
+- **`bundle_release`**: `"0.2.5"`
 - **`semantic_versions`**:
-  - **`research_spec`**: `"0.2.4"`
-  - **`architecture`**: `"0.2.4"`
+  - **`research_spec`**: `"0.2.5"`
+  - **`architecture`**: `"0.2.5"`
   - **`dgp`**: `"0.3.0"`
   - **`sap`**: `"0.3.0"`
   - **`decision_rule`**: `"0.3.0"`
   - **`guardrails`**: `"0.3.0"`
-  - **`oracle_protocol`**: `"0.3.0"`
-  - **`slice_1`**: `"0.2.4"`
-  - **`golden_fixtures`**: `"0.2.4"`
+  - **`oracle_protocol`**: `"0.4.0"`
+  - **`slice_1`**: `"0.2.5"`
+  - **`golden_fixtures`**: `"0.2.5"`
 
 ## 1. Scope and claim boundary
 
@@ -79,13 +79,13 @@ The sections below are a lossless human-readable rendering of the complete typed
 - **`confirmatory_hte_question`**: `"Does the assignment effect differ between customers with and without a recoverable KYC-friction state observed before the landmark?"`
 - **`reference_rollout_period_days`**: `28`
 - **`policy_set`**:
-  - **Item 1**:
+  - Item 1:
     - **`id`**: `"NONE"`
     - **`definition`**: `"Retain documented business as usual; assign no eligible customer to the proactive package."`
-  - **Item 2**:
+  - Item 2:
     - **`id`**: `"TARGETED"`
     - **`definition`**: `"Assign only customers with pre-T0 recoverable KYC friction."`
-  - **Item 3**:
+  - Item 3:
     - **`id`**: `"BROAD"`
     - **`definition`**: `"Assign every eligible customer."`
 - **`decision_representation`**:
@@ -244,31 +244,31 @@ The sections below are a lossless human-readable rendering of the complete typed
 - **`evaluation_time`**: `"T0_i"`
 - **`immutable_snapshot_required`**: `true`
 - **`all_conditions_required`**:
-  - **Item 1**:
+  - Item 1:
     - **`id`**: `"FIRST_COMPLETED_REGISTRATION"`
     - **`rule`**: `"Completed first registration at R_i."`
-  - **Item 2**:
+  - Item 2:
     - **`id`**: `"NO_SUCCESSFUL_DEPOSIT_BY_T0"`
     - **`rule`**: `"No successful, settled, valid deposit at or before T0_i."`
-  - **Item 3**:
+  - Item 3:
     - **`id`**: `"ACTIVATION_JOURNEY_ELIGIBLE_IN_PRINCIPLE"`
     - **`rule`**: `"Eligible for the activation journey in principle under the synthetic product and jurisdiction regime."`
-  - **Item 4**:
+  - Item 4:
     - **`id`**: `"PERMITTED_CONTACT_ROUTES"`
     - **`rule`**: `"Verified and permissibly contactable telephone route plus permitted registered-email follow-up route."`
-  - **Item 5**:
+  - Item 5:
     - **`id`**: `"CALLING_WINDOW_AVAILABLE"`
     - **`rule`**: `"At least one continuous 30-minute initial-call scheduling interval is fully contained in permitted local hours after T0_i and ends no later than R_i + 24h - 15 minutes. The 15-minute buffer is the required 5-minute follow-up delay plus a 10-minute synthetic processing margin."`
-  - **Item 6**:
+  - Item 6:
     - **`id`**: `"NO_PRIOR_MANUAL_CAMPAIGN"`
     - **`rule`**: `"No prior manual onboarding or conversion-oriented campaign outreach from registration through T0_i."`
-  - **Item 7**:
+  - Item 7:
     - **`id`**: `"MATURE_PRIMARY_WINDOW"`
     - **`rule`**: `"Complete primary outcome window through R_i + 168h."`
-  - **Item 8**:
+  - Item 8:
     - **`id`**: `"UNIQUE_NOT_PREVIOUSLY_ENROLLED"`
     - **`rule`**: `"No duplicate or linked person already enrolled."`
-  - **Item 9**:
+  - Item 9:
     - **`id`**: `"ELIGIBLE_KYC_SOURCE_STATE"`
     - **`rule`**: `"KYC source state is NO_OBSERVED_KYC_FRICTION or one of the three recoverable states."`
 - **`ineligible_kyc_states`**:
@@ -415,22 +415,22 @@ The sections below are a lossless human-readable rendering of the complete typed
 - **`control_value`**: `0`
 - **`definition`**: `"Documented BAU without intended proactive assignment; the frozen accidental control-contamination mechanism remains part of implemented BAU."`
 - **`received_by_both_arms`**:
-  - **Item 1**:
+  - Item 1:
     - **`id`**: `"REGISTRATION_CONFIRMATION"`
     - **`timing`**: `"at R_i"`
-  - **Item 2**:
+  - Item 2:
     - **`id`**: `"AUTOMATED_STATUS_COMMUNICATIONS"`
     - **`timing`**: `"triggered by state changes"`
-  - **Item 3**:
+  - Item 3:
     - **`id`**: `"GENERIC_INCOMPLETE_ONBOARDING_REMINDER"`
     - **`timing`**: `"Exactly R_i + 36 hours, iff randomized, active_settled_deposit_by(t)=false and hard_restriction_by(t)=false at that instant under DGP §7.5.1. Equal-time state events precede the reminder. No replacement reminder if suppressed."`
-  - **Item 4**:
+  - Item 4:
     - **`id`**: `"SELF_SERVICE_HELP"`
     - **`timing`**: `"available throughout"`
-  - **Item 5**:
+  - Item 5:
     - **`id`**: `"CUSTOMER_INITIATED_REACTIVE_SUPPORT"`
     - **`timing`**: `"when initiated by customer"`
-  - **Item 6**:
+  - Item 6:
     - **`id`**: `"MANDATORY_CONTROLS"`
     - **`timing`**: `"as applicable"`
 - **`control_is_silence`**: `false`
@@ -718,7 +718,7 @@ The sections below are a lossless human-readable rendering of the complete typed
   - **`condition`**: `"V_Q=0 AND tau_Q!=0 by exact rational sufficient-statistic arithmetic before binary64 conversion"`
 - **`zero_se_interpretation`**: `"Computational/limiting normal conventions, not an exact finite-sample test or proof of certainty."`
 - **`zero_se_rules_apply_to_later_interaction`**: `true`
-- **`golden_fixtures`**: `"Golden_Fixtures_v0.2.4.yaml"`
+- **`golden_fixtures`**: `"Golden_Fixtures_v0.2.5.yaml"`
 - **`adjustment_basis_unchanged`**: `true`
 - **`kyc_subtype_adjustment_rationale`**: `"KYC subtypes are intentionally omitted from the frozen Lin basis. Binary-friction assignment-block indicators do not represent separate subtype main effects."`
 - **`arithmetic_contract`**:
@@ -759,9 +759,9 @@ The sections below are a lossless human-readable rendering of the complete typed
   - **`sidedness`**: `"TWO_SIDED"`
   - **`adjustment`**: `"HOLM_STEP_DOWN"`
   - **`hypotheses`**:
-    - **Item 1**:
+    - Item 1:
       - **`id`**: `"H1_OVERALL_ITT_EQUALS_ZERO"`
-    - **Item 2**:
+    - Item 2:
       - **`id`**: `"H2_INTERACTION_EQUALS_ZERO"`
   - **`estimation_intervals`**: `"Unadjusted 95% intervals are still reported."`
   - **`subgroup_significance_tests`**: `false`
@@ -915,36 +915,36 @@ The sections below are a lossless human-readable rendering of the complete typed
 - **`evidence_status_precedence`**:
   - **`precondition`**: `"Hard data and design validation has passed; otherwise no authoritative decision object is emitted."`
   - **`rules`**:
-    - **Item 1**:
+    - Item 1:
       - **`order`**: `1`
       - **`status`**: `"GUARDRAIL_BLOCKED"`
       - **`condition`**: `"Any applicable guardrail veto or non-inferiority gate fails."`
-    - **Item 2**:
+    - Item 2:
       - **`order`**: `2`
       - **`status`**: `"UNCERTAIN"`
       - **`condition`**: `"No guardrail block, but treatment-fidelity/design-readiness thresholds fail or point-recommended policy is not simultaneously superior."`
-    - **Item 3**:
+    - Item 3:
       - **`order`**: `3`
       - **`status`**: `"READY"`
       - **`condition`**: `"No guardrail block and all applicable fidelity, design-readiness, and simultaneous superiority conditions pass."`
 - **`statistical_guardrail_action_mapping`**:
-  - **Item 1**:
+  - Item 1:
     - **`recommended_policy`**: `"TARGETED"`
     - **`evidence_status`**: `"READY"`
     - **`statistical_guardrail_action`**: `"DEPLOY_TARGETED"`
-  - **Item 2**:
+  - Item 2:
     - **`recommended_policy`**: `"BROAD"`
     - **`evidence_status`**: `"READY"`
     - **`statistical_guardrail_action`**: `"DEPLOY_BROAD"`
-  - **Item 3**:
+  - Item 3:
     - **`recommended_policy`**: `"NONE"`
     - **`evidence_status`**: `"READY"`
     - **`statistical_guardrail_action`**: `"HOLD"`
-  - **Item 4**:
+  - Item 4:
     - **`recommended_policy`**: `"ANY"`
     - **`evidence_status`**: `"UNCERTAIN"`
     - **`statistical_guardrail_action`**: `"HOLD"`
-  - **Item 5**:
+  - Item 5:
     - **`recommended_policy`**: `"ANY"`
     - **`evidence_status`**: `"GUARDRAIL_BLOCKED"`
     - **`statistical_guardrail_action`**: `"HOLD"`
@@ -1009,7 +1009,7 @@ The sections below are a lossless human-readable rendering of the complete typed
   - **`multiplicity`**: `"BONFERRONI_FOUR_METRICS"`
   - **`critical_value`**: `2.241402727604947`
 - **`items`**:
-  - **Item 1**:
+  - Item 1:
     - **`id`**: `"UNWANTED_CONTACT_OR_OPTOUT"`
     - **`window`**: `"(T0_i, R_i + 168h]"`
     - **`denominator`**: `"All randomized persons by arm."`
@@ -1017,7 +1017,7 @@ The sections below are a lossless human-readable rendering of the complete typed
     - **`treatment_minus_control_margin_risk_difference`**: `0.005`
     - **`margin_percentage_points`**: `0.5`
     - **`decision_role`**: `"READINESS_NONINFERIORITY_GATE"`
-  - **Item 2**:
+  - Item 2:
     - **`id`**: `"ONBOARDING_RELATED_COMPLAINT"`
     - **`window`**: `"(T0_i, R_i + 168h]"`
     - **`denominator`**: `"All randomized persons by arm."`
@@ -1025,14 +1025,14 @@ The sections below are a lossless human-readable rendering of the complete typed
     - **`treatment_minus_control_margin_risk_difference`**: `0.002`
     - **`margin_percentage_points`**: `0.2`
     - **`decision_role`**: `"READINESS_NONINFERIORITY_GATE"`
-  - **Item 3**:
+  - Item 3:
     - **`id`**: `"SERIOUS_SCRIPT_OR_COMPLIANCE_BREACH"`
     - **`window`**: `"Treatment delivery through R_i + 72h."`
     - **`denominator`**: `"All treatment-assigned proactive-package interactions plus any contaminated-control proactive-package interactions; 100% auditable status required."`
     - **`threshold_count`**: `0`
     - **`decision_role`**: `"ZERO_TOLERANCE_VETO"`
     - **`any_event_blocks_outreach_policies`**: `true`
-  - **Item 4**:
+  - Item 4:
     - **`id`**: `"REPEATED_FAILED_OR_REVERSED_DEPOSITS"`
     - **`event`**: `"At least two failed or reversed deposit events by R_i + 168h."`
     - **`window`**: `"(T0_i, R_i + 168h]"`
@@ -1071,7 +1071,7 @@ The sections below are a lossless human-readable rendering of the complete typed
       - **`true_projection`**: `"Flag true; exact second-terminal timestamp, fixed reason and triggering deposit ordinal required; one matching occurrence event."`
       - **`no_new_draw`**: `true`
       - **`authoritative_details`**: `"DGP §11.3; Guardrail §6.1.1"`
-  - **Item 5**:
+  - Item 5:
     - **`id`**: `"APPROPRIATENESS_OR_PRODUCT_PROTECTION_SIGNAL"`
     - **`event`**: `"Any post-T0 warning, failure, retake, cooling-off, or new restriction by R_i + 168h."`
     - **`window`**: `"(T0_i, R_i + 168h]"`
@@ -1081,7 +1081,7 @@ The sections below are a lossless human-readable rendering of the complete typed
     - **`margin_percentage_points`**: `0.25`
     - **`decision_role`**: `"READINESS_NONINFERIORITY_GATE"`
     - **`communication_restriction_rule`**: `"Every member qualifies from its existing occurrence timestamp under control_bau.hard_restriction_predicate / DGP §7.5.1, without subtype generation; guardrail margins and inference unchanged."`
-  - **Item 6**:
+  - Item 6:
     - **`id`**: `"REACTIVE_SUPPORT_CAPACITY"`
     - **`denominator`**: `"Policy-level operational projection for the 28-day rollout period."`
     - **`p90_wait_time_max_minutes`**: `8.0`
@@ -1200,10 +1200,10 @@ The sections below are a lossless human-readable rendering of the complete typed
   - **`package_members`**: `"All and only regular files under each package payload/; sorted relative POSIX path/hash array; no self-containing digest."`
   - **`package_digest_method`**: `"OIDL-PACKAGE-MEMBERS-SHA256-v1"`
   - **`excluded_from_own_package`**: `"Root manifest and digest sidecar; scans/approvals remain outside package roots."`
-  - **`manifest_authentication`**: `"Dataset release binds data manifest exact hashes; unblind approval binds archive manifest exact hash and archive digest."`
+  - **`manifest_authentication`**: `"Dataset release binds exact data manifest hashes and immutable scan-file hash; local scan creation verifies analyst bytes/manifest/sidecar without a future release record. Downstream use requires signed-release cross-authentication under Oracle section 2.5.2. Gate H binds exact archive manifest and digest."`
   - **`exact_integrity_not_normalized`**: `true`
   - **`reproducibility_projection`**: `"Only declared deterministic_result objects exclude run IDs, wall-clock/approval/exposure/archive metadata; exact envelopes remain integrity-committed. No arbitrary normalization masks."`
-  - **`authoritative_details`**: `"Oracle §§2.4–2.6 (especially mandatory aliases in §2.5.1) and 6."`
+  - **`authoritative_details`**: `"Oracle sections 2.4–2.6 (mandatory alias domains in 2.5.1; exhaustive two-stage scan/release fields, order and rejection in 2.5.2) and 6."`
   - **`deterministic_data_representation`**: `"Inside analyst/oracle data payloads, deterministic object/map metadata and schemas use YAML; tabular members use pinned typed lossless serialization. Run JSON envelopes stay outside data payloads. Archive payloads contain exact copies of run records."`
   - **`mandatory_data_hash_domains`**:
     - **`dataset_package_hash`**:
@@ -1213,7 +1213,7 @@ The sections below are a lossless human-readable rendering of the complete typed
       - **`method_id`**: `"OIDL-PACKAGE-MEMBERS-SHA256-v1"`
       - **`alias`**: `"Analyst package-content digest; dataset_package_hash and analyst_view_hash must be identical; also equals analyst_package_hash.txt without its LF. Not manifest, release, ZIP or combined oracle digest."`
       - **`placement`**: `"payload.deterministic_result.dataset_package_hash for calculation/comparison results; payload.provenance.dataset_package_hash for records without deterministic_result."`
-      - **`authentication`**: `"Recompute bytes/member digest; match manifest and sidecar; verify exact manifest hash in external dataset_release_record.json."`
+      - **`authentication`**: `"Recompute finalized analyst bytes/member digest and match manifest plus sidecar. Oracle section 2.5.2 permits producer-side local verification for immutable pre-release scan creation and construction of its signed release; all downstream consumption requires valid signed-release authentication of unchanged scan/manifest/content bindings."`
     - **`analyst_view_hash`**:
       - **`source`**: `"analyst_package_manifest.json -> payload.package_content_sha256"`
       - **`preimage`**: `"UTF-8 canonical JSON array of exactly {path,sha256} per regular analyst payload file, paths relative to package root including payload/ prefix, sorted by path with sorted object keys, no BOM/whitespace/newline. File hashes cover finalized exact bytes; root manifest and sidecar excluded."`
@@ -1221,12 +1221,68 @@ The sections below are a lossless human-readable rendering of the complete typed
       - **`method_id`**: `"OIDL-PACKAGE-MEMBERS-SHA256-v1"`
       - **`alias`**: `"Analyst package-content digest; dataset_package_hash and analyst_view_hash must be identical; also equals analyst_package_hash.txt without its LF. Not manifest, release, ZIP or combined oracle digest."`
       - **`placement`**: `"payload.deterministic_result.analyst_view_hash for calculation/comparison results; payload.provenance.analyst_view_hash for records without deterministic_result."`
-      - **`authentication`**: `"Recompute bytes/member digest; match manifest and sidecar; verify exact manifest hash in external dataset_release_record.json."`
+      - **`authentication`**: `"Recompute finalized analyst bytes/member digest and match manifest plus sidecar. Oracle section 2.5.2 permits producer-side local verification for immutable pre-release scan creation and construction of its signed release; all downstream consumption requires valid signed-release authentication of unchanged scan/manifest/content bindings."`
   - **`volatile_predecessor_hashes`**:
     - **`analyst_package_manifest_sha256`**: `"SHA-256 of whole original manifest bytes; only payload.provenance."`
-    - **`dataset_release_record_sha256`**: `"SHA-256 of whole original signed release record bytes; only payload.provenance."`
-  - **`no_recursive_result_data_binding`**: `"No result/alias or dataset release record enters the analyst payload it hashes; pre-dataset commitment/approval records are not dataset-grounded results/claims and cannot bind future data."`
-- **`placement_rule`**: `"Dataset-grounded records carry both aliases per hashing.mandatory_data_hash_domains. Run/profile/approval/exposure and volatile manifest/release hashes stay in surrounding provenance; no arbitrary exclusion mask."`
+    - **`dataset_release_record_sha256`**: `"SHA-256 of whole original signed release record bytes; only payload.provenance of downstream records. Absent permanently in the pre-release scan and in the release record itself; no null placeholder or later backfill."`
+    - **`analyst_leakage_scan_sha256`**: `"SHA-256 of whole finalized scan-file bytes. Required in payload.provenance of the signed release and downstream records attesting scan acceptance; absent in the scan itself; never in deterministic_result."`
+  - **`no_recursive_result_data_binding`**: `"No result/alias/scan/release enters analyst payload. Pre-dataset commitments/spec approvals cannot bind future data. The immutable dataset-grounded scan carries both aliases but no future release hash; release carries both aliases and the scan hash but no self-hash. Original scan/release bytes are copied unchanged into the archive."`
+  - **`pre_release_scan_provenance`**:
+    - **`authoritative_contract`**: `"Oracle section 2.5.2; exact field paths, bindings, ordered actions, rejection reasons and signature semantics are incorporated in full."`
+    - **`scan_artifact`**: `"analyst_leakage_scan.json"`
+    - **`dataset_grounded`**: `true`
+    - **`has_deterministic_result`**: `false`
+    - **`mandatory_aliases`**:
+      - `"dataset_package_hash"`
+      - `"analyst_view_hash"`
+    - **`alias_location`**: `"payload.provenance"`
+    - **`scan_phase_field`**: `"payload.provenance.verification_phase_at_creation"`
+    - **`scan_phase_literal`**: `"LOCAL_BYTES_VERIFIED"`
+    - **`scan_phase_field_mutable`**: `false`
+    - **`local_verification`**: `"Complete finalized analyst payload bytes -> member/content digest; match both aliases, manifest package_content_sha256 and root digest sidecar. Bind exact manifest hash and already committed run/profile/contract/schema/exposure inputs. Existing leakage obligations unchanged; scanner receives analyst/public inputs only."`
+    - **`scan_release_hash_presence`**: `"ABSENT_BEFORE_AND_AFTER_RELEASE_NOT_NULL"`
+    - **`scan_self_hash_presence`**: `"ABSENT"`
+    - **`scan_hash_operation`**: `"SHA-256 of whole finalized original scan bytes, computed outside the scan only after finalization."`
+    - **`release_record_artifact`**: `"dataset_release_record.json"`
+    - **`release_record_has_both_aliases`**: `true`
+    - **`release_record_own_hash_presence`**: `"ABSENT"`
+    - **`release_record_required_bindings`**:
+      - `"both exact manifest hashes"`
+      - `"both package-content commitments"`
+      - `"exact scan-file SHA-256"`
+      - `"both analyst content aliases"`
+      - `"run ID and immutable profile/artifact groups"`
+      - `"benchmark commitment and contract-set hashes"`
+      - `"run/research/oracle protocol versions, exact analyst member-schema projection and complete oracle schema IDs without oracle paths"`
+      - `"exposure lineage/class/history/parent"`
+      - `"attributable ORACLE_CUSTODIAN approval of all release fields"`
+    - **`release_authentication`**: `"After signing, reverify unchanged scan bytes, PASS status, all alias/manifest/member/sidecar/release/commitment/schema/profile/exposure bindings and approval. Oracle package verification remains custody-side; analyst consumers verify only its signed opaque association."`
+    - **`authenticated_phase`**: `"RELEASE_AUTHENTICATED is a derived verification relationship, not a scan field or new run state."`
+    - **`ordered_actions`**:
+      - `"FINALIZE_PACKAGES_MANIFESTS_SIDECARS"`
+      - `"LOCAL_BYTE_VERIFICATION_AND_LEAKAGE_SCAN"`
+      - `"FINALIZE_IMMUTABLE_SCAN"`
+      - `"HASH_SCAN_EXACT_BYTES"`
+      - `"SIGN_AND_FINALIZE_RELEASE"`
+      - `"HASH_RELEASE_AND_CROSS_AUTHENTICATE"`
+      - `"ENTER_ANALYST_PACKAGE_RELEASED_AFTER_EXISTING_LOCK_L"`
+    - **`downstream_precondition`**: `"Valid release authentication; local verification or a cached status alone is insufficient. Apply Oracle section 2.5.2 failures and retain last valid lifecycle state."`
+    - **`downstream_provenance`**: `"Both aliases in their registered locations; exact analyst manifest and signed release hashes in payload.provenance. Records attesting acceptance of scan, including data_contract_validation.json, also bind exact scan hash there."`
+    - **`post_signing_scan_mutation_allowed`**: `false`
+    - **`new_receipt_package_gate_or_lifecycle_state`**: `false`
+    - **`archive_rule`**: `"Copy original scan and release bytes unchanged; never add a release hash or authenticated flag to scan."`
+    - **`required_failure_codes`**:
+      - `"SCAN_LOCAL_PROVENANCE_MISMATCH"`
+      - `"ANALYST_LEAKAGE_SCAN_FAILED"`
+      - `"SCAN_IMMUTABILITY_VIOLATION"`
+      - `"DATASET_RELEASE_APPROVAL_INVALID"`
+      - `"LEAKAGE_SCAN_HASH_MISMATCH"`
+      - `"DATASET_RELEASE_BINDING_MISMATCH"`
+      - `"DATASET_RELEASE_NOT_AUTHENTICATED"`
+      - `"CIRCULAR_PROVENANCE_FIELD"`
+    - **`fixture_reference`**: `"Golden_Fixtures_v0.2.5.yaml pre_release_scan_provenance_fixtures"`
+- **`placement_rule`**: `"Dataset-grounded records carry both frozen aliases per hashing.mandatory_data_hash_domains. The pre-release scan and signed release carry them in payload.provenance with the exact producer-side lifecycle in hashing.pre_release_scan_provenance and Oracle section 2.5.2; neither has deterministic_result or a dataset_release_record_sha256. Ordinary downstream records require signed-release authentication and its exact hash in surrounding provenance. Run/profile/approval/exposure and volatile scan/manifest/release hashes never enter deterministic_result; no arbitrary exclusion mask."`
+- **`pre_release_record_schema_scope`**: `"For analyst_leakage_scan.json and dataset_release_record.json only, the exhaustive validation/governance field schemas in Oracle section 2.5.2 replace analysis-specific every_result_and_claim_requires fields. Both remain dataset-grounded with both aliases and all registered benchmark/contract/profile/exposure bindings. No other downstream result or claim is exempted."`
 
 ## 20. Human governance, run profiles and exposure lineage
 
@@ -1303,43 +1359,43 @@ The sections below are a lossless human-readable rendering of the complete typed
   - **`full_system`**: `"DECISION_FROZEN"`
   - **`slice_1_only`**: `"DECISION_NOT_IN_SCOPE"`
 - **`approval_gates`**:
-  - **Item 1**:
+  - Item 1:
     - **`id`**: `"A_TREATMENT_BAU_PROTECTION_APPROVAL"`
     - **`required_roles`**:
       - `"BUSINESS_PROTECTION_APPROVER"`
     - **`all_listed_role_approvals_required`**: `true`
-  - **Item 2**:
+  - Item 2:
     - **`id`**: `"B_SPEC_SAP_ECONOMICS_POLICY_GUARDRAIL_DECISION_APPROVAL"`
     - **`required_roles`**:
       - `"METHOD_APPROVER"`
       - `"BUSINESS_PROTECTION_APPROVER"`
     - **`all_listed_role_approvals_required`**: `true`
-  - **Item 3**:
+  - Item 3:
     - **`id`**: `"C_DGP_SEEDS_PACKAGE_SEPARATION_APPROVAL"`
     - **`required_roles`**:
       - `"ORACLE_CUSTODIAN"`
     - **`all_listed_role_approvals_required`**: `true`
-  - **Item 4**:
+  - Item 4:
     - **`id`**: `"D_ANALYST_DATA_AND_DESIGN_READINESS"`
     - **`required_roles`**:
       - `"METHOD_APPROVER"`
     - **`all_listed_role_approvals_required`**: `true`
-  - **Item 5**:
+  - Item 5:
     - **`id`**: `"E_ANALYSIS_FREEZE"`
     - **`required_roles`**:
       - `"RESEARCH_OWNER"`
     - **`all_listed_role_approvals_required`**: `true`
-  - **Item 6**:
+  - Item 6:
     - **`id`**: `"F_CAUSAL_CLAIM_DISPOSITION_APPROVED_WITHHELD_OR_NOT_REQUESTED"`
     - **`required_roles`**:
       - `"METHOD_APPROVER"`
     - **`all_listed_role_approvals_required`**: `true`
-  - **Item 7**:
+  - Item 7:
     - **`id`**: `"G_BUSINESS_PROTECTION_APPROVAL_AND_DECISION_FREEZE_OR_SLICE1_SCOPE_RECORD"`
     - **`required_roles`**:
       - `"BUSINESS_PROTECTION_APPROVER"`
     - **`all_listed_role_approvals_required`**: `true`
-  - **Item 8**:
+  - Item 8:
     - **`id`**: `"H_ORACLE_UNBLIND_APPROVAL"`
     - **`required_roles`**:
       - `"ORACLE_CUSTODIAN"`
@@ -1391,6 +1447,7 @@ The sections below are a lossless human-readable rendering of the complete typed
   - **`authorized_generation_is_analyst_exposure`**: `false`
   - **`public_targets_are_exposure`**: `false`
 - **`approval_role_reference`**: `"Architecture section 5; gate records preserve each required accountable role."`
+- **`analyst_package_release_precondition`**: `"Within the existing BENCHMARK_COMMITTED -> ANALYST_PACKAGE_RELEASED transition, complete Oracle section 2.5.2 scan finalization, exact hashing, signed release and cross-authentication before the existing lock-L-gated release. The two verification phases add no lifecycle state or approval gate; failure retains the last valid state and blocks unblinding."`
 
 ## 21. Truth-sequestered benchmark and payload scope
 

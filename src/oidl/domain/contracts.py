@@ -1,4 +1,4 @@
-"""Pure v0.2.4 validation (Bundle §§2–4; Oracle §§2.1, 2.4–2.6)."""
+"""Pure v0.2.5 validation (Bundle §§2–4; Oracle §§2.1, 2.4–2.6)."""
 
 from dataclasses import dataclass
 from hashlib import sha256
@@ -100,7 +100,8 @@ def typed_equal(left, right) -> bool:
 
 _ROOT = re.compile(r"\*\*Root field:\*\* \x60([^\x60]+)\x60")
 _KEY = re.compile(r"- \*\*\x60([^\x60]+)\x60\*\*:(?: \x60([^\x60]*)\x60)?")
-_ITEM = re.compile(r"- \*\*Item ([1-9][0-9]*)\*\*:")
+# Bundle §3: Item n is structural; bold emphasis is navigational.
+_ITEM = re.compile(r"- (?:\*\*Item ([1-9][0-9]*)\*\*|Item ([1-9][0-9]*)):")
 _SCALAR = re.compile(r"- \x60([^\x60]*)\x60")
 
 
@@ -138,7 +139,7 @@ def _block(rows, start, depth):
                 value, position = _literal(token), position + 1
             result[name] = value
         elif not mapping and item:
-            if item[1] != str(len(result) + 1):
+            if (item[1] or item[2]) != str(len(result) + 1):
                 raise ContractError("MARKDOWN_LOADING", "NONCONTIGUOUS_ITEM_NUMBER")
             value, position = _block(rows, position + 1, depth + 1)
             result.append(value)
@@ -235,10 +236,10 @@ def validate_versions(spec: dict, texts: dict[str, str], fixtures: dict) -> None
     """Check release/schema identity and independently versioned linked methods."""
     identity = spec.get("specification")
     expected = {
-        "document_id": "ResearchSpec_v0.2.4",
+        "document_id": "ResearchSpec_v0.2.5",
         "version": RELEASE,
         "bundle_release": RELEASE,
-        "human_readable_twin": "ResearchSpec_v0.2.4.md",
+        "human_readable_twin": "ResearchSpec_v0.2.5.md",
         "required_linked_contracts": LINKED_CONTRACTS,
         "semantic_versions": SEMANTIC_VERSIONS,
     }
@@ -248,13 +249,13 @@ def validate_versions(spec: dict, texts: dict[str, str], fixtures: dict) -> None
     ):
         raise ContractError("RELEASE_IDENTITY", "UNSUPPORTED_OR_MISSING_VERSION_LINK")
     headers = {
-        "Contract_Bundle_v0.2.4.md": ("Release", RELEASE),
-        "Architecture_v0.2.4.md": ("Version", RELEASE),
-        "Slice_1_Definition_of_Done_v0.2.4.md": ("Version", RELEASE),
+        "Contract_Bundle_v0.2.5.md": ("Release", RELEASE),
+        "Architecture_v0.2.5.md": ("Version", RELEASE),
+        "Slice_1_Definition_of_Done_v0.2.5.md": ("Version", RELEASE),
         "Statistical_Analysis_Plan_v0.3.0.md": ("SAP version", "0.3.0"),
+        "Oracle_Benchmark_Spec_v0.4.0.md": ("Version", "0.4.0"),
         **{f"{name}_v0.3.0.md": ("Version", "0.3.0") for name in (
             "DGP_Parameter_Sheet", "Decision_Rule_Spec", "Guardrail_Spec",
-            "Oracle_Benchmark_Spec",
         )},
     }
     for path, (label, expected_version) in headers.items():
@@ -301,9 +302,9 @@ def verify_release_bytes(files: dict[str, bytes]) -> VerifiedRelease:
             raise ContractError("RELEASE_INTEGRITY", "FILE_SHA256_MISMATCH")
     texts = {path: release_text(files[path]) for path in sorted(manifest)}
     spec = load_research_twins(
-        texts["ResearchSpec_v0.2.4.md"], texts["ResearchSpec_v0.2.4.yaml"],
+        texts["ResearchSpec_v0.2.5.md"], texts["ResearchSpec_v0.2.5.yaml"],
     )
-    fixtures = load_yaml_mapping(texts["Golden_Fixtures_v0.2.4.yaml"])
+    fixtures = load_yaml_mapping(texts["Golden_Fixtures_v0.2.5.yaml"])
     validate_versions(spec, texts, fixtures)
     return VerifiedRelease(
         canonical_json(spec), tuple((path, manifest[path]) for path in sorted(NORMATIVE_PATHS)),

@@ -1,10 +1,10 @@
-# Slice 1 Definition of Done v0.2.4
+# Slice 1 Definition of Done v0.2.5
 
 ## Truth-Sequestered Randomized Causal Core
 
 **Project:** Onboarding Intervention Decision Lab  
 **Slice/run profile:** `SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE`  
-**Version:** `0.2.4`  
+**Version:** `0.2.5`  
 **Status:** `FINAL_PRE_IMPLEMENTATION`
 
 “Blind” in the retained capability ID refers to sequestered individual/realized truth, not to intentionally public aggregate design targets. A run's separate immutable exposure class states whether it is genuinely pre-exposure or a post-unblind reanalysis.
@@ -24,7 +24,7 @@ No placeholder recommendation, HTE result, p-value significance claim or policy 
 1. Validate and approve contracts; custodian prepares the fixed assignment sequences without population outcome generation.
 2. Resolve exposure lineage and commit the immutable profile, required artifact groups, seed digest, assignment payload, contract set, code and environment.
 3. Authorized isolated generation creates the complete screened cohort, calibrated probabilities, potential paths and observed projection; the analyst runtime receives no secret/potential truth.
-4. Finalize and hash separate payloads; scan analyst data and bind both manifests in a dataset release record. Release after the frozen data lock.
+4. Execute Oracle §2.5.2: finalize both payloads/manifests/sidecars → locally verify both analyst data aliases and scan contents → finalize immutable analyst_leakage_scan.json → hash the exact scan → obtain/finalize the signed dataset_release_record.json → hash that release and cross-authenticate all unchanged predecessor bytes and approval → enter ANALYST_PACKAGE_RELEASED only after the existing data lock L. No release-record hash is required during scan creation or ever backfilled into that scan; local byte verification alone permits no downstream acceptance.
 5. Validate analyst-only data, perform design audit and descriptive fidelity diagnostics, then calculate the primary result.
 6. Freeze analysis and predecessor hashes; record calculation-only causal and decision scope.
 7. Close the exact pre-unblind archive and its acyclic manifest/digest; obtain signed unblind authorization with all hash, profile and lineage checks.
@@ -46,7 +46,8 @@ Exact CLI/framework syntax is engineering discretion. Inputs, outputs, scopes an
 | spec validate | Eleven normative artifacts and release integrity manifest | Typed ResearchSpec equivalence check, linked version check, exact contract hashes; reject invalid YAML, duplicate keys, unknown normative member, unsupported version or hash mismatch |
 | benchmark commit | Approved contracts; immutable Slice 1 profile; custodian sequence/seed commitments; signed exposure snapshot; code/environment identity | benchmark_commitment.json with **all** Oracle §2.6 fields and exact required artifact groups; no population outcomes; reject missing binding, profile downgrade, unknown exposure history or any raw seed in public output |
 | cohort generate | Committed DGP/profile; raw seed injected only in authorized custody boundary | Complete screened snapshot, observed data, exact Slice 1 oracle payload and manifests; fail on any quota, calibration, lifecycle or generation-contract violation; never widen a bracket/window or reroll |
-| analyst validate | Analyst payload, public contracts and release bindings only | Cohort/eligibility/timestamp/outcome reconciliation, leakage and integrity validation; no oracle access |
+| dataset release (existing generation-to-release step) | Finalized separate packages/manifests/sidecars; public committed inputs; existing custodian approval | Dataset-grounded scan with both aliases and LOCAL_BYTES_VERIFIED creation record; then signed release and successful Oracle §2.5.2 cross-authentication before ANALYST_PACKAGE_RELEASED; no oracle mount to the scanner and no new gate/artifact |
+| analyst validate | Analyst payload, public contracts, unchanged scan and signed release bindings only | First reverify release/scan authentication; then cohort/eligibility/timestamp/outcome reconciliation, leakage and integrity validation; reject unverified release, scan mutation or binding mismatch; no oracle access |
 | design audit | Validated randomized data and public assignment commitment | Exact arrival-slot/bitstring audit; arm/block counts; SMD diagnostics; descriptive fidelity/missingness; never rerandomize or choose another estimator |
 | analysis primary | Validated data and SAP | Primary risks, block contributions, ITT, variance, SE, 95% limits, p-value, exact zero-SE diagnostics and provenance |
 | analysis freeze | All analyst results and approvals | Immutable analysis freeze record, calculation-only claim/decision scope, then complete archive; no descendant archive digest embedded in its own members |
@@ -75,7 +76,7 @@ Analyst `payload/` contains the four DGP §15.3 logical tables plus their logica
 
 Oracle `payload/` contains exactly the eight Slice 1 logical components in Oracle §1.2. Root sidecars are oracle_package_manifest.json and oracle_package_commitment_hash.txt. Raw canonical/hidden/child secrets never enter that evaluator payload.
 
-Outside both package roots: analyst_leakage_scan.json and dataset_release_record.json. The release record binds exact manifest hashes and member-content digests; the analyst-facing record uses a non-resolving oracle commitment ID, never its physical path. Root manifests/sidecars are excluded from their own member sets. Every regular file in payload/ is included and no undeclared file is allowed.
+Outside both package roots: analyst_leakage_scan.json and dataset_release_record.json, with the exact run envelopes, field paths, source hashes, approval and failure rules in Oracle §2.5.2. Both are dataset-grounded and carry dataset_package_hash and analyst_view_hash in payload.provenance; neither has deterministic_result. The scan verifies aliases directly from finalized analyst bytes/manifest/sidecar and records LOCAL_BYTES_VERIFIED at creation. It never contains dataset_release_record_sha256 or its own hash, before OR after signing. The signed release binds both exact manifests/content commitments and the finalized scan-file hash; it contains no hash of itself. Only successful external cross-authentication permits release. Analyst-facing oracle association is a non-resolving commitment ID, never a physical path. No new receipt or provisional artifact is required. Root manifests/sidecars remain excluded from their own member sets; every regular file in payload/ is included and no undeclared file is allowed.
 
 ### 3.3 Analyst calculation records
 
@@ -89,7 +90,7 @@ Outside both package roots: analyst_leakage_scan.json and dataset_release_record
 - primary_itt_result.md (deterministic rendering only);
 - analysis_deviations.json.
 
-The JSON records use Oracle §2.4 run envelopes. Calculated reproducible output lives in `payload.deterministic_result`; the remaining envelope/provenance binds run identity and approvals. An empty warning/deviation list is explicit, not an omitted record. No NaN/Infinity is emitted. Mandatory dataset_package_hash and analyst_view_hash are the identical, authenticated analyst content digest under Oracle §2.5.1 and reside in deterministic_result. Volatile exact manifest/release-record hashes belong only in payload.provenance; they cannot replace the aliases or contaminate deterministic_result.
+Data_contract_validation.json must explicitly bind payload.provenance.analyst_leakage_scan_sha256 in addition to the exact analyst manifest and signed release hashes after successful Oracle §2.5.2 authentication. The scan itself is not rewritten. The JSON records use Oracle §2.4 run envelopes. Calculated reproducible output lives in `payload.deterministic_result`; the remaining envelope/provenance binds run identity and approvals. An empty warning/deviation list is explicit, not an omitted record. No NaN/Infinity is emitted. Mandatory dataset_package_hash and analyst_view_hash are the identical, authenticated analyst content digest under Oracle §2.5.1 and reside in deterministic_result. Volatile exact manifest/release-record hashes belong only in payload.provenance; they cannot replace the aliases or contaminate deterministic_result.
 
 ### 3.4 Freeze, authorization and comparison
 
@@ -168,7 +169,7 @@ Acceptance never requires a positive/significant estimate, proximity to +1.33 pp
 
 ### 7.1 Golden mathematical and boundary fixtures
 
-Implement all primary-statistics and boundary fixtures in Golden_Fixtures_v0.2.4.yaml: equal/unequal block weighting; positive/negative/zero contrasts; one zero-variance block; all-zero and all-one outcomes; zero-SE positive/negative/nonzero contrasts; cancelling constant block effects; empty and singleton block-arm rejection. Small fixtures test the estimator component, not the full canonical quota validator. Include the complete sixteen-canonical-block NON_DYADIC_CANONICAL_CANCELLATION fixture, permutations and arm swap, plus GENERAL_UNEQUAL_ALLOCATION_CANCELLATION; exact rational aggregation and exact zero output must hold for all.
+Implement all primary-statistics and boundary fixtures in Golden_Fixtures_v0.2.5.yaml: equal/unequal block weighting; positive/negative/zero contrasts; one zero-variance block; all-zero and all-one outcomes; zero-SE positive/negative/nonzero contrasts; cancelling constant block effects; empty and singleton block-arm rejection. Small fixtures test the estimator component, not the full canonical quota validator. Include the complete sixteen-canonical-block NON_DYADIC_CANONICAL_CANCELLATION fixture, permutations and arm swap, plus GENERAL_UNEQUAL_ALLOCATION_CANCELLATION; exact rational aggregation and exact zero output must hold for all.
 
 Corresponding timing fixtures cover future-help anchoring, post-settlement reversal, noncallable registration support and structurally absent callbacks. Additional explicit-input fixtures cover repeated failure at the second terminal disposition, ties, excluded statuses, absent events, and reminder suppression by a protection signal at/before R+36h. Verify the same hard-restriction predicate in contact stopping, including equality and missing-input behavior. Compare exact integer timestamps and typed null/status expectations. Golden inputs are explicit fabricated records, not seed-derived canonical samples.
 
@@ -186,7 +187,7 @@ Row order, input file enumeration and categorical label enumeration cannot alter
 
 Reject skipped states, absent approvals, unblind before closed archive, analysis overwrites, profile downgrade or missing profile artifacts. Verify that new run IDs preserve prior-exposure classification. Early truth disclosure must fail the run and append an incident. A reanalysis still needs valid custody/approval gates but cannot be relabeled blind.
 
-Reject self-containing package manifests/digest sidecars, unlisted payload files, symlinks/path traversal and changed manifest bytes even when the payload digest is unchanged. Verify exact data manifest hashes through release records and exact archive manifest hash through unblind authorization. Governance metadata remains byte-committed, not normalized away.
+Reject self-containing package manifests/digest sidecars, unlisted payload files, symlinks/path traversal and changed manifest bytes even when the payload digest is unchanged. Verify exact data manifest hashes through release records and exact archive manifest hash through unblind authorization. Governance metadata remains byte-committed, not normalized away. Implement every pre_release_scan_provenance_fixture in Golden_Fixtures_v0.2.5.yaml. In particular test valid local scan followed by valid signed authentication; wrong signed scan hash; wrong local analyst content alias; post-signing scan mutation; and downstream acceptance attempted before release authentication. Local verification must succeed without a release record but must not authorize analyst use. No scan field may be backfilled after release, and the release never contains its own hash. Check exact signed scope/profile/schema/exposure bindings and the existing conceptual lock L before the release transition.
 
 ### 7.5 Post-unblind oracle consistency
 
@@ -200,7 +201,7 @@ Development uses noncanonical fixtures only. The custodian injects the canonical
 
 ## 8. Exact reproducibility versus integrity
 
-Follow Oracle §2.5. Data member digests are exact-byte, metadata-free commitments and repeat under identical frozen inputs/serialization. Run envelopes and archives include legitimate run/time/approval/exposure differences and are not required to have identical overall hashes across different runs. The two mandatory data aliases are Oracle §2.5.1 package-content digests, not manifest/release hashes; verify them against the canonical member preimage and authenticated source field. Their registered deterministic_result subobjects must repeat; no arbitrary field-stripping/normalization mask is allowed. An original run's exact bytes, including governance metadata, must always verify against its original integrity commitments.
+Follow Oracle §2.5. Data member digests are exact-byte, metadata-free commitments and repeat under identical frozen inputs/serialization. Run envelopes and archives include legitimate run/time/approval/exposure differences and are not required to have identical overall hashes across different runs. The two mandatory data aliases are Oracle §2.5.1 package-content digests, not manifest/release hashes. The pre-release scan performs the direct byte check and the subsequent signed release authenticates its unchanged bytes under §2.5.2; every downstream consumer requires that release authentication. Exact scan/release hashes remain provenance only, not deterministic-result inputs. Their registered deterministic_result subobjects must repeat; no arbitrary field-stripping/normalization mask is allowed. An original run's exact bytes, including governance metadata, must always verify against its original integrity commitments.
 
 ## 9. Oracle comparison contract
 

@@ -6,6 +6,7 @@ import sys
 
 from oidl.adapters.release import load_release, validation_records, write_validation_records
 from oidl.domain.contracts import ContractError
+from oidl.domain.release_identity import RELEASE
 
 
 def main(argv=None) -> int:
@@ -35,7 +36,7 @@ def main(argv=None) -> int:
         print(str(error), file=sys.stderr)
         return 1
     print(
-        f"PASS: frozen release 0.2.4; {len(release.release_hashes)} release hashes; "
+        f"PASS: frozen release {RELEASE}; {len(release.release_hashes)} release hashes; "
         f"{len(release.contract_hashes)} normative members; full typed ResearchSpec parity."
     )
     print(f"contract_set_hash={release.contract_set_hash}")
