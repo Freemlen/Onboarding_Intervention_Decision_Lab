@@ -1,0 +1,1491 @@
+specification:
+  document_id: ResearchSpec_v0.2.4
+  study_id: OIDL-ONBOARDING-ASSIST-001
+  version: 0.2.4
+  status: FINAL_PRE_IMPLEMENTATION
+  human_readable_twin: ResearchSpec_v0.2.4.md
+  required_linked_contracts:
+    dgp_parameter_card: DGP_Parameter_Sheet_v0.3.0
+    statistical_analysis_plan: Statistical_Analysis_Plan_v0.3.0
+    decision_rule: Decision_Rule_Spec_v0.3.0
+    guardrails: Guardrail_Spec_v0.3.0
+    oracle_protocol: Oracle_Benchmark_Spec_v0.3.0
+    architecture: Architecture_v0.2.4
+    contract_bundle: Contract_Bundle_v0.2.4
+    slice_1: Slice_1_Definition_of_Done_v0.2.4
+    golden_fixtures: Golden_Fixtures_v0.2.4
+  equivalence_rule:
+    normative: true
+    rule: 'Markdown and YAML encode the same complete typed normative tree. Markdown is a lossless sectioned rendering
+      of this tree: identical keys, ordered lists, scalar values, types, formulas, rationales and prohibitions.
+      A mismatch fails release; neither form may be silently preferred. Linked-contract requirements are incorporated
+      identically by reference in both twins.'
+  bundle_release: 0.2.4
+  semantic_versions:
+    research_spec: 0.2.4
+    architecture: 0.2.4
+    dgp: 0.3.0
+    sap: 0.3.0
+    decision_rule: 0.3.0
+    guardrails: 0.3.0
+    oracle_protocol: 0.3.0
+    slice_1: 0.2.4
+    golden_fixtures: 0.2.4
+scope_and_claim_boundary:
+  scope: SYNTHETIC_PORTFOLIO_BENCHMARK_ONLY
+  one_use_case: true
+  one_customer_cohort: true
+  one_treatment_assignment: true
+  one_primary_outcome: true
+  public_evidence_use: Public documentation may establish that journey steps or constraints can exist; it does not
+    establish internal practice and must not be used to import effect sizes into the synthetic DGP.
+  prohibited_real_firm_inferences:
+  - internal onboarding workflow
+  - targeting logic
+  - KYC or AML operations
+  - scripts
+  - KPIs
+  - conversion rates
+  - customer value or CLV
+  - costs or staffing
+  - experiments
+  - controls
+  - causal effects
+  evidence_roles:
+  - PUBLIC_FACT
+  - DIRECT_CAUSAL_EVIDENCE
+  - ADJACENT_CAUSAL_EVIDENCE
+  - REASONABLE_INFERENCE
+  - SYNTHETIC_ASSUMPTION
+  - UNKNOWN_INTERNAL_FACT
+  numerical_quantity_role: SYNTHETIC_ASSUMPTION
+product_decision:
+  research_question: Among unique newly registered synthetic customers who are still unfunded and eligible at a
+    fixed 12-hour landmark, what is the customer-level causal effect of assignment to a standardized neutral onboarding-assistance
+    package on the probability of first successful commercial activation by seven days after registration?
+  confirmatory_hte_question: Does the assignment effect differ between customers with and without a recoverable
+    KYC-friction state observed before the landmark?
+  reference_rollout_period_days: 28
+  policy_set:
+  - id: NONE
+    definition: Retain documented business as usual; assign no eligible customer to the proactive package.
+  - id: TARGETED
+    definition: Assign only customers with pre-T0 recoverable KYC friction.
+  - id: BROAD
+    definition: Assign every eligible customer.
+  decision_representation:
+    recommended_policy:
+      enum:
+      - NONE
+      - TARGETED
+      - BROAD
+      meaning: Highest point-estimated SVU policy value among capacity-feasible policies under the base economic
+        scenario.
+    evidence_status:
+      enum:
+      - READY
+      - UNCERTAIN
+      - GUARDRAIL_BLOCKED
+      meaning: Whether the point recommendation is sufficiently distinguished and passes fidelity and guardrail
+        requirements.
+    operational_action:
+      enum:
+      - HOLD
+      - DEPLOY_TARGETED
+      - DEPLOY_BROAD
+      meaning: Final authorized action after the deterministic default mapping, causal-claim gate, business/protection
+        approval, and any allowed more-conservative override.
+    statistical_guardrail_action:
+      enum:
+      - HOLD
+      - DEPLOY_TARGETED
+      - DEPLOY_BROAD
+      meaning: Immutable deterministic action from recommended_policy and evidence_status before the causal-claim
+        gate.
+    default_operational_action:
+      enum:
+      - HOLD
+      - DEPLOY_TARGETED
+      - DEPLOY_BROAD
+      meaning: Immutable action after the causal-claim gate and before optional conservative business/protection
+        override.
+  p_value_is_decision_rule: false
+unit_and_cohort:
+  randomization_unit: person_id
+  analysis_unit: person_id
+  unit_definition: One unique natural person/customer.
+  one_randomization_per_person: true
+  one_primary_outcome_per_person: true
+  account_hierarchy:
+    accounts_are_child_entities: true
+    account_rows_are_independent_units: false
+    roll_up_key: person_id
+  registration:
+    symbol: R_i
+    definition: Timestamp at which person i completes the synthetic registration event starting the onboarding episode.
+    newly_registered_rules:
+    - First completed registration in the synthetic system.
+    - No successful funded account before R_i; the 500 screened early depositors fund during this new episode before
+      T0 and are excluded.
+    - Not already enrolled in another onboarding-assistance experiment.
+  canonical_sizes:
+    screened_registration_cohort_n: 55000
+    landmark_eligible_randomized_n: 50000
+    screened_out_nonrandomized_n: 5000
+    causal_estimands_reference_randomized_n: 50000
+  canonical_screened_generation:
+    authoritative_rule: DGP Parameter Sheet sections 2.2-2.6, 4, 5.1 and 17.1.1 completely specify all 55000 screened
+      persons.
+    excluded_period_assignment: Within each exact exclusion reason, rank under excluded_period|{reason}; assign
+      one quarter to each of P1,P2,P3,P4.
+    excluded_market_assignment: Within reason/period, rank under excluded_market|{reason}|P{k}; assign NORMAL 80%,
+      PAYMENT_CONSTRAINED 20%; no eligible quotas change.
+    excluded_source_state: Three KYC-restricted exclusions have their identical source-state name and null friction/step
+      count. Other four exclusions have NO_OBSERVED_KYC_FRICTION, friction=0, and the existing no-friction step
+      distribution.
+    no_window_semantics: NO_PERMITTED_CALLING_WINDOW has valid contact routes; sample a whole UTC-second instant
+      from the noncallable-support complement in its assigned period, without a DAY/EVENING/NIGHT restriction. Its
+      shift/load and their source timestamps are null, structural N/A; their full-length draws are ignored.
+    excluded_no_post_t0_path: true
+    excluded_assignment_block_is_null: true
+    excluded_primary_outcome_row_exists: false
+    source_timestamps: 'Registration context and permissions: R; KYC state: R+6h; applicable completed steps: R+9h;
+      eligibility/absence assessment: T0. Prior outreach occurrence: R+6h only for that exclusion; early-deposit
+      initiation R+1s and settlement Tick(R+1min,T0,u) only for that exclusion. Absent/inapplicable occurrence timestamps
+      are null.'
+    default_flags: Activation journey/telephone/email/window/maturity/unique registration pass; prior outreach and
+      successful deposit by T0 false. Override only the exact reason-specific fields in DGP section 2.6. Restricted
+      KYC state and journey-in-principle failure describe the same exclusion.
+    missing_baseline_behavior: Unregistered null/missing applicable source field is a hard contract failure; missing
+      data do not form another canonical exclusion quota.
+    null_source_timestamp_rule: An inapplicable field has both null value and null source timestamp; all applicable
+      registration-context source timestamps equal R.
+clock_semantics:
+  authoritative_storage_timezone: UTC
+  timestamps_require_timezone: true
+  local_time_use: Fixed synthetic UTC offset for registration shift and calling-hour rules; no DST.
+  permitted_proactive_calling_window_local:
+    start_inclusive: 09:00
+    end_exclusive: '20:00'
+  landmark:
+    symbol: T0_i
+    formula: T0_i = R_i + 12 hours
+    offset_hours: 12
+    snapshot_event_time_rule: event_timestamp <= T0_i
+    deposit_at_or_before_t0_is_ineligible: true
+    randomization_occurs_after_snapshot_validation: true
+  primary_horizon:
+    symbol: H_i
+    formula: H_i = R_i + 168 hours
+    offset_hours: 168
+    origin: REGISTRATION
+    authoritative_business_label: First successful commercial activation within seven days of registration.
+    eligible_observed_success_interval: (T0_i, H_i]
+    post_assignment_opportunity_hours: 156
+    business_interpretation: Effect on seven-day-from-registration activation among customers who remain unfunded
+      12 hours after registration; not an effect among all registrants from registration.
+    causal_interpretation: The causal contrast begins at assignment at T0. Pre-T0 activity defines the eligible
+      population and modifier and is not affected by treatment.
+  treatment_exposure_window:
+    assignment_time: T0_i
+    initial_call_attempt:
+      earliest: after T0_i
+      deadline: R_i + 24 hours
+      deadline_offset_hours: 24
+      permitted_local_hours_required: true
+    unreachable_followup_email:
+      only_if_unreachable: true
+      exact_delay_after_attempt_minutes: 5
+      deadline: R_i + 24 hours
+    customer_requested_callback:
+      maximum_count: 1
+      must_be_customer_requested: true
+      available_only_after_unreachable_followup_email_seen: true
+      available_after_reached_initial_call: false
+      maximum_delay_after_request_hours: 24
+      absolute_deadline: R_i + 72 hours
+      absolute_deadline_offset_hours: 72
+    unsolicited_retry_allowed: false
+    proactive_contact_after_registration_plus_24h_allowed: false
+    only_late_contact_allowed: Customer-requested callback by R_i + 72 hours.
+  maturity:
+    final_data_lock_symbol: L
+    canonical_final_data_lock: synthetic_epoch + 35 days
+    canonical_registration_intake: '[synthetic_epoch, synthetic_epoch + 28 days)'
+    final_data_lock_declared_before_cohort_generation: true
+    randomized_intake_rule: H_i <= L
+    simulated_assignment_time_remains: T0_i
+    analyst_package_release_after_data_lock: true
+    maturity_rule_is_not_outcome_conditioning: true
+    immature_outcome_coded_zero: false
+    canonical_all_randomized_windows_complete: true
+    primary_status_time: H_i
+    later_reversal_changes_primary: false
+  synthetic_epoch: '2000-01-01T00:00:00.000000Z'
+  timestamp_precision: Exact integer microseconds after synthetic epoch; registration instants are whole seconds;
+    six fractional digits in UTC rendering.
+  interval_mapping_reference: DGP section 4.3 Tick(a,b,u), permitted-union cumulative tick selection and endpoint
+    rules.
+  node_specific_timing:
+    authoritative_rule: DGP sections 4.3-4.5 and 11 are the complete lifecycle contract; no earliest-any-event anchor.
+    package_enrollment: Intended treatment at T0; contaminated control at T0+1 microsecond, even if no attempt;
+      no enrollment timestamp when no package.
+    first_exposure: Reached initial call start, otherwise seen email at followup sent +1 hour; no timestamp if E=0.
+    substantive_package_help: Initial accepted-help completion or completed requested callback, never exposure-only;
+      BAU help has its own timestamp.
+    first_substantive_help: t_J is the minimum of existing substantive package-help and BAU-help times, not a non-help
+      exposure time.
+    verification_anchor: max(T0,t_J when J=1); r=1 for no friction but no post-T0 resolution event is emitted for
+      that group.
+    funding_anchor: max(T0, applicable resolved verification time, t_E when E=1, t_J when J=1).
+    downstream_mapping: Original Dirichlet draws become node-specific conditional fractions with reserved terminal
+      microseconds. Funding cannot precede its active E/J/verification inputs; settlement is strictly later than
+      initiation; reversal is strictly later than settlement.
+    observed_projection: Only assignment-selected events enter analyst records; all absent occurrence timestamps
+      are null with structural N/A, not imputed timestamps.
+    draw_registry_precision: Initial-call and callback-completion registered timing uniforms map to microsecond
+      ticks, not whole seconds; registration alone uses whole seconds.
+eligibility:
+  evaluation_time: T0_i
+  immutable_snapshot_required: true
+  all_conditions_required:
+  - id: FIRST_COMPLETED_REGISTRATION
+    rule: Completed first registration at R_i.
+  - id: NO_SUCCESSFUL_DEPOSIT_BY_T0
+    rule: No successful, settled, valid deposit at or before T0_i.
+  - id: ACTIVATION_JOURNEY_ELIGIBLE_IN_PRINCIPLE
+    rule: Eligible for the activation journey in principle under the synthetic product and jurisdiction regime.
+  - id: PERMITTED_CONTACT_ROUTES
+    rule: Verified and permissibly contactable telephone route plus permitted registered-email follow-up route.
+  - id: CALLING_WINDOW_AVAILABLE
+    rule: At least one continuous 30-minute initial-call scheduling interval is fully contained in permitted local
+      hours after T0_i and ends no later than R_i + 24h - 15 minutes. The 15-minute buffer is the required 5-minute
+      follow-up delay plus a 10-minute synthetic processing margin.
+  - id: NO_PRIOR_MANUAL_CAMPAIGN
+    rule: No prior manual onboarding or conversion-oriented campaign outreach from registration through T0_i.
+  - id: MATURE_PRIMARY_WINDOW
+    rule: Complete primary outcome window through R_i + 168h.
+  - id: UNIQUE_NOT_PREVIOUSLY_ENROLLED
+    rule: No duplicate or linked person already enrolled.
+  - id: ELIGIBLE_KYC_SOURCE_STATE
+    rule: KYC source state is NO_OBSERVED_KYC_FRICTION or one of the three recoverable states.
+  ineligible_kyc_states:
+  - MANUAL_REVIEW_OR_ENHANCED_DUE_DILIGENCE
+  - SANCTIONS_PEP_FRAUD_OR_HARD_INELIGIBILITY
+  - APPROPRIATENESS_OR_PRODUCT_RESTRICTION
+  other_exclusion_reasons:
+  - SUCCESSFUL_DEPOSIT_BY_T0
+  - NO_PERMITTED_CONTACT_ROUTE
+  - NO_PERMITTED_CALLING_WINDOW
+  - PRIOR_MANUAL_CAMPAIGN_OUTREACH
+  - IMMATURE_PRIMARY_WINDOW
+  - DUPLICATE_OR_PREVIOUSLY_ENROLLED_PERSON
+  post_assignment_hard_restriction_strategy: Use DGP §7.5.1 hard_restriction_by(t) and proactive_stop_by(t); prohibit
+    proactive starts at/after stop, retain the assigned arm for ITT, and do not resimulate the frozen generation
+    path.
+  calling_window_boundary: Evaluate lengths of continuous intersections of (T0,R+24h-15min] with permitted local
+    [09:00,20:00). A component duration >=30 minutes passes; lower/upper endpoint exclusion is retained for scheduling.
+kyc_modifier:
+  source_state_field: kyc_source_state_at_t0
+  source_state_timestamp_rule: state_event_timestamp <= T0_i
+  taxonomy:
+    recoverable_eligible:
+    - RECOVERABLE_DOCUMENT_QUALITY
+    - RECOVERABLE_UPLOAD_OR_LIVENESS
+    - RECOVERABLE_INCOMPLETE_ATTEMPT
+    no_observed_recoverable_friction_eligible:
+    - NO_OBSERVED_KYC_FRICTION
+    ineligible:
+    - MANUAL_REVIEW_OR_ENHANCED_DUE_DILIGENCE
+    - SANCTIONS_PEP_FRAUD_OR_HARD_INELIGIBILITY
+    - APPROPRIATENESS_OR_PRODUCT_RESTRICTION
+  binary_field: kyc_friction
+  binary_rule:
+    one_for_states:
+    - RECOVERABLE_DOCUMENT_QUALITY
+    - RECOVERABLE_UPLOAD_OR_LIVENESS
+    - RECOVERABLE_INCOMPLETE_ATTEMPT
+    zero_for_states:
+    - NO_OBSERVED_KYC_FRICTION
+    never_derive_from:
+    - post-assignment events
+    - issue resolution
+    - contact outcome
+    - deposit behavior
+    - later review
+    null_for_states:
+    - MANUAL_REVIEW_OR_ENHANCED_DUE_DILIGENCE
+    - SANCTIONS_PEP_FRAUD_OR_HARD_INELIGIBILITY
+    - APPROPRIATENESS_OR_PRODUCT_RESTRICTION
+    ineligible_null_is_not_friction_zero: true
+  interpretation_boundary: Operational recoverability state; not a proxy for vulnerability, risk appetite, customer
+    value, suitability, or appropriateness.
+treatment:
+  assignment_field: assigned_onboarding_assistance
+  assignment_symbol: Z_i
+  treated_value: 1
+  definition: Assignment at T0 to the complete standardized neutral onboarding-assistance offer.
+  not_equivalent_to:
+  - reached
+  - answered
+  - helped
+  - issue resolved
+  - verified
+  - funded
+  - satisfied
+  treatment_is_incremental_to_bau: true
+  package:
+    initial_human_call_attempt:
+      count: 1
+      permitted_local_hours: true
+      after_t0: true
+      deadline: R_i + 24 hours
+    neutral_email_if_unreachable:
+      count: 1
+      only_if_unreachable: true
+      exact_delay_after_attempt_minutes: 5
+      deadline: R_i + 24 hours
+    customer_requested_callback:
+      maximum_count: 1
+      only_on_explicit_request: true
+      available_only_if_initial_call_unreachable: true
+      request_source: UNREACHABLE_FOLLOWUP_EMAIL_SEEN
+      available_after_reached_initial_call: false
+      later_customer_initiated_help_after_reached_call: BAU_REACTIVE_SUPPORT
+      deadline: R_i + 72 hours
+    stop_rules:
+    - explicit opt-out
+    - hard_restriction_by(contact_start_ts)=true under DGP §7.5.1, including every generated product-protection
+      signal
+    - serious compliance or product-protection concern
+    shared_stop_predicate:
+      definition: proactive_stop_by(t) = hard_restriction_by(t) OR (unwanted_contact_or_optout AND unwanted_contact_or_optout_ts
+        <= t) OR (audit_stop_ts is nonnull AND audit_stop_ts <= t)
+      event_boundary: Evaluate at contact start; stop at exactly the same timestamp takes precedence. Preserve violating
+        fixture evidence; do not delete interactions or randomized persons.
+      authoritative_details: DGP §7.5.1; generated non-serious signals occur after last proactive interaction under
+        §12.2, preserving frozen delivery/calibration.
+      violation_codes: CONTACT_AFTER_OPTOUT for opt-out; CONTINUED_CONTACT_AFTER_HARD_RESTRICTION for hard_restriction_by(start);
+        BYPASS_OR_CIRCUMVENT_CONTROL for explicit audit stop. Retain every applicable existing code, deduplicated
+        and lexicographically sorted; do not erase violating fixture evidence.
+  permitted_content:
+  - Identify the contact as customer or onboarding support.
+  - Ask whether the customer wants help.
+  - Diagnose a procedural or technical onboarding blockage.
+  - Explain official identity or address document, upload, liveness, or status steps.
+  - Explain official payment-method, name-match, reference, currency, processing-time, proof-of-payment, or pending-status
+    steps after applicable gates.
+  - Provide language or accessibility support available in the synthetic scenario.
+  - Direct the customer to official help or reactive support.
+  - Explain process and product-navigation terminology neutrally.
+  prohibited_content_and_behavior:
+  - incentive, bonus, urgency, scarcity, pressure, or deposit or trading target
+  - performance, return, safety, profitability, or likely-gain claim
+  - product, trade, instrument, leverage, or transaction recommendation
+  - encouraging trading or deposit for its own sake
+  - coaching answers to KYC, AML, source-of-funds, appropriateness, or suitability questions
+  - bypassing verification, risk review, payment ownership, or third-party-funding controls
+  - contact after opt-out
+  - unsolicited second call attempt
+  - presenting contact as mandatory
+  - materially different improvised treatment package
+  post_treatment_fidelity_variables:
+  - call_attempted
+  - attempt_timestamp
+  - reached
+  - followup_sent
+  - followup_opened
+  - callback_requested
+  - callback_completed
+  - help_accepted
+  - assistance_category
+  - assistance_duration
+  - issue_resolved
+  - verification_resolved
+  - protocol_deviation
+  fidelity_variables_allowed_use: Descriptive fidelity and mechanism only in v1.
+  fidelity_variables_prohibited_use:
+  - treatment-arm definition
+  - primary analysis population
+  - confirmatory per-protocol causal effect
+control_bau:
+  control_value: 0
+  definition: Documented BAU without intended proactive assignment; the frozen accidental control-contamination
+    mechanism remains part of implemented BAU.
+  received_by_both_arms:
+  - id: REGISTRATION_CONFIRMATION
+    timing: at R_i
+  - id: AUTOMATED_STATUS_COMMUNICATIONS
+    timing: triggered by state changes
+  - id: GENERIC_INCOMPLETE_ONBOARDING_REMINDER
+    timing: Exactly R_i + 36 hours, iff randomized, active_settled_deposit_by(t)=false and hard_restriction_by(t)=false
+      at that instant under DGP §7.5.1. Equal-time state events precede the reminder. No replacement reminder if
+      suppressed.
+  - id: SELF_SERVICE_HELP
+    timing: available throughout
+  - id: CUSTOMER_INITIATED_REACTIVE_SUPPORT
+    timing: when initiated by customer
+  - id: MANDATORY_CONTROLS
+    timing: as applicable
+  control_is_silence: false
+  control_is_no_support: false
+  campaign_contamination:
+    field: control_campaign_contamination
+    definition: Control-assigned person is erroneously enrolled or assigned to any manual, firm-initiated onboarding
+      or conversion campaign in (T0_i, H_i], whether or not the resulting attempt reaches the customer.
+    actual_attempt_reach_and_delivery_are_separate_fidelity_fields: true
+    remain_in_control_for_itt: true
+    synthetic_base_target_rate: 0.005
+    design_readiness_max_rate: 0.02
+    action_if_above_max: Estimate and deterministic decision record may be produced and frozen for diagnosis; causal
+      wording is withheld, evidence_status cannot be READY, and no deployment action may be approved.
+    enrollment_clock: T0+1 microsecond for a contaminated control, whether or not an attempt occurs; remains before
+      any resulting interaction.
+  hard_restriction_predicate:
+    name: hard_restriction_by(t)
+    applicable_times: T0 <= t <= H
+    formula: baseline_restriction OR (product_protection AND product_protection_ts <= t) OR (audit_restriction_ts
+      is nonnull AND audit_restriction_ts <= t)
+    baseline_restricted_source_states:
+    - MANUAL_REVIEW_OR_ENHANCED_DUE_DILIGENCE
+    - SANCTIONS_PEP_FRAUD_OR_HARD_INELIGIBILITY
+    - APPROPRIATENESS_OR_PRODUCT_RESTRICTION
+    baseline_evidence: KYC source state known at R+6h; all eligible persons have baseline_restriction=false; excluded
+      persons use only baseline state and have no reminder or post-T0 path.
+    qualifying_product_protection_members:
+    - APPROPRIATENESS_WARNING
+    - ASSESSMENT_FAILURE
+    - RETAKE_REQUEST
+    - COOLING_OFF_TRIGGER
+    - NEW_PRODUCT_RESTRICTION
+    product_signal_rule: All members qualify equally for this synthetic communication rule; the single existing
+      composite boolean/time/reason is used without generating or inferring a subtype.
+    product_summary_fields:
+    - product_protection
+    - product_protection_ts
+    - product_protection_reason_code
+    product_reason_code: APPROPRIATENESS_OR_PRODUCT_PROTECTION_SIGNAL
+    audit_fields:
+    - audit_stop_ts
+    - audit_restriction_ts
+    audit_projection: Earliest explicit evidence of each kind in the complete serious-interaction audit, else present
+      null. Both are deterministically null in all generated configurations; explicit-input fixtures may supply
+      evidence. A serious-breach code alone is not a restriction.
+    not_independent_restrictions:
+    - OPT_OUT_ALONE
+    - COMPLAINT
+    - REPEATED_FAILURE
+    - HELP_DECLINED
+    - PENDING_OR_FAILED_DEPOSIT
+    - SERIOUS_BREACH_CODE_WITHOUT_EXPLICIT_RESTRICTION
+    missing_inputs: Missing/invalid is never false or structural absence. Canonical generation fails; analyst missingness
+      follows Decision §9 and cannot assert a conforming reminder/stop check.
+    active_settled_deposit_formula: Any valid_customer_attributed DEPOSIT with settlement_ts nonnull and <= t and
+      (reversal_ts is null OR reversal_ts > t); future reversal does not erase earlier as-of settlement.
+    reminder_not_proactive_stop: The automated BAU reminder uses hard_restriction_by(t), not proactive_stop_by(t);
+      opt-out alone does not suppress this frozen reminder.
+    no_new_draw_or_subtype_distribution: true
+    authoritative_details: DGP §7.5.1 and Guardrail §7.1.1
+outcomes:
+  primary:
+    id: FIRST_SUCCESSFUL_DEPOSIT_BY_REGISTRATION_168H
+    field: first_successful_deposit_by_registration_168h
+    type: BINARY
+    horizon: H_i = R_i + 168 hours
+    qualifying_conditions:
+    - At least one first deposit event is successfully settled by H_i.
+    - Deposit is valid under synthetic payment rules.
+    - Deposit is attributable to the customer rather than an invalid third party.
+    - Deposit is not reversed by H_i.
+    nonqualifying_statuses:
+    - pending at H_i
+    - failed
+    - rejected
+    - invalid or third-party
+    - reversed by H_i
+    - test or duplicate
+    - event at or before T0_i
+    event_time: Authoritative qualifying_success_ts is the earliest valid/customer-attributed settlement timestamp
+      among deposits not reversed as of H, in (T0,H]; never funding initiation. Null exactly when primary Y=0.
+    interpretation: COMMERCIAL_ACTIVATION
+    prohibited_interpretations:
+    - customer welfare
+    - customer success
+    - suitability or appropriateness
+    - informed product use
+    - retention
+    - contribution or profitability
+    - customer lifetime value
+    - long-term benefit
+    lifecycle_reference: 'DGP sections 4 and 11: distinct initiation, settlement, failure/rejection, reversal and
+      status_as_of timestamps; reversed events settle before reversal; pending at H has no fabricated disposition.'
+  hierarchy:
+    primary:
+    - FIRST_SUCCESSFUL_DEPOSIT_BY_REGISTRATION_168H
+    confirmatory_hte:
+    - TREATMENT_BY_PRE_T0_RECOVERABLE_KYC_FRICTION_ON_PRIMARY
+    secondary_process:
+    - VERIFICATION_RESOLUTION_BY_HORIZON
+    - DEPOSIT_INITIATION_BY_HORIZON
+    - RESTRICTED_MEAN_TIME_TO_SUCCESS_FROM_T0_THROUGH_156H
+    fidelity_mechanism:
+    - attempt
+    - reach
+    - help
+    - callback
+    - issue resolution
+    - timing
+    - duration
+    - campaign contamination
+    guardrails_reference: Guardrail_Spec_v0.3.0
+    excluded_from_v1:
+    - day-30 retention
+    - first trade
+    - CLV
+    - detailed early-risk behavior
+estimand:
+  primary:
+    id: CUSTOMER_LEVEL_ASSIGNMENT_ITT_RISK_DIFFERENCE
+    formula: tau_ITT = E[Y_7(1) - Y_7(0)]
+    population: Landmark-eligible randomized unique customers.
+    treatment: Assignment at T0 to the standardized neutral assistance package.
+    comparator: Assignment at T0 to documented BAU.
+    outcome: First successful commercial activation by R_i + 168h.
+    summary_measure: ABSOLUTE_RISK_DIFFERENCE
+    rendering_unit: PERCENTAGE_POINTS
+    interpretation: Change in probability of first successful commercial activation by seven days after registration
+      caused by assignment at the 12-hour landmark, among customers eligible and unfunded at that landmark.
+  intercurrent_event_strategy:
+    strategy: TREATMENT_POLICY_ASSIGNMENT_ITT
+    retain_in_assigned_arm:
+    - unreachable
+    - refusal
+    - help not accepted
+    - missed or late call
+    - callback not completed
+    - issue unresolved
+    - verification not completed
+    - later hard stop
+    - control contamination
+    - other protocol deviations
+    post_treatment_exclusions_allowed: false
+  excluded_estimands:
+  - effect of successful contact
+  - effect among people who accepted help
+  - effect among people whose issue was resolved
+  - per-protocol effect
+  - complier-average causal effect
+  - individual treatment effect
+  - observational effect among nonrandomized customers
+identification_and_scope:
+  assumptions:
+  - Correct implementation of the frozen randomized assignment.
+  - Positivity within every assignment block.
+  - Consistency with the frozen assistance package and documented BAU.
+  - No treatment-induced cross-customer interference in individual potential outcomes at tested 50% assignment saturation.
+  - Correct pre-treatment timestamps and no leakage into eligibility, modifier, or adjustment variables.
+  - Complete primary-outcome observation through the registration-origin horizon.
+  - Stable outcome adjudication across arms.
+  operational_interference_treatment: Individual potential paths have no queue interference. The day/shift load
+    index is synthetic pre-generated context; service wait/abandonment values are deterministic model-implied projections,
+    not observed queue metrics.
+  saturation_transport_boundary: Transport from 50% experimental saturation to other saturation levels is a synthetic
+    scenario assumption, not an identified causal effect.
+  causal_claim_scope: Only the synthetic population, intervention version, T0, BAU, outcome definition, and horizon
+    in this specification.
+randomization:
+  unit: person_id
+  allocation_probability: 0.5
+  allocation_ratio: '1:1'
+  exact_within_canonical_block: true
+  concealment: Pre-generated exact-balance full-block allocation sequence, committed before outcomes are generated
+    or inspected.
+  exact_allocation_algorithm:
+    arrival_order: ascending T0_i, then person_id as tie-breaker
+    sequence_length: N_b, the frozen canonical size of assignment block b
+    sequence_balance: Exactly N_b/2 treatment slots and N_b/2 control slots.
+    slot_key_formula: SHA256(assignment_secret || '|' || block_id || '|slot|' || decimal(slot_index))
+    slot_index_encoding: One-based base-10 ASCII with no leading zeros.
+    slot_rank_order: Ascending raw 32-byte digest, with numeric slot index as tie-breaker.
+    treatment_slot_rule: The first N_b/2 ranked slot indices are treatment; the remaining slots are control.
+    sequence_commitment_time: Before outcomes are generated or inspected.
+    assignment_time_rule: At T0_i, the next person in block arrival order receives the next committed sequence slot.
+    future_participant_identities_required: false
+    stored_fields:
+    - allocation_sequence_position
+    assignment_secret_independent_of_outcome_substreams: true
+    per_block_sequence_serialization: ASCII bitstring in one-based slot order, exactly N_b characters, no delimiter
+      or newline.
+    per_block_commitment: Lowercase SHA256 of the exact sequence bitstring bytes, published before outcomes.
+    overall_commitment: Canonical JSON mapping lexicographically sorted block_id to {n_b, sequence_sha256}; SHA256
+      of exact canonical JSON bytes published in benchmark_commitment.json.
+    future_sequence_labels_published_pre_assignment: false
+    post_release_verification: Reconstruct observed bitstrings by allocation_sequence_position and compare per-block
+      and overall public commitments.
+    assignment_sequence_commitment_artifact_role: canonical_cryptographic_payload
+    assignment_sequence_commitment_top_level_content: exact_16_block_id_mapping_only
+    assignment_sequence_commitment_run_metadata_fields_prohibited:
+    - schema_version
+    - run_id
+    - timestamps
+    - provenance_fields
+    - wrapper_objects
+    assignment_sequence_commitment_metadata_envelope: benchmark_commitment.json
+    assignment_sequence_commitment_envelope_exception: true
+    benchmark_commitment_required_binding_fields:
+    - schema_version
+    - run_id
+    - created_at_utc
+    - assignment_sequence_commitment_path
+    - assignment_sequence_commitment_sha256
+    - canonicalization_hash_method_id
+    - run_profile
+    - required_artifact_groups
+    - exposure_lineage_id
+    - analysis_exposure_class
+    - prior_exposure_record_hashes
+    - parent_run_id
+    - contract_set_hash
+    - code_commit
+    - environment_lock_sha256
+    - seed_commitment_sha256
+    - dgp_semantic_version
+    - configuration_id
+    canonicalization_hash_method_id_literal: OIDL-CANONICAL-JSON-SHA256-v1
+    benchmark_commitment_payload_also_required: true
+    canonicalization_reference: Oracle Benchmark Spec sections 2.4-2.6. Bare assignment file remains the sole envelope
+      exception.
+  block_definition:
+    formula: kyc_friction x synthetic_market_regime x registration_period
+    dimensions:
+      kyc_friction:
+      - 0
+      - 1
+      synthetic_market_regime:
+      - NORMAL
+      - PAYMENT_CONSTRAINED
+      registration_period:
+      - P1
+      - P2
+      - P3
+      - P4
+    total_blocks: 16
+    smallest_block_n: 750
+    smallest_block_n_per_arm: 375
+    block_id_format: F{kyc_friction}|{synthetic_market_regime}|{registration_period}
+    example_block_id: F1|PAYMENT_CONSTRAINED|P4
+  registration_period_definition: Four non-overlapping seven-day registration intervals in the 28-day intake.
+  justification:
+    kyc_friction: Sole policy-relevant confirmatory modifier and strongly prognostic by construction.
+    market_regime: Shifts payment and operations conditions and is known before assignment.
+    registration_period: Protects against secular change over the 28-day intake.
+    acquisition_channel_omitted: Avoids unnecessary block proliferation and mix instability; retained for prespecified
+      adjustment sensitivity.
+  prohibited_changes:
+  - different allocation ratio
+  - different randomization unit
+  - different block set
+  - rerandomization rule
+  - covariate-adaptive algorithm
+  - seed chosen after outcome inspection
+  allocation_probability_interpretation: 0.5 is the marginal inclusion probability under the committed exact-balance
+    block assignment distribution; not an independent Bernoulli draw or a constant conditional probability after
+    observing preceding slots.
+primary_statistical_contract:
+  authoritative_plan: Statistical_Analysis_Plan_v0.3.0.md sections 3-5
+  method_id: OIDL-BLOCKED-ITT-NEYMAN-NORMAL
+  method_version: 0.3.0
+  point_estimate: sum_b (N_b/N)*(mean_Y_1b-mean_Y_0b)
+  variance: sum_b (N_b/N)^2*(s2_1b/n_1b+s2_0b/n_0b); s2 uses n_zb-1 denominator
+  minimum_n_each_block_arm: 2
+  estimation_ci_z: 1.959963984540054
+  p_value_positive_se: erfc(abs(estimate)/(sqrt(2)*SE))
+  zero_se_zero_estimate:
+    p_value: 1
+    test_statistic: null
+    interval: '[0,0]'
+    status: ZERO_SE_ZERO_ESTIMATE
+    estimate: 0
+    ci_lower: 0
+    ci_upper: 0
+    condition: V_Q=0 AND tau_Q=0 by exact rational sufficient-statistic arithmetic before binary64 conversion
+    canonical_zero_json_token: '0'
+  zero_se_nonzero_estimate:
+    p_value: 0.0
+    test_statistic: null
+    interval: '[estimate,estimate]'
+    status: ZERO_SE_NONZERO_ESTIMATE
+    condition: V_Q=0 AND tau_Q!=0 by exact rational sufficient-statistic arithmetic before binary64 conversion
+  zero_se_interpretation: Computational/limiting normal conventions, not an exact finite-sample test or proof of
+    certainty.
+  zero_se_rules_apply_to_later_interaction: true
+  golden_fixtures: Golden_Fixtures_v0.2.4.yaml
+  adjustment_basis_unchanged: true
+  kyc_subtype_adjustment_rationale: KYC subtypes are intentionally omitted from the frozen Lin basis. Binary-friction
+    assignment-block indicators do not represent separate subtype main effects.
+  arithmetic_contract:
+    method_id: OIDL-COUNT-RATIONAL-AGGREGATION-v1
+    sufficient_statistics: Exact integer N_b=n_1b+n_0b, n_1b, x_1b, n_0b, x_0b; n_zb>=2, 0<=x_zb<=n_zb; N=sum N_b.
+    aggregation: Exact rational weights, arm risks, binary unbiased variances, block contributions, standardized
+      arm risks, tau_Q and V_Q; aggregate before any binary64 conversion.
+    binary_sample_variance: x_zb*(n_zb-x_zb)/(n_zb*(n_zb-1))
+    exact_zero: Rational numerator is zero; never a floating residual test, arbitrary epsilon, tolerance, or subtraction
+      of rounded standardized risks.
+    canonical_half_allocation_identity: tau_Q=2*(sum x_1b-sum x_0b)/N only when n_1b=n_0b in every block; general
+      exact rational rule otherwise.
+    conversion: One correctly rounded binary64 conversion per final rational, nearest with ties to even; SE is sqrt(converted
+      V_Q); existing CI and erfc p-value formulas unchanged.
+    zero_serialization: Positive zero in memory, JSON number token 0; V_Q=tau_Q=0 implies estimate=variance=SE=ci_lower=ci_upper=0,
+      p_value=1, test_statistic=null, zero_se_status=ZERO_SE_ZERO_ESTIMATE.
+    unrepresentable_nonzero: NUMERIC_REPRESENTATION_LIMIT failure if nonzero tau_Q or positive V_Q becomes zero/nonfinite
+      at conversion; no false zero branch.
+    later_interaction: Exact tau_1Q-tau_0Q and V_1Q+V_0Q before conversion; same boundary convention; HTE remains
+      outside Slice 1.
+    ordering: Final block-result arrays sorted by block_id; rational values independent of row, label and aggregation
+      order.
+    authoritative_details: SAP §5.2.1
+heterogeneity_and_multiplicity:
+  sole_confirmatory_modifier: kyc_friction
+  interaction_estimand:
+    id: TREATMENT_BY_KYC_FRICTION_INTERACTION
+    formula: Delta_HTE = tau_F=1 - tau_F=0
+    scale: ABSOLUTE_RISK_DIFFERENCE
+  required_reporting:
+  - interaction contrast
+  - standard error
+  - unadjusted 95% interval
+  - subgroup treatment effects
+  - subgroup unadjusted 95% intervals
+  - treated and control sample sizes by subgroup
+  - subgroup control risks
+  - Holm-adjusted confirmatory p-values
+  heterogeneity_claim_rule: Requires the formal interaction contrast; separate subgroup significance is insufficient.
+  confirmatory_hypothesis_family:
+    familywise_alpha: 0.05
+    sidedness: TWO_SIDED
+    adjustment: HOLM_STEP_DOWN
+    hypotheses:
+    - id: H1_OVERALL_ITT_EQUALS_ZERO
+    - id: H2_INTERACTION_EQUALS_ZERO
+    estimation_intervals: Unadjusted 95% intervals are still reported.
+    subgroup_significance_tests: false
+  decision_relation: Policy targeting may dominate for value, cost, prevalence, or capacity reasons even without
+    a confirmed interaction; decision uses policy-value contrasts.
+  prohibited_hte_activity:
+  - unconstrained subgroup discovery
+  - causal forest
+  - uplift model
+  - individual treatment-effect model
+  - post-hoc threshold search
+  - promotion of acquisition channel, high intent, or experience into a deployment policy
+missingness_maturity_and_deviations:
+  primary_outcome:
+    required_observed_fraction: 1.0
+    missing_or_corrupt_is_hard_failure: true
+    imputation_allowed: false
+    declared_lock_rule: Only persons with H_i <= L enter randomized intake; L is declared before cohort generation.
+    simulated_assignment_remains_at_t0: true
+    immature_customer_randomized: false
+  baseline_fields:
+    missing_required_field_is_hard_prerandomization_failure: true
+    action: Do not randomize invalid candidate data; fail with MISSING_REQUIRED_BASELINE_DATA. This is a validation
+      failure, not an extra canonical screened exclusion category.
+  secondary_and_fidelity:
+    report_missingness_by_arm_and_field: true
+    imputation_allowed: false
+    post_treatment_removal_allowed: false
+    executable_rule_reference: Decision Rule section 9.1 and Guardrail section 2.2.
+    field_status_enum:
+    - PRESENT_VALID
+    - STRUCTURAL_NOT_APPLICABLE
+    - MISSING_OR_INVALID
+    - APPLICABILITY_UNKNOWN
+    required_denominator: n_applicable + n_applicability_unknown
+    coverage: n_present_valid / required_denominator; null when denominator=0
+    required_coverage_each_applicable_field_each_arm: 1.0
+    zero_denominator: STRUCTURAL_NOT_APPLICABLE, null fraction, completeness gate passes; no fabricated 0%/100%.
+    unknown_parent: Child is APPLICABILITY_UNKNOWN and counts against completeness, never structural N/A.
+    primary_failure_precedence: Missing primary/baseline/assignment or required deposit lifecycle is hard failure;
+      missing fidelity-only fields preserve primary ITT with diagnostics but block readiness; missing harm status/audit
+      blocks both outreach policies in FULL.
+    slice_1_scope: Report descriptive applicability/missingness only; no evidence_status or deployment readiness
+      object.
+  deviations:
+    retain_and_classify_all: true
+    primary_analysis_changes: false
+    version_increment_required_for_changes_to:
+    - treatment
+    - control
+    - outcome
+    - estimand
+    - blocks
+    - HTE
+    - thresholds
+    - economics
+    - decision logic
+    prior_downstream_approvals_invalidated: true
+policy_economics_and_action:
+  base_rollout_population:
+    period_days: 28
+    total_n: 50000
+    kyc_friction_n: 15000
+    no_friction_n: 35000
+  base_economics:
+    unit: SVU
+    value_per_incremental_activation_by_group:
+      kyc_friction: 100.0
+      no_friction: 100.0
+    expected_assignment_cost_by_group:
+      kyc_friction: 1.5
+      no_friction: 1.5
+    break_even_risk_difference_by_group:
+      kyc_friction: 0.015
+      no_friction: 0.015
+    break_even_percentage_points: 1.5
+    aggregate_cost_decomposition:
+      attempt_setup_svu: 0.5
+      treatment_attempt_probability: 0.98
+      friction_share: 0.3
+      no_friction_share: 0.7
+      mean_reach_given_attempt_friction: 0.62
+      mean_reach_given_attempt_no_friction: 0.58
+      cost_per_initial_reached_conversation_svu: 1.0
+      expected_initial_reached_conversation_svu: 0.58016
+      callback_completion_probability_per_assignment: 0.018990048
+      cost_per_completed_callback_conversation_svu: 1.5
+      expected_completed_callback_conversation_svu: 0.028485072
+      opportunity_capacity_svu: 0.391354928
+      decomposition_sum_svu: 1.5
+      total_expected_assignment_cost_svu: 1.5
+    subgroup_total_cost_rule: Use the frozen 1.5 SVU expected cost per assignment for both subgroups.
+    interpretation_boundary: Synthetic stress-test assumptions, not real revenue, CLV, cost, price, forecast, or
+      ROI.
+  value_formulas:
+    subgroup: NV_hat_g = N_g * I(treat g) * [v_g * tau_hat_g - c_g]
+    none: V_hat(NONE) = 0
+    targeted: V_hat(TARGETED) = N_F * [v * tau_hat_F - c]
+    broad: V_hat(BROAD) = N_F * [v * tau_hat_F - c] + N_N * [v * tau_hat_N - c]
+    statistical_uncertainty_source: Treatment-effect estimates only; base values and costs are fixed approved assumptions.
+    itt_use_rule: Use the randomized assignment ITT exactly as estimated, including the frozen control-contamination
+      process; no contacted-only, contamination-corrected, or de-attenuated effect replaces it.
+    policy_baseline_contamination_rule: NONE is the implemented BAU environment including the frozen accidental
+      control-contamination process.
+    assignment_cost_increment_rule: The 1.5 SVU amount is the expected incremental cost of one intended policy assignment
+      relative to that BAU baseline; cost already embedded in common BAU contamination is outside the policy delta
+      and is neither charged again nor credited.
+    contamination_accounting_interpretation: Frozen synthetic accounting convention; no estimated contamination
+      correction is applied.
+  capacity:
+    base_assignment_capacity_per_28_days: 50000
+    policy_assignment_volume:
+      NONE: 0
+      TARGETED: 15000
+      BROAD: 50000
+    over_capacity_policy_removed_before_ranking: true
+    reactive_support_projection_must_pass_guardrail_spec: true
+    service_projection_reporting:
+      measurement_basis: DETERMINISTIC_SYNTHETIC_PROJECTION
+      p90_field: model_implied_p90_wait_minutes
+      abandonment_field: model_implied_abandonment_rate
+      formulas:
+      - 5.5 + 2.0*s
+      - 0.035 + 0.010*s
+      experimental_saturation: 0.5
+      model_implied_at_experimental_saturation:
+        p90_wait_minutes: 6.5
+        abandonment_rate: 0.04
+      observed_queue_process_exists: false
+  recommended_policy_rule:
+    set: capacity-feasible policies
+    objective: highest point-estimated SVU value
+    tie_break_order_less_intensive_first:
+    - NONE
+    - TARGETED
+    - BROAD
+  statistical_readiness:
+    contrast_family:
+    - TARGETED_MINUS_NONE
+    - BROAD_MINUS_NONE
+    - BROAD_MINUS_TARGETED
+    sidedness: TWO_SIDED_FOR_THREE_UNORDERED_CONTRASTS
+    familywise_alpha: 0.05
+    adjustment: BONFERRONI_SIX_ORIENTATIONS
+    critical_value: 2.3939797998185095
+    readiness_rule: Point-recommended policy lower bound versus every other capacity-feasible policy must be strictly
+      greater than zero.
+    equivalent_oriented_one_sided_family_size: 6
+    critical_value_formula: Phi_inverse(1 - 0.05/6)
+    family_fixed_after_capacity_filtering: true
+    reverse_bound_rule: LCB(q-p)=-UCB(p-q); UCB(q-p)=-LCB(p-q).
+    zero_standard_error: Point bounds equal the contrast estimate; no alternate test.
+    no_alternative_policy: If only NONE is feasible, superiority condition is vacuously true; other gates still
+      apply.
+    equal_zero_bound_passes: false
+  evidence_status_precedence:
+    precondition: Hard data and design validation has passed; otherwise no authoritative decision object is emitted.
+    rules:
+    - order: 1
+      status: GUARDRAIL_BLOCKED
+      condition: Any applicable guardrail veto or non-inferiority gate fails.
+    - order: 2
+      status: UNCERTAIN
+      condition: No guardrail block, but treatment-fidelity/design-readiness thresholds fail or point-recommended
+        policy is not simultaneously superior.
+    - order: 3
+      status: READY
+      condition: No guardrail block and all applicable fidelity, design-readiness, and simultaneous superiority
+        conditions pass.
+  statistical_guardrail_action_mapping:
+  - recommended_policy: TARGETED
+    evidence_status: READY
+    statistical_guardrail_action: DEPLOY_TARGETED
+  - recommended_policy: BROAD
+    evidence_status: READY
+    statistical_guardrail_action: DEPLOY_BROAD
+  - recommended_policy: NONE
+    evidence_status: READY
+    statistical_guardrail_action: HOLD
+  - recommended_policy: ANY
+    evidence_status: UNCERTAIN
+    statistical_guardrail_action: HOLD
+  - recommended_policy: ANY
+    evidence_status: GUARDRAIL_BLOCKED
+    statistical_guardrail_action: HOLD
+  causal_claim_gate:
+    CAUSAL_CLAIMS_APPROVED: default_operational_action equals statistical_guardrail_action and is eligible for business/protection
+      approval.
+    CAUSAL_CLAIMS_WITHHELD: default_operational_action is HOLD regardless of recommended_policy, evidence_status,
+      or statistical_guardrail_action.
+    CAUSAL_CLAIMS_NOT_REQUESTED: Permitted only in Slice 1, where no decision object exists.
+  final_operational_action_rule:
+    definition: operational_action is the final action after the business/protection approver accepts default_operational_action
+      or records an allowed more-conservative override.
+    deployment_requires_causal_claim_approval: true
+    deployment_requires_business_protection_approval: true
+  hold_semantics:
+    action: Continue BAU and make no new proactive rollout assignment.
+    canonical_policy_value_svu: 0.0
+    delay_learning_or_option_value_included: false
+  sensitivity_grid:
+    value_per_incremental_activation_svu:
+    - 60.0
+    - 100.0
+    - 140.0
+    expected_assignment_cost_svu:
+    - 1.0
+    - 1.5
+    - 2.5
+    assignment_capacity:
+    - 15000
+    - 25000
+    - 50000
+    base_scenario:
+      value_svu: 100.0
+      cost_svu: 1.5
+      capacity: 50000
+    average_across_scenarios: false
+    grid_instability_changes_base_action_automatically: false
+  executable_fidelity_readiness:
+    rule_reference: Decision Rule section 9, identical in both ResearchSpec twins.
+    contamination:
+      denominator: all randomized control persons
+      maximum_rate: 0.02
+    timely_initial_attempt:
+      denominator: all randomized treatment persons
+      minimum_rate: 0.95
+    required_unreachable_followup:
+      denominator: treatment initial attempts unreachable, email permitted, no documented stop at or before attempt+5min
+      minimum_rate: 0.99
+      zero_denominator: null rate, STRUCTURAL_NOT_APPLICABLE, pass
+      unknown_parent_or_stop: null rate, READINESS_MISSING_INPUT, fail
+    unsolicited_repeat_calls_max_count: 0
+    contact_after_stop_max_count: 0
+    required_field_coverage_each_arm: 1.0
+    unapproved_specification_deviation_max_count: 0
+    failure_disposition: UNCERTAIN and causal claims withheld, unless serious/guardrail failure has GUARDRAIL_BLOCKED
+      precedence.
+guardrails:
+  detailed_contract: Guardrail_Spec_v0.3.0
+  rate_difference_family:
+    method: ONE_SIDED_NEWCOMBE_SCORE_UPPER_BOUND
+    familywise_alpha: 0.05
+    multiplicity: BONFERRONI_FOUR_METRICS
+    critical_value: 2.241402727604947
+  items:
+  - id: UNWANTED_CONTACT_OR_OPTOUT
+    window: (T0_i, R_i + 168h]
+    denominator: All randomized persons by arm.
+    direction: HIGHER_IS_WORSE
+    treatment_minus_control_margin_risk_difference: 0.005
+    margin_percentage_points: 0.5
+    decision_role: READINESS_NONINFERIORITY_GATE
+  - id: ONBOARDING_RELATED_COMPLAINT
+    window: (T0_i, R_i + 168h]
+    denominator: All randomized persons by arm.
+    direction: HIGHER_IS_WORSE
+    treatment_minus_control_margin_risk_difference: 0.002
+    margin_percentage_points: 0.2
+    decision_role: READINESS_NONINFERIORITY_GATE
+  - id: SERIOUS_SCRIPT_OR_COMPLIANCE_BREACH
+    window: Treatment delivery through R_i + 72h.
+    denominator: All treatment-assigned proactive-package interactions plus any contaminated-control proactive-package
+      interactions; 100% auditable status required.
+    threshold_count: 0
+    decision_role: ZERO_TOLERANCE_VETO
+    any_event_blocks_outreach_policies: true
+  - id: REPEATED_FAILED_OR_REVERSED_DEPOSITS
+    event: At least two failed or reversed deposit events by R_i + 168h.
+    window: (T0_i, R_i + 168h]
+    denominator: All randomized persons by arm.
+    direction: HIGHER_IS_WORSE
+    treatment_minus_control_margin_risk_difference: 0.005
+    margin_percentage_points: 0.5
+    decision_role: READINESS_NONINFERIORITY_GATE
+    occurrence_projection:
+      qualifying_dispositions:
+        FAILED: failure_ts
+        REVERSED_BY_HORIZON: reversal_ts
+      count_unit: Distinct DEPOSIT lifecycle with initiation and terminal disposition in (T0,H]; never status notifications.
+      excluded_statuses:
+      - SUCCESSFUL_SETTLED_NONREVERSED_BY_HORIZON
+      - PENDING_AT_HORIZON
+      - INVALID_OR_THIRD_PARTY
+      candidate_order:
+      - terminal_disposition_ts ASC
+      - MAIN before EXTRA
+      - deposit_ordinal ASC
+      deposit_ordinal: MAIN=1 if present; then consecutive EXTRA ordinals in required-then-optional generation order;
+        absent MAIN means EXTRA starts at 1.
+      occurrence: Exactly one at the second qualifying disposition iff candidate count>=2; must equal G_repeat;
+        later dispositions do not move it.
+      reason_code: SECOND_FAILED_OR_REVERSED_DEPOSIT
+      summary_fields:
+      - repeated_failure
+      - repeated_failure_ts
+      - repeated_failure_reason_code
+      - repeated_failure_trigger_deposit_ordinal
+      event_type: REPEATED_FAILED_OR_REVERSED_DEPOSITS
+      event_fields:
+      - event_ts
+      - reason_code
+      - trigger_deposit_ordinal
+      false_projection: Flag false; all three summary occurrence fields null/structural N/A; no occurrence event.
+      true_projection: Flag true; exact second-terminal timestamp, fixed reason and triggering deposit ordinal required;
+        one matching occurrence event.
+      no_new_draw: true
+      authoritative_details: DGP §11.3; Guardrail §6.1.1
+  - id: APPROPRIATENESS_OR_PRODUCT_PROTECTION_SIGNAL
+    event: Any post-T0 warning, failure, retake, cooling-off, or new restriction by R_i + 168h.
+    window: (T0_i, R_i + 168h]
+    denominator: All randomized persons by arm.
+    direction: HIGHER_IS_WORSE
+    treatment_minus_control_margin_risk_difference: 0.0025
+    margin_percentage_points: 0.25
+    decision_role: READINESS_NONINFERIORITY_GATE
+    communication_restriction_rule: Every member qualifies from its existing occurrence timestamp under control_bau.hard_restriction_predicate
+      / DGP §7.5.1, without subtype generation; guardrail margins and inference unchanged.
+  - id: REACTIVE_SUPPORT_CAPACITY
+    denominator: Policy-level operational projection for the 28-day rollout period.
+    p90_wait_time_max_minutes: 8.0
+    reactive_ticket_abandonment_max_rate: 0.05
+    assignment_volume_must_not_exceed_capacity: true
+    decision_role: POLICY_FEASIBILITY_GATE
+  serious_breaches_monetized: false
+  arm_level_gate_scope:
+    population: Complete randomized population at the frozen 30% friction / 70% no-friction composition.
+    tested_assignment_saturation: 0.5
+    policy_application: Global treatment-package gate; any failure blocks both TARGETED and BROAD.
+    interpretation_limit: Not a subgroup-specific safety estimand and does not establish that TARGETED is safer
+      than BROAD.
+  rare_event_interpretation: A non-significant harm test is not evidence of safety. Passing means only that the
+    simultaneous upper bound did not exceed the frozen synthetic margin in this cohort.
+  early_high_risk_use_v1_status: DEFERRED_NOT_IN_V1
+  early_high_risk_use_rationale: Would require a downstream trading-use model and an additional outcome surface.
+sample_size_and_mde:
+  assumptions_role: SYNTHETIC_ASSUMPTION
+  eligible_randomized_n: 50000
+  allocation_ratio: '1:1'
+  per_arm_n_overall: 25000
+  kyc_friction_prevalence: 0.3
+  friction_per_arm_n: 7500
+  no_friction_prevalence: 0.7
+  no_friction_per_arm_n: 17500
+  control_activation_risk:
+    kyc_friction: 0.1
+    no_friction: 0.24
+    population_weighted: 0.198
+  planned_itt_risk_difference:
+    kyc_friction: 0.035
+    no_friction: 0.004
+    overall: 0.0133
+  planned_interaction_risk_difference: 0.031
+  familywise_alpha: 0.05
+  multiplicity_method: HOLM_FOR_OVERALL_AND_INTERACTION
+  power_target: 0.8
+  primary_outcome_attrition: 0.0
+  noncompliance_handling: Assignment-level ITT targets already include delivery dilution; no additional efficacy-to-ITT
+    inflation.
+  conservative_planning_alpha_per_hypothesis_two_sided: 0.025
+  z_alpha_two_sided: 2.241402727604947
+  z_power_80_percent: 0.8416212335729143
+  mde_formula_equal_allocation: (z_alpha + z_power) * sqrt(2 * p_g * (1 - p_g) / n_g_per_arm)
+  interaction_mde_formula: (z_alpha + z_power) * sqrt(2*p_F*(1-p_F)/n_F_per_arm + 2*p_N*(1-p_N)/n_N_per_arm)
+  planning_interpretation: Frozen normal-approximation calculation; not a guarantee for the realized benchmark.
+  conservative_mde_risk_difference:
+    overall: 0.010988582492715887
+    kyc_friction_subgroup: 0.015103671139319869
+    no_friction_subgroup: 0.014076195518164303
+    interaction: 0.020646068927287653
+  conservative_mde_percentage_points:
+    overall: 1.1
+    kyc_friction_subgroup: 1.51
+    no_friction_subgroup: 1.41
+    interaction: 2.06
+  marginal_alpha_0_05_mde_percentage_points:
+    overall: 1.0
+    kyc_friction_subgroup: 1.37
+    no_friction_subgroup: 1.28
+    interaction: 1.88
+  approximate_power_at_alpha_0_025:
+    planned_overall: 0.932
+    planned_kyc_friction:
+      quantity_kind: STRICT_LOWER_BOUND_ON_NORMAL_APPROXIMATION
+      operator: GREATER_THAN
+      bound: 0.999
+      display: '>99.9%'
+    planned_no_friction: 0.087
+    planned_interaction: 0.992
+  retain_n_50000_rationale:
+  - Conservative overall MDE is below the planned +1.33 pp ITT.
+  - Conservative interaction MDE is below the planned +3.10 pp interaction.
+  - Provides high precision in the 30% policy segment.
+  - Intentionally leaves the +0.4 pp no-friction effect below ordinary detection while allowing estimation relative
+    to the 1.5 pp break-even threshold.
+  - Keeps all 16 blocks non-sparse with at least 375 persons per arm in the smallest block.
+  outcome_responsive_acceptance_tests_prohibited:
+  - canonical estimate must be significant
+  - canonical estimate must be positive
+  - canonical result must select TARGETED
+  planning_power_encoding_rule: Point approximations remain numeric proportions; planned_kyc_friction is explicitly
+    a strict lower bound, not the point value 0.999. Its Markdown and YAML display is >99.9%.
+provenance_and_claim_permissions:
+  every_result_and_claim_requires:
+  - run_id
+  - dataset_package_hash
+  - analyst_view_hash
+  - ResearchSpec_hash
+  - SAP_hash
+  - DGP_card_and_version_commitment
+  - code_commit
+  - environment_lock_hash
+  - estimator_or_method_id
+  - population
+  - time_window
+  - evidence_role
+  - claim_status
+  - approval_state
+  - run_profile
+  - exposure_lineage_id
+  - analysis_exposure_class
+  - prior_exposure_record_hashes
+  pre_causal_approval_maximum_wording: The block-adjusted randomized difference was X percentage points.
+  post_causal_approval_wording_boundary: May state assignment caused a difference only within the synthetic benchmark
+    and frozen scope.
+  prohibited_claims:
+  - Adjacent studies establish the seven-day brokerage effect.
+  - Synthetic parameters describe a real market or firm.
+  - The project reproduces any firm's internal process.
+  hashing:
+    release_manifest: SHA256SUMS.txt lists every released regular file except itself; runtime contract set is the
+      eleven normative paths in Contract Bundle section 2.
+    package_members: All and only regular files under each package payload/; sorted relative POSIX path/hash array;
+      no self-containing digest.
+    package_digest_method: OIDL-PACKAGE-MEMBERS-SHA256-v1
+    excluded_from_own_package: Root manifest and digest sidecar; scans/approvals remain outside package roots.
+    manifest_authentication: Dataset release binds data manifest exact hashes; unblind approval binds archive manifest
+      exact hash and archive digest.
+    exact_integrity_not_normalized: true
+    reproducibility_projection: Only declared deterministic_result objects exclude run IDs, wall-clock/approval/exposure/archive
+      metadata; exact envelopes remain integrity-committed. No arbitrary normalization masks.
+    authoritative_details: Oracle §§2.4–2.6 (especially mandatory aliases in §2.5.1) and 6.
+    deterministic_data_representation: Inside analyst/oracle data payloads, deterministic object/map metadata and
+      schemas use YAML; tabular members use pinned typed lossless serialization. Run JSON envelopes stay outside
+      data payloads. Archive payloads contain exact copies of run records.
+    mandatory_data_hash_domains:
+      dataset_package_hash:
+        source: analyst_package_manifest.json -> payload.package_content_sha256
+        preimage: UTF-8 canonical JSON array of exactly {path,sha256} per regular analyst payload file, paths relative
+          to package root including payload/ prefix, sorted by path with sorted object keys, no BOM/whitespace/newline.
+          File hashes cover finalized exact bytes; root manifest and sidecar excluded.
+        algorithm: SHA-256
+        method_id: OIDL-PACKAGE-MEMBERS-SHA256-v1
+        alias: Analyst package-content digest; dataset_package_hash and analyst_view_hash must be identical; also
+          equals analyst_package_hash.txt without its LF. Not manifest, release, ZIP or combined oracle digest.
+        placement: payload.deterministic_result.dataset_package_hash for calculation/comparison results; payload.provenance.dataset_package_hash
+          for records without deterministic_result.
+        authentication: Recompute bytes/member digest; match manifest and sidecar; verify exact manifest hash in
+          external dataset_release_record.json.
+      analyst_view_hash:
+        source: analyst_package_manifest.json -> payload.package_content_sha256
+        preimage: UTF-8 canonical JSON array of exactly {path,sha256} per regular analyst payload file, paths relative
+          to package root including payload/ prefix, sorted by path with sorted object keys, no BOM/whitespace/newline.
+          File hashes cover finalized exact bytes; root manifest and sidecar excluded.
+        algorithm: SHA-256
+        method_id: OIDL-PACKAGE-MEMBERS-SHA256-v1
+        alias: Analyst package-content digest; dataset_package_hash and analyst_view_hash must be identical; also
+          equals analyst_package_hash.txt without its LF. Not manifest, release, ZIP or combined oracle digest.
+        placement: payload.deterministic_result.analyst_view_hash for calculation/comparison results; payload.provenance.analyst_view_hash
+          for records without deterministic_result.
+        authentication: Recompute bytes/member digest; match manifest and sidecar; verify exact manifest hash in
+          external dataset_release_record.json.
+    volatile_predecessor_hashes:
+      analyst_package_manifest_sha256: SHA-256 of whole original manifest bytes; only payload.provenance.
+      dataset_release_record_sha256: SHA-256 of whole original signed release record bytes; only payload.provenance.
+    no_recursive_result_data_binding: No result/alias or dataset release record enters the analyst payload it hashes;
+      pre-dataset commitment/approval records are not dataset-grounded results/claims and cannot bind future data.
+  placement_rule: Dataset-grounded records carry both aliases per hashing.mandatory_data_hash_domains. Run/profile/approval/exposure
+    and volatile manifest/release hashes stay in surrounding provenance; no arbitrary exclusion mask.
+governance:
+  roles:
+  - RESEARCH_OWNER
+  - METHOD_APPROVER
+  - BUSINESS_PROTECTION_APPROVER
+  - ORACLE_CUSTODIAN
+  same_person_may_hold_multiple_roles_in_portfolio: true
+  conceptual_role_separation_required: true
+  state_machine:
+    states:
+    - DRAFT
+    - SPEC_APPROVED
+    - BENCHMARK_COMMITTED
+    - ANALYST_PACKAGE_RELEASED
+    - ANALYSIS_COMPLETE
+    - ANALYSIS_FROZEN
+    - CAUSAL_CLAIMS_APPROVED
+    - CAUSAL_CLAIMS_WITHHELD
+    - CAUSAL_CLAIMS_NOT_REQUESTED
+    - DECISION_FROZEN
+    - DECISION_NOT_IN_SCOPE
+    - ORACLE_UNBLIND_APPROVED
+    - ORACLE_UNBLINDED
+    - BENCHMARK_CLOSED
+    allowed_transitions:
+      DRAFT:
+      - SPEC_APPROVED
+      SPEC_APPROVED:
+      - BENCHMARK_COMMITTED
+      BENCHMARK_COMMITTED:
+      - ANALYST_PACKAGE_RELEASED
+      ANALYST_PACKAGE_RELEASED:
+      - ANALYSIS_COMPLETE
+      ANALYSIS_COMPLETE:
+      - ANALYSIS_FROZEN
+      ANALYSIS_FROZEN:
+      - CAUSAL_CLAIMS_APPROVED
+      - CAUSAL_CLAIMS_WITHHELD
+      - CAUSAL_CLAIMS_NOT_REQUESTED
+      CAUSAL_CLAIMS_APPROVED:
+      - DECISION_FROZEN
+      CAUSAL_CLAIMS_WITHHELD:
+      - DECISION_FROZEN
+      CAUSAL_CLAIMS_NOT_REQUESTED:
+      - DECISION_NOT_IN_SCOPE
+      DECISION_FROZEN:
+      - ORACLE_UNBLIND_APPROVED
+      DECISION_NOT_IN_SCOPE:
+      - ORACLE_UNBLIND_APPROVED
+      ORACLE_UNBLIND_APPROVED:
+      - ORACLE_UNBLINDED
+      ORACLE_UNBLINDED:
+      - BENCHMARK_CLOSED
+      BENCHMARK_CLOSED: []
+    other_transitions_allowed: false
+    skipping_states_allowed: false
+  execution_status:
+    enum:
+    - RUNNING
+    - SUCCEEDED
+    - FAILED
+    hard_failure_rule: Set run_execution_status to FAILED, record failure_stage and reason_codes, retain the last
+      valid governance lifecycle state, and prohibit unblinding.
+    failure_is_governance_transition: false
+  causal_claim_state_rules:
+    causal_wording_approved: CAUSAL_CLAIMS_APPROVED
+    causal_wording_withheld_but_full_decision_record_required: CAUSAL_CLAIMS_WITHHELD
+    withheld_forces_default_operational_action: HOLD
+    slice_1_calculation_only: CAUSAL_CLAIMS_NOT_REQUESTED
+  decision_state_rules:
+    full_system: DECISION_FROZEN
+    slice_1_only: DECISION_NOT_IN_SCOPE
+  approval_gates:
+  - id: A_TREATMENT_BAU_PROTECTION_APPROVAL
+    required_roles:
+    - BUSINESS_PROTECTION_APPROVER
+    all_listed_role_approvals_required: true
+  - id: B_SPEC_SAP_ECONOMICS_POLICY_GUARDRAIL_DECISION_APPROVAL
+    required_roles:
+    - METHOD_APPROVER
+    - BUSINESS_PROTECTION_APPROVER
+    all_listed_role_approvals_required: true
+  - id: C_DGP_SEEDS_PACKAGE_SEPARATION_APPROVAL
+    required_roles:
+    - ORACLE_CUSTODIAN
+    all_listed_role_approvals_required: true
+  - id: D_ANALYST_DATA_AND_DESIGN_READINESS
+    required_roles:
+    - METHOD_APPROVER
+    all_listed_role_approvals_required: true
+  - id: E_ANALYSIS_FREEZE
+    required_roles:
+    - RESEARCH_OWNER
+    all_listed_role_approvals_required: true
+  - id: F_CAUSAL_CLAIM_DISPOSITION_APPROVED_WITHHELD_OR_NOT_REQUESTED
+    required_roles:
+    - METHOD_APPROVER
+    all_listed_role_approvals_required: true
+  - id: G_BUSINESS_PROTECTION_APPROVAL_AND_DECISION_FREEZE_OR_SLICE1_SCOPE_RECORD
+    required_roles:
+    - BUSINESS_PROTECTION_APPROVER
+    all_listed_role_approvals_required: true
+  - id: H_ORACLE_UNBLIND_APPROVAL
+    required_roles:
+    - ORACLE_CUSTODIAN
+    all_listed_role_approvals_required: true
+  override_semantics:
+    calculated_recommended_policy_immutable: true
+    calculated_evidence_status_immutable: true
+    calculated_statistical_guardrail_action_immutable: true
+    calculated_default_operational_action_immutable: true
+    operational_action_is_final_authorized_action: true
+    allowed_more_conservative_overrides:
+    - DEPLOY_BROAD_TO_DEPLOY_TARGETED_IF_TARGETED_FEASIBLE
+    - ANY_DEPLOYMENT_TO_HOLD
+    prohibited_overrides:
+    - UNCERTAIN_TO_DEPLOYMENT
+    - GUARDRAIL_BLOCKED_TO_DEPLOYMENT
+    - DEPLOY_CAPACITY_INFEASIBLE_POLICY
+    prohibited_override_requires_new_spec_version: true
+    required_decision_approval_record_fields:
+    - statistical_guardrail_action
+    - default_operational_action
+    - operational_action
+    - approver
+    - role
+    - timestamp
+    - reason
+    - artifact_hashes
+    - override_is_allowed_and_more_conservative_when_actions_differ
+  run_profile_commitment:
+    profiles:
+    - SLICE_1_BLIND_RANDOMIZED_CAUSAL_CORE
+    - FULL_DECISION_SYSTEM
+    binding_state: BENCHMARK_COMMITTED
+    before_population_outcome_generation: true
+    required_artifact_groups_reference: Oracle section 2.6
+    downgrade_allowed: false
+    profile_change_requires_linked_new_run: true
+  cross_run_exposure:
+    lineage_key: SHA256(ASCII("OIDL-EXPOSURE-LINEAGE-v1|" + study_id + "|" + seed_commitment_sha256))
+    classification_enum:
+    - PRE_EXPOSURE_SEQUESTERED_TRUTH
+    - POST_UNBLIND_REANALYSIS
+    registry_rule: Custodian-owned local append-only signed chain, attested genesis; unknown registry fails closed.
+      Oracle section 12 is exhaustive.
+    prior_exposure_action: Any prior analyst-facing sequestered-truth exposure forces all later runs of that lineage
+      to POST_UNBLIND_REANALYSIS, with prior exposure hashes and parent run.
+    new_run_restores_blindness: false
+    new_profile_restores_blindness: false
+    new_dgp_version_same_seed_restores_blindness: false
+    unexpected_early_exposure: Fail the run, record exposure incident, preserve artifacts; only a linked post-unblind
+      reanalysis may continue.
+    authorized_generation_is_analyst_exposure: false
+    public_targets_are_exposure: false
+  approval_role_reference: Architecture section 5; gate records preserve each required accountable role.
+truth_sequestered_benchmark:
+  authoritative_term: TRUTH_SEQUESTERED_SYNTHETIC_BENCHMARK
+  prohibited_term: VALIDATION_OF_THE_ESTIMATOR
+  pre_outcome_freeze_and_hash:
+  - DGP version
+  - complete parameter card
+  - structural equations
+  - calibration procedure
+  - seed commitments
+  - ResearchSpec
+  - Statistical Analysis Plan
+  - economics and capacity
+  - policy set
+  - guardrail definitions and thresholds
+  - decision rule
+  - potential-outcome truth-target definitions
+  analyst_package_prohibited_fields:
+  - latent traits
+  - future-timestamp baseline fields
+  - per-person structural probabilities
+  - potential outcomes and unobserved paths
+  - generated realized finite-schedule truth
+  - calibrated coefficients
+  - generated oracle policy values and regret
+  - seed secrets
+  allowed_single_cohort_comparisons:
+  - signed overall estimate error against probability-scale expected truth
+  - signed subgroup and interaction errors against probability-scale expected truth
+  - secondary signed errors against realized finite potential-outcome schedule
+  - whether each interval contained each stated truth in this realization
+  - selected or acted policy versus oracle-best feasible policy
+  - case-level decision regret
+  prohibited_single_cohort_claims:
+  - bias
+  - RMSE
+  - confidence-interval coverage
+  - calibrated uncertainty
+  - power
+  - robustness
+  - method superiority
+  - external validity
+  visibility:
+    public: Complete contracts, synthetic design/calibration targets, scenario names and aggregate arithmetic derived
+      from public targets.
+    public_target_class: PUBLIC_SYNTHETIC_DESIGN_TARGET
+    public_target_evidence_role: SYNTHETIC_ASSUMPTION
+    aggregate_blindness_claimed: false
+    sequestered: Per-person probabilities, latent traits, counterfactual paths/outcomes, generated finite-schedule
+      truths, calibrated coefficients and generated oracle policy outputs.
+    restriction_scope: Analyst runtime and analyst-facing data/artifacts; not authorized isolated oracle generation.
+    authorized_oracle_generation_may_access_required_secrets: true
+    seeds_in_evaluator_payload: false
+    seed_custody: Custodian-only secret input; evaluator receives digest verification receipt, never raw canonical/child
+      secrets.
+  slice_1_oracle_payload:
+    exact_logical_components:
+    - generation_manifest
+    - oracle_screened_snapshot
+    - latent_traits
+    - potential_paths
+    - individual_primary_truth
+    - overall_primary_truth
+    - subgroup_probability_calibration
+    - oracle_logical_schema
+    forbidden_computed_components:
+    - policy values
+    - policy feasibility
+    - oracle-best policy
+    - regret
+    - HTE test
+    - subgroup finite-schedule and interaction summary
+    - guardrail decision result
+    authoritative_details: Oracle section 1.2 and DGP section 16; generated primitives necessary for event realization
+      are retained, not analyzed as guardrails in Slice 1.
+non_goals:
+- real or proprietary customer data
+- observational identification, matching, weighting, or propensity scores
+- CACE or instrumental-variable analysis
+- contacted-only or per-protocol causal claims
+- multiple treatments or multiple primary outcomes
+- individual treatment effects, uplift models, causal forests, or learned policies
+- post-hoc subgroup discovery
+- first-trade, retention, CLV, profitability, or detailed customer-welfare simulation
+- full brokerage or KYC simulator
+- CRM integration, production scheduling, streaming, authentication, or enterprise UI
+- LLMs, RAG, autonomous agents, or multi-agent orchestration
+- legal advice or universal jurisdictional claims
+- claims about Exness or any other firm's internal facts

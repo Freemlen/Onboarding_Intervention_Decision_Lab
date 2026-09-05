@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.pytest-tmp/
+.venv/
+*.egg-info/
+build/
+dist/
+.checkpoint-tmp/
+# Retain the user's historical backup outside the frozen runtime release.
+/contracts_v0.2.2_backup/

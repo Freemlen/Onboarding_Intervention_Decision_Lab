@@ -1,0 +1,1004 @@
+{
+  "release": "0.2.4",
+  "audit_kind": "TARGETED_CONTRACT_REPAIR_REGRESSION_AND_EXPLICIT_INPUT_MATHEMATICS",
+  "canonical_seed_used": false,
+  "canonical_cohort_generated": false,
+  "application_implementation_written_or_executed": false,
+  "hidden_fixture_runs_executed": false,
+  "runtime_isolation_signature_or_gate_enforcement_executed": false,
+  "original_readiness_check_count": 54,
+  "md_yaml_root_sections": 23,
+  "md_yaml_scalar_leaves": 1116,
+  "normative_artifacts": 11,
+  "normative_fixture_cases": 57,
+  "checks": [
+    {
+      "id": "SOURCE_AND_ACCEPTED_EVIDENCE_IDENTITY",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": {
+        "source_release": "0.2.3",
+        "zip_sha256": "3b5ad46ef36e084c01bd9a54787f47c77fec291bca2af51e709e491eafcefc80",
+        "zip_members": 17,
+        "verified_manifest_entries": 16,
+        "repair_input": "Onboarding_v0.2.3_Independent_Adversarial_Review.md, R1–R4; source passages independently inspected",
+        "historical_check_rebased": "Prior readiness catalogue source-identity check now verifies the actual v0.2.3 repair base; no earlier research input."
+      }
+    },
+    {
+      "id": "EXACT_NORMATIVE_SET",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "The two normative inventories agree on exactly eleven files; informative artifacts are outside the runtime contract set."
+    },
+    {
+      "id": "YAML_DUPLICATE_SAFE_PARSE",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "Both YAML documents parse; duplicate-key rejection separately exercised."
+    },
+    {
+      "id": "FULL_TYPED_MD_YAML_EQUIVALENCE",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": {
+        "roots": 23,
+        "typed_scalar_leaves": 1116
+      }
+    },
+    {
+      "id": "RESEARCH_LINKED_CONTRACTS_EXIST",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": {
+        "dgp_parameter_card": "DGP_Parameter_Sheet_v0.3.0",
+        "statistical_analysis_plan": "Statistical_Analysis_Plan_v0.3.0",
+        "decision_rule": "Decision_Rule_Spec_v0.3.0",
+        "guardrails": "Guardrail_Spec_v0.3.0",
+        "oracle_protocol": "Oracle_Benchmark_Spec_v0.3.0",
+        "architecture": "Architecture_v0.2.4",
+        "contract_bundle": "Contract_Bundle_v0.2.4",
+        "slice_1": "Slice_1_Definition_of_Done_v0.2.4",
+        "golden_fixtures": "Golden_Fixtures_v0.2.4"
+      }
+    },
+    {
+      "id": "SEMANTIC_VERSIONS",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": {
+        "release": "0.2.4",
+        "behavior_contracts": "0.3.0",
+        "arithmetic": "OIDL-COUNT-RATIONAL-AGGREGATION-v1",
+        "unchanged_assignment_and_package_hash_methods": true
+      }
+    },
+    {
+      "id": "TEXT_ENCODING_Contract_Bundle_v0.2.4.md",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "UTF-8 without BOM, LF, final newline."
+    },
+    {
+      "id": "TEXT_ENCODING_Architecture_v0.2.4.md",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "UTF-8 without BOM, LF, final newline."
+    },
+    {
+      "id": "TEXT_ENCODING_ResearchSpec_v0.2.4.md",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "UTF-8 without BOM, LF, final newline."
+    },
+    {
+      "id": "TEXT_ENCODING_ResearchSpec_v0.2.4.yaml",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "UTF-8 without BOM, LF, final newline."
+    },
+    {
+      "id": "TEXT_ENCODING_DGP_Parameter_Sheet_v0.3.0.md",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "UTF-8 without BOM, LF, final newline."
+    },
+    {
+      "id": "TEXT_ENCODING_Statistical_Analysis_Plan_v0.3.0.md",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "UTF-8 without BOM, LF, final newline."
+    },
+    {
+      "id": "TEXT_ENCODING_Decision_Rule_Spec_v0.3.0.md",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "UTF-8 without BOM, LF, final newline."
+    },
+    {
+      "id": "TEXT_ENCODING_Guardrail_Spec_v0.3.0.md",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "UTF-8 without BOM, LF, final newline."
+    },
+    {
+      "id": "TEXT_ENCODING_Oracle_Benchmark_Spec_v0.3.0.md",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "UTF-8 without BOM, LF, final newline."
+    },
+    {
+      "id": "TEXT_ENCODING_Slice_1_Definition_of_Done_v0.2.4.md",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "UTF-8 without BOM, LF, final newline."
+    },
+    {
+      "id": "TEXT_ENCODING_Golden_Fixtures_v0.2.4.yaml",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "UTF-8 without BOM, LF, final newline."
+    },
+    {
+      "id": "FROZEN_CORE_PRESERVATION",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": {
+        "unchanged_typed_subtrees": [
+          "scope_and_claim_boundary",
+          "product_decision",
+          "unit_and_cohort",
+          "clock_semantics",
+          "kyc_modifier",
+          "outcomes",
+          "estimand",
+          "identification_and_scope",
+          "randomization",
+          "heterogeneity_and_multiplicity",
+          "missingness_maturity_and_deviations",
+          "policy_economics_and_action",
+          "sample_size_and_mde",
+          "governance",
+          "truth_sequestered_benchmark",
+          "non_goals"
+        ],
+        "version_identity_normalization_only": true
+      }
+    },
+    {
+      "id": "PLANNING_INPUTS_UNCHANGED",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "All planning inputs and bounds unchanged."
+    },
+    {
+      "id": "PLANNED_FRICTION_POWER_TYPED_BOUND",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "Strict bound, not scalar point estimate."
+    },
+    {
+      "id": "PLANNING_BOUND_MATHEMATICS",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "normal_planning_power": 0.9999995279415183
+      }
+    },
+    {
+      "id": "SCREENED_QUOTAS",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "screened": 55000,
+        "eligible": 50000,
+        "excluded": 5000,
+        "exact_period_and_regime_allocations": true
+      }
+    },
+    {
+      "id": "ASSIGNMENT_QUOTAS",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "blocks": 16,
+        "smallest_block": 750,
+        "smallest_arm": 375
+      }
+    },
+    {
+      "id": "CALL_WINDOW_EXHAUSTIVE_LOCAL_SECONDS",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "registration_seconds_checked": 86400,
+        "noncallable_seconds": 8099,
+        "first": 27001,
+        "last": 35099,
+        "declared_shifts_all_callable": true
+      }
+    },
+    {
+      "id": "B1_SOURCE_AND_NA_CONTRACT",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "Source construction, exclusion quotas, source clocks/nullability and calling supports unchanged byte-for-byte after version identity normalization."
+    },
+    {
+      "id": "GOLDEN_EQUAL_BLOCKS_POSITIVE",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "max_absolute_error": 0.0,
+        "estimate_fraction": "1/4",
+        "variance_fraction": "7/96",
+        "status": "NOT_ZERO"
+      }
+    },
+    {
+      "id": "GOLDEN_UNEQUAL_BLOCK_WEIGHTS",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "max_absolute_error": 0.0,
+        "estimate_fraction": "1/4",
+        "variance_fraction": "9/160",
+        "status": "NOT_ZERO"
+      }
+    },
+    {
+      "id": "GOLDEN_ZERO_EFFECT_NONZERO_SE",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "max_absolute_error": 0.0,
+        "estimate_fraction": "0",
+        "variance_fraction": "7/96",
+        "status": "NOT_ZERO"
+      }
+    },
+    {
+      "id": "GOLDEN_NEGATIVE_EFFECT",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "max_absolute_error": 0.0,
+        "estimate_fraction": "-1/4",
+        "variance_fraction": "7/96",
+        "status": "NOT_ZERO"
+      }
+    },
+    {
+      "id": "GOLDEN_ONE_ZERO_VARIANCE_BLOCK",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "max_absolute_error": 0.0,
+        "estimate_fraction": "1/6",
+        "variance_fraction": "1/18",
+        "status": "NOT_ZERO"
+      }
+    },
+    {
+      "id": "GOLDEN_ALL_ZERO",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "max_absolute_error": 0.0,
+        "estimate_fraction": "0",
+        "variance_fraction": "0",
+        "status": "ZERO_SE_ZERO_ESTIMATE"
+      }
+    },
+    {
+      "id": "GOLDEN_ALL_ONE",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "max_absolute_error": 0.0,
+        "estimate_fraction": "0",
+        "variance_fraction": "0",
+        "status": "ZERO_SE_ZERO_ESTIMATE"
+      }
+    },
+    {
+      "id": "GOLDEN_ZERO_SE_POSITIVE",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "max_absolute_error": 0.0,
+        "estimate_fraction": "1",
+        "variance_fraction": "0",
+        "status": "ZERO_SE_NONZERO_ESTIMATE"
+      }
+    },
+    {
+      "id": "GOLDEN_ZERO_SE_NEGATIVE",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "max_absolute_error": 0.0,
+        "estimate_fraction": "-1",
+        "variance_fraction": "0",
+        "status": "ZERO_SE_NONZERO_ESTIMATE"
+      }
+    },
+    {
+      "id": "GOLDEN_ZERO_SE_CANCELLING_BLOCK_EFFECTS",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "max_absolute_error": 0.0,
+        "estimate_fraction": "0",
+        "variance_fraction": "0",
+        "status": "ZERO_SE_ZERO_ESTIMATE"
+      }
+    },
+    {
+      "id": "GOLDEN_NON_DYADIC_CANONICAL_CANCELLATION",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "max_absolute_error": 0.0,
+        "estimate_fraction": "0",
+        "variance_fraction": "0",
+        "status": "ZERO_SE_ZERO_ESTIMATE"
+      }
+    },
+    {
+      "id": "GOLDEN_GENERAL_UNEQUAL_ALLOCATION_CANCELLATION",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "max_absolute_error": 0.0,
+        "estimate_fraction": "0",
+        "variance_fraction": "0",
+        "status": "ZERO_SE_ZERO_ESTIMATE"
+      }
+    },
+    {
+      "id": "GOLDEN_INVALID_ARM_CONTRACT",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": "Both empty and singleton arms fail before any authoritative calculation."
+    },
+    {
+      "id": "GOLDEN_FUTURE_HELP_ANCHOR_REPAIRED",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "verification_anchor": 144000000000,
+        "resolved_verification_ts": 190080000000,
+        "funding_anchor": 190080000000,
+        "funding_initiation_ts": 282240000000,
+        "settlement_ts": 328320000000,
+        "qualifying_success_ts": 328320000000,
+        "reversal_ts": null
+      }
+    },
+    {
+      "id": "GOLDEN_REVERSAL_AFTER_SETTLEMENT",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "reversal_ts": 421200000001
+      }
+    },
+    {
+      "id": "TIME_RESERVATION_ENDPOINT_GRID",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "main_cases": 486,
+        "extra_endpoints_per_case": 3,
+        "fraction_endpoints": [
+          0,
+          0.5,
+          1
+        ]
+      }
+    },
+    {
+      "id": "POLICY_SIX_ORIENTATION_BOUND",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "statements": 6,
+        "critical_value": 2.3939797998185104
+      }
+    },
+    {
+      "id": "SERVICE_PROJECTION_ARITHMETIC",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "p90_minutes": 6.5,
+        "abandonment": 0.04,
+        "observations": false
+      }
+    },
+    {
+      "id": "ECONOMIC_ARITHMETIC_UNCHANGED",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "targeted_public_target_value": 30000,
+        "broad_public_target_value": -8500,
+        "canonical_policy_computed": false
+      }
+    },
+    {
+      "id": "BENCHMARK_COMMITMENT_BINDINGS",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "18 bindings plus payload; immutable profile/groups before outcome generation."
+    },
+    {
+      "id": "EXACT_SLICE1_ORACLE_COMPONENTS",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "Eight unchanged logical components; no computed policy/HTE/guardrail-decision additions."
+    },
+    {
+      "id": "VISIBILITY_AND_PRIOR_EXPOSURE_RULES",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "Public targets remain public; seed/individual truth isolated; new run/profile/version never resets exposure."
+    },
+    {
+      "id": "EXECUTABLE_COMPLETENESS",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "Per-field/per-arm exact completeness, unknown applicability denominator and structural N/A preserved; R1/R2 projected fields included."
+    },
+    {
+      "id": "NO_STOP_DERIVATION_NOT_EXTRA_RANDOM_VARIABLE",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "No-stop derived from known flags/times and complete audit; no new draw or protection subtype."
+    },
+    {
+      "id": "M1_BASIS_UNCHANGED_RATIONALE",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "Original adjustment basis and corrected subtype rationale retained."
+    },
+    {
+      "id": "GATE_ROLE_PARITY",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "Eight unchanged role-explicit human gates; no approval delegated to implementation."
+    },
+    {
+      "id": "PACKAGE_GOLDEN_HASH",
+      "status": "PASS",
+      "category": "EXPLICIT_BYTE_HASH_CHECK",
+      "detail": {
+        "payload_members": 2,
+        "sha256": "8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5"
+      }
+    },
+    {
+      "id": "DATA_JSON_ENVELOPE_CYCLE_REMOVED",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "Run-envelope JSON outside analyst/oracle data payload; member array is not another artifact."
+    },
+    {
+      "id": "PACKAGE_COMMITMENT_DAG_ACYCLIC",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": {
+        "topological_order": [
+          "analyst_payload",
+          "commitment",
+          "oracle_payload",
+          "scan",
+          "analyst_content",
+          "oracle_content",
+          "analyst_manifest",
+          "deterministic_result",
+          "oracle_manifest",
+          "release",
+          "result_envelope",
+          "freeze",
+          "scope_records",
+          "archive_payload",
+          "archive_content",
+          "archive_manifest",
+          "gate_H",
+          "unblind_comparison",
+          "close"
+        ],
+        "backward_result_to_analyst_payload_edge": false
+      }
+    },
+    {
+      "id": "REMOVED_CONTRADICTORY_LANGUAGE",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "Superseded earliest-anchor, ambiguous zero comparison and observed-projection labels are absent."
+    },
+    {
+      "id": "PUBLIC_SEED_COMMITMENT_PRESERVED",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "Public seed identifiers/commitment declarations retained; no secret inputs read, generated, requested or used."
+    },
+    {
+      "id": "GOLDEN_COMPLETENESS_NO_CALLBACK_STRUCTURAL_NA",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": "Explicit applicability/absence fixture recomputed; no full decision system executed."
+    },
+    {
+      "id": "GOLDEN_COMPLETENESS_MISSING_COMPLETED_CALLBACK_TIME",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": "Explicit applicability/absence fixture recomputed; no full decision system executed."
+    },
+    {
+      "id": "GOLDEN_COMPLETENESS_UNKNOWN_CALLBACK_PARENT",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": "Explicit applicability/absence fixture recomputed; no full decision system executed."
+    },
+    {
+      "id": "GOLDEN_COMPLETENESS_NO_REQUIRED_UNREACHABLE_EMAILS",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": "Explicit applicability/absence fixture recomputed; no full decision system executed."
+    },
+    {
+      "id": "GOLDEN_COMPLETENESS_MISSING_HARM_STATUS",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": "Explicit applicability/absence fixture recomputed; no full decision system executed."
+    },
+    {
+      "id": "GOLDEN_GOVERNANCE_PROFILE_DOWNGRADE",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": "Fixture disposition agrees with the immutable profile/visibility/scope contract; runtime state machine not executed."
+    },
+    {
+      "id": "GOLDEN_GOVERNANCE_NEW_ID_AFTER_EXPOSURE",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": "Fixture disposition agrees with the immutable profile/visibility/scope contract; runtime state machine not executed."
+    },
+    {
+      "id": "GOLDEN_GOVERNANCE_EARLY_EXPOSURE",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": "Fixture disposition agrees with the immutable profile/visibility/scope contract; runtime state machine not executed."
+    },
+    {
+      "id": "GOLDEN_GOVERNANCE_PUBLIC_TARGET_ONLY",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": "Fixture disposition agrees with the immutable profile/visibility/scope contract; runtime state machine not executed."
+    },
+    {
+      "id": "GOLDEN_GOVERNANCE_SLICE1_POLICY_ORACLE_COMPONENT",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": "Fixture disposition agrees with the immutable profile/visibility/scope contract; runtime state machine not executed."
+    },
+    {
+      "id": "GOLDEN_CALL_WINDOW_EXAMPLES",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": "08:00 excluded and 10:00 callable, consistent with exhaustive scan."
+    },
+    {
+      "id": "GOLDEN_REPEATED_FAILURE_REVIEW_TWO_FAILED",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "repeated_failure": true,
+        "repeated_failure_ts": 504000000000,
+        "repeated_failure_reason_code": "SECOND_FAILED_OR_REVERSED_DEPOSIT",
+        "repeated_failure_trigger_deposit_ordinal": 2,
+        "occurrence_event_count": 1,
+        "event_type": "REPEATED_FAILED_OR_REVERSED_DEPOSITS",
+        "summary_event_ts": 604800000000
+      }
+    },
+    {
+      "id": "GOLDEN_REPEATED_FAILURE_REVERSAL_NOT_SETTLEMENT",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "repeated_failure": true,
+        "repeated_failure_ts": 576000000000,
+        "repeated_failure_reason_code": "SECOND_FAILED_OR_REVERSED_DEPOSIT",
+        "repeated_failure_trigger_deposit_ordinal": 1,
+        "occurrence_event_count": 1,
+        "event_type": "REPEATED_FAILED_OR_REVERSED_DEPOSITS",
+        "summary_event_ts": 604800000000
+      }
+    },
+    {
+      "id": "GOLDEN_REPEATED_FAILURE_TIE_MAIN_BEFORE_EXTRA",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "repeated_failure": true,
+        "repeated_failure_ts": 360000000000,
+        "repeated_failure_reason_code": "SECOND_FAILED_OR_REVERSED_DEPOSIT",
+        "repeated_failure_trigger_deposit_ordinal": 2,
+        "occurrence_event_count": 1,
+        "event_type": "REPEATED_FAILED_OR_REVERSED_DEPOSITS",
+        "summary_event_ts": 604800000000
+      }
+    },
+    {
+      "id": "GOLDEN_REPEATED_FAILURE_TIE_EXTRA_ORDINAL",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "repeated_failure": true,
+        "repeated_failure_ts": 360000000000,
+        "repeated_failure_reason_code": "SECOND_FAILED_OR_REVERSED_DEPOSIT",
+        "repeated_failure_trigger_deposit_ordinal": 2,
+        "occurrence_event_count": 1,
+        "event_type": "REPEATED_FAILED_OR_REVERSED_DEPOSITS",
+        "summary_event_ts": 604800000000
+      }
+    },
+    {
+      "id": "GOLDEN_REPEATED_FAILURE_LATER_THIRD_DOES_NOT_MOVE",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "repeated_failure": true,
+        "repeated_failure_ts": 504000000000,
+        "repeated_failure_reason_code": "SECOND_FAILED_OR_REVERSED_DEPOSIT",
+        "repeated_failure_trigger_deposit_ordinal": 3,
+        "occurrence_event_count": 1,
+        "event_type": "REPEATED_FAILED_OR_REVERSED_DEPOSITS",
+        "summary_event_ts": 604800000000
+      }
+    },
+    {
+      "id": "GOLDEN_REPEATED_FAILURE_FINAL_H_BOUNDARY",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "repeated_failure": true,
+        "repeated_failure_ts": 604800000000,
+        "repeated_failure_reason_code": "SECOND_FAILED_OR_REVERSED_DEPOSIT",
+        "repeated_failure_trigger_deposit_ordinal": 1,
+        "occurrence_event_count": 1,
+        "event_type": "REPEATED_FAILED_OR_REVERSED_DEPOSITS",
+        "summary_event_ts": 604800000000
+      }
+    },
+    {
+      "id": "GOLDEN_REPEATED_FAILURE_SINGLE_QUALIFYING_FALSE",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "repeated_failure": false,
+        "repeated_failure_ts": null,
+        "repeated_failure_reason_code": null,
+        "repeated_failure_trigger_deposit_ordinal": null,
+        "occurrence_event_count": 0,
+        "event_type": null,
+        "summary_event_ts": 604800000000
+      }
+    },
+    {
+      "id": "GOLDEN_REPEATED_FAILURE_NONQUALIFYING_STATUSES",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "repeated_failure": false,
+        "repeated_failure_ts": null,
+        "repeated_failure_reason_code": null,
+        "repeated_failure_trigger_deposit_ordinal": null,
+        "occurrence_event_count": 0,
+        "event_type": null,
+        "summary_event_ts": 604800000000
+      }
+    },
+    {
+      "id": "GOLDEN_REPEATED_FAILURE_NO_DEPOSITS",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "repeated_failure": false,
+        "repeated_failure_ts": null,
+        "repeated_failure_reason_code": null,
+        "repeated_failure_trigger_deposit_ordinal": null,
+        "occurrence_event_count": 0,
+        "event_type": null,
+        "summary_event_ts": 604800000000
+      }
+    },
+    {
+      "id": "GOLDEN_REPEATED_FAILURE_FLAG_LOG_MISMATCH",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": "Declared malformed projection rejected; null true-event clock is never structural N/A."
+    },
+    {
+      "id": "GOLDEN_REPEATED_FAILURE_TRUE_MISSING_TIMESTAMP",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": "Declared malformed projection rejected; null true-event clock is never structural N/A."
+    },
+    {
+      "id": "GOLDEN_REPEATED_FAILURE_FALSE_NONNULL_REASON",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": "Declared malformed projection rejected; null true-event clock is never structural N/A."
+    },
+    {
+      "id": "R1_REVIEW_HALF_SPAN_COUNTEREXAMPLE",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": "Review initiations 32/112h give failures 100/140h; one occurrence at 140h, no new timing draw."
+    },
+    {
+      "id": "GOLDEN_PROTECTION_BEFORE_REMINDER_SUPPRESSED",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": {
+        "hard_restriction_by_t": true,
+        "proactive_stop_by_t": true,
+        "active_settled_deposit_by_t": false,
+        "emit_generic_reminder": false,
+        "reminder_ts": null
+      }
+    },
+    {
+      "id": "GOLDEN_PROTECTION_AT_REMINDER_SUPPRESSED",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": {
+        "hard_restriction_by_t": true,
+        "proactive_stop_by_t": true,
+        "active_settled_deposit_by_t": false,
+        "emit_generic_reminder": false,
+        "reminder_ts": null
+      }
+    },
+    {
+      "id": "GOLDEN_PROTECTION_AFTER_REMINDER_NOT_RETROACTIVE",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": {
+        "hard_restriction_by_t": false,
+        "proactive_stop_by_t": false,
+        "active_settled_deposit_by_t": false,
+        "emit_generic_reminder": true,
+        "reminder_ts": 129600000000
+      }
+    },
+    {
+      "id": "GOLDEN_NO_SIGNAL_UNFUNDED_REMINDER",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": {
+        "hard_restriction_by_t": false,
+        "proactive_stop_by_t": false,
+        "active_settled_deposit_by_t": false,
+        "emit_generic_reminder": true,
+        "reminder_ts": 129600000000
+      }
+    },
+    {
+      "id": "GOLDEN_OPTOUT_ALONE_NOT_HARD_RESTRICTION",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": {
+        "hard_restriction_by_t": false,
+        "proactive_stop_by_t": true,
+        "active_settled_deposit_by_t": false,
+        "emit_generic_reminder": true,
+        "reminder_ts": 129600000000
+      }
+    },
+    {
+      "id": "GOLDEN_PRESSURE_BREACH_ALONE_NOT_RESTRICTION",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": {
+        "hard_restriction_by_t": false,
+        "proactive_stop_by_t": false,
+        "active_settled_deposit_by_t": false,
+        "emit_generic_reminder": true,
+        "reminder_ts": 129600000000
+      }
+    },
+    {
+      "id": "GOLDEN_EXPLICIT_AUDIT_RESTRICTION_SUPPRESSES",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": {
+        "hard_restriction_by_t": true,
+        "proactive_stop_by_t": true,
+        "active_settled_deposit_by_t": false,
+        "emit_generic_reminder": false,
+        "reminder_ts": null
+      }
+    },
+    {
+      "id": "GOLDEN_EXPLICIT_AUDIT_STOP_ONLY",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": {
+        "hard_restriction_by_t": false,
+        "proactive_stop_by_t": true,
+        "active_settled_deposit_by_t": false,
+        "emit_generic_reminder": true,
+        "reminder_ts": 129600000000
+      }
+    },
+    {
+      "id": "GOLDEN_BASELINE_RESTRICTION_EXCLUDED_NO_REMINDER",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": {
+        "hard_restriction_by_t": true,
+        "proactive_stop_by_t": true,
+        "active_settled_deposit_by_t": false,
+        "emit_generic_reminder": false,
+        "reminder_ts": null
+      }
+    },
+    {
+      "id": "GOLDEN_SETTLEMENT_AT_REMINDER_SUPPRESSES",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": {
+        "hard_restriction_by_t": false,
+        "proactive_stop_by_t": false,
+        "active_settled_deposit_by_t": true,
+        "emit_generic_reminder": false,
+        "reminder_ts": null
+      }
+    },
+    {
+      "id": "GOLDEN_FUTURE_REVERSAL_NOT_EARLIER_DISPOSITION",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": {
+        "hard_restriction_by_t": false,
+        "proactive_stop_by_t": false,
+        "active_settled_deposit_by_t": true,
+        "emit_generic_reminder": false,
+        "reminder_ts": null
+      }
+    },
+    {
+      "id": "GOLDEN_REVERSAL_AT_REMINDER_REOPENS_ASOF",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": {
+        "hard_restriction_by_t": false,
+        "proactive_stop_by_t": false,
+        "active_settled_deposit_by_t": false,
+        "emit_generic_reminder": true,
+        "reminder_ts": 129600000000
+      }
+    },
+    {
+      "id": "GOLDEN_TRUE_PROTECTION_WITHOUT_TIME",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": {
+        "predicate_result": "NOT_EVALUABLE",
+        "missing_treated_as_false": false,
+        "generation_conforms": false
+      }
+    },
+    {
+      "id": "GOLDEN_INCOMPLETE_SERIOUS_AUDIT_NOT_NO_STOP",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": {
+        "predicate_result": "NOT_EVALUABLE",
+        "missing_treated_as_false": false,
+        "generation_conforms": false
+      }
+    },
+    {
+      "id": "R2_SHARED_STOP_EQUAL_TIME_AND_CODE_SET",
+      "status": "PASS",
+      "category": "EXPLICIT_RULE_CHECK",
+      "detail": {
+        "equal_timestamp_truth_table_cases": 8,
+        "codes": "Existing serious-code set only; deterministic union, no new stochastic harm.",
+        "feedback_into_generation": false
+      }
+    },
+    {
+      "id": "R3_REVIEW_COUNTEREXAMPLE_AND_PERMUTATIONS",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "nonconforming_lexical_binary64_estimate": -2.7755575615628914e-17,
+        "nonconforming_sorted_estimate": 0.0,
+        "conforming_exact_estimate": 0,
+        "conforming_p_value": 1,
+        "status": "ZERO_SE_ZERO_ESTIMATE",
+        "deterministic_order_arm_swap_cases": 64
+      }
+    },
+    {
+      "id": "R3_GENERAL_COUNTS_NOT_POOLED_SHORTCUT",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": "Six general unequal-allocation permutations; exact blocked cancellation, unequal pooled arm risks, no invalid pooled-count shortcut."
+    },
+    {
+      "id": "R3_INDEPENDENT_BINARY_ARRAY_ARITHMETIC",
+      "status": "PASS",
+      "category": "EXPLICIT_INPUT_MATHEMATICS",
+      "detail": {
+        "explicit_count_fixtures": 12,
+        "expanded_array_numeric_max_error": 2.7755575615628914e-17,
+        "branch_from_exact_counts_only": true
+      }
+    },
+    {
+      "id": "R4_TWO_RUN_BYTE_DOMAINS",
+      "status": "PASS",
+      "category": "EXPLICIT_BYTE_HASH_CHECK",
+      "detail": {
+        "content_sha256": "8f0104a328d90689f0aa552f0c0f32de3db376f52d05771995046247d5a025b5",
+        "deterministic_result_sha256": "eb9da6520fa79f68e5c3f52abe18f81196886a4b8dab66cd7c6deae259f35528",
+        "distinct_manifest_hashes": [
+          "ca46bd4cb5a2c33bd6825172973aac3f8c98e1c552b821cf92994b21ee1a617f",
+          "d440f16082ab438262e1d1caa96f4de447250e59cc02e63ce430374c1dbfbb85"
+        ],
+        "distinct_release_hashes": [
+          "7d6e4072540ed981b60ee1e5a8e8c826011c6ae15f685da5fe6d4f3d858beccd",
+          "f410052641031582c1446e9921c2fedd8b519ba031ced4aa86daa1b1608503ea"
+        ],
+        "unchanged_aliases": true,
+        "authentic_run_binding_check": "Exact fixture byte references checked; no digital-signature runtime executed."
+      }
+    },
+    {
+      "id": "R1_R2_NO_NEW_RANDOM_DRAWS",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": {
+        "registry_names_and_distributions_unchanged": 43,
+        "new_draws": 0
+      }
+    },
+    {
+      "id": "ALL_ORIGINAL_FIXTURES_RETAINED",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": "All original 28 fixture cases retained; only exact-zero numeric token typing normalized in primary outputs. New cases supplement, never replace, original cases."
+    },
+    {
+      "id": "PRIOR_READINESS_CATALOGUE_FULL_RECHECK",
+      "status": "PASS",
+      "category": "STATIC_CONTRACT_CHECK",
+      "detail": {
+        "prior_check_count": 54,
+        "rechecked": 54,
+        "missing": [],
+        "source_identity_rebased_to_current_repair_input": true
+      }
+    }
+  ],
+  "summary": {
+    "total": 102,
+    "passed": 102,
+    "failed": 0
+  },
+  "limitations": [
+    "Static contract/rule checks are not application integration tests.",
+    "Explicit fixture arithmetic is not a canonical cohort or repeated-simulation operating-characteristic study.",
+    "Actual runtime isolation, signatures, hidden-seed replay and production capability were not executed.",
+    "Readiness catalogue was reconstructed and re-evaluated against this release; prior PASS labels were not accepted as proof."
+  ]
+}

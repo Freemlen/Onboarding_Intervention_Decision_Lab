@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools==68.1.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "onboarding-intervention-decision-lab"
+version = "0.0.1"
+description = "First checkpoint: frozen v0.2.4 contract validation only"
+requires-python = ">=3.12,<3.13"
+dependencies = ["PyYAML==6.0.1"]
+
+[project.optional-dependencies]
+test = ["pytest==7.4.4"]
+
+[project.scripts]
+oidl = "oidl.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra --basetemp=.pytest-tmp"
+
+[tool.oidl.serialization]
+runtime = "CPython 3.12.3"
+encoding = "UTF-8"
+json_keys = "sorted recursively"
+json_separators = [",", ":"]
+json_ensure_ascii = false
+json_allow_nan = false
+record_final_newline = true
+member_hash_preimage_final_newline = false
