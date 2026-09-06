@@ -32,3 +32,13 @@ json_ensure_ascii = false
 json_allow_nan = false
 record_final_newline = true
 member_hash_preimage_final_newline = false
+
+data_table_format = "OIDL-TYPED-TSV-1"
+data_table_delimiter = "TAB"
+data_table_cell_encoding = "finite JSON typed values"
+data_timestamp_encoding = "UTC with six fractional digits"
+yaml_library = "PyYAML 6.0.1"
+yaml_sort_keys = true
+yaml_allow_unicode = true
+yaml_width = 1000
+yaml_final_newline = true

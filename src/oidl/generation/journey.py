@@ -15,18 +15,7 @@ from oidl.domain.population import validate_snapshot
 from oidl.domain.timing import DAY, HOUR, MINUTE, tick
 from oidl.generation.population import category
 
-OCCURRENCES = (
-    "campaign_enrollment_ts", "initial_attempt_ts", "initial_call_completion_ts",
-    "followup_sent_ts", "followup_seen_ts", "callback_request_ts", "callback_start_ts",
-    "callback_completion_ts", "package_exposure_ts", "package_help_ts", "bau_help_ts",
-    "first_substantive_help_ts", "resolved_verification_ts", "last_proactive_interaction_ts",
-)
-FLAGS = (
-    "package_enrolled", "contamination", "attempted", "reached", "initial_help_accepted",
-    "help_accepted", "followup_sent", "followup_seen", "callback_requested",
-    "callback_completed", "package_help", "BAU_help", "main_funding_initiated",
-    "main_qualifying_success",
-)
+from oidl.domain.observed import FLAGS, OCCURRENCES
 
 
 def permitted_time(after, deadline, offset, duration, u, *, completion=False):

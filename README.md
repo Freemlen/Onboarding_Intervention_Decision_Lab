@@ -1,14 +1,15 @@
 # Onboarding Intervention Decision Lab
 
-Checkpoints 1–3: frozen contract release **v0.2.7** validation, pre-outcome
-population/randomization, and pure sequential journey/outcome construction.
+Checkpoints 1–4: frozen contract release **v0.2.7** validation, population and
+journey construction, analyst-package release and descriptive design audit.
 This is not completion of Slice 1 or approval of a benchmark run.
 See [Checkpoint 2 quotas](docs/checkpoint_2.md) and
 [Checkpoint 3 clauses, logical tables and test coverage](docs/checkpoint_3.md).
 The [v0.2.7 rebind checkpoint](docs/contract_rebind_v0.2.7.md) records the identity
 migration and the exact-byte ResearchSpec_hash binding; accepted generation,
-R5 provenance and R6 balance-catalogue behavior are unchanged. Runtime release/authentication and balance
-calculation remain deferred to Checkpoint 4.
+R5 provenance and R6 balance behavior are preserved.
+[Checkpoint 4](docs/checkpoint_4.md) adds authenticated release and the exact 45-row
+balance calculation using fabricated fixtures only.
 
 The sole normative authority is [Contract Bundle v0.2.7](contracts/Contract_Bundle_v0.2.7.md).
 The installed release was verified before implementation: all 16 entries in
@@ -120,41 +121,28 @@ Record files end with LF; contract member-list hash preimages have no newline.
 Integrity always uses original bytes, never parser reserialization. Generated
 validation records live outside the frozen release.
 
-## Slice 1 scope and deferred acceptance
+## Checkpoint 4 release and design validation
 
-The complete Slice 1 is defined by
-[its frozen Definition of Done](contracts/Slice_1_Definition_of_Done_v0.2.7.md).
-It eventually covers the 55,000-person screened construction, 50,000 randomized
-eligible persons, separated analyst/oracle packages, eligibility/time/outcome/
-assignment checks, descriptive balance and fidelity, primary blocked ITT with
-Neyman variance/normal interval/p-value, immutable freeze, explicit scope
-dispositions, authorized overall oracle comparison, and provenance/exposure
-lineage. Checkpoint 3 adds pure sequential generation and four-table construction; physical
-packages, authenticated releases and the governed workflow remain deferred.
+Checkpoint 4 finalizes the four-table analyst package, separates custody-only
+oracle retention, authenticates the frozen two-stage leakage-scan/release
+lifecycle, and emits the randomization audit and identical baseline-balance
+projection only after release. The exact 45-row SAP catalogue is implemented.
+See [clause-level traceability and fixture verification](docs/checkpoint_4.md).
 
-The remaining required implementation tests are tracked here by exact section,
-without claiming they have run:
+Pure canonicalization/hashing, package/schema/visibility validation, governance
+bindings and diagnostic arithmetic live in domain modules; filesystem operations
+live in adapters. The workflow takes explicit public contract bytes, commitments,
+already-generated tables, isolated oracle package and attributable approval
+records. Tests supply only fabricated non-secret fixtures and approvals.
 
-| Slice 1 requirement | Deferred tests |
-|---|---|
-| §§4–6 and §7.1 | All fabricated primary estimator, rational cancellation and zero-SE boundary fixtures, plus SAP §4.3 balance arithmetic and complete runtime diagnostic/projection validation. The exact 45-row catalogue and schema are bound and tested without calculating SMDs in the v0.2.7 rebind. Post-assignment event, anchor, reversal, repeated-failure and restriction/reminder projection fixtures pass in Checkpoint 3. |
-| §7.2 | Complete analyst-package/primary checks; full direct/aliased truth leakage and secret/path rejection; isolated analyst-only calculations. Pre-outcome schema, eligibility, assignment integrity and domain/generation import separation are tested in Checkpoint 2. |
-| §7.3 | Estimator row/file/category-order and arm-swap invariance; data/result reproducibility for identical custodied inputs; rendering preserves numbers. Contract and complete pre-outcome fixture determinism/order invariance are tested now; finalized data-package reproducibility remains deferred. |
-| §7.4 | Lifecycle/approval/freeze/profile/lineage enforcement; exposure incidents; complete data/archive package DAG and manifest authentication. Oracle §2.5.2 two-phase scan/release authentication and its complete R5 fixtures also remain deferred. Only public release file safety and validation-record no-overwrite are tested now. |
-| §7.5 | Authorized oracle hash/calibration/projection checks, exact frozen output integrity and overall error decomposition/containment. |
-| §7.6 | At least five custodian-committed hidden seeds per NULL_EFFECT_V0.3 and ADVERSE_EFFECT_V0.3; serious-breach decision-veto acceptance deferred to FULL. Only public noncanonical fixture inputs are used in Checkpoints 2 and 3; hidden/canonical inputs remain unused. |
+Accepted Checkpoints 1–3 generation and event semantics remain unchanged.
+The workflow stops at ANALYST_PACKAGE_RELEASED with design diagnostics; it does
+not enter ANALYSIS_COMPLETE or freeze statistical results. Gate D before primary
+analysis, ITT/Neyman/CI/p-values, descriptive fidelity reporting, analysis freeze,
+archive/unblind gates and oracle comparison remain for later checkpoints.
 
-Slice 1 §0 prohibits economics/policy feasibility or selection, deployment
-actions, confirmatory HTE/subgroup effect analysis, guardrail inference/vetoes,
-Lin adjustment, a full reporting/claim engine, proprietary data, observational
-methods, ML/AI/agents, CRM/UI/API services and cloud/production infrastructure.
-These capabilities have no implementation or placeholder output here.
-The pre-outcome screened construction, assignment sequences and pure audit checks
-are implemented. Post-assignment generation and observed logical tables are also implemented.
-Estimation, physical release packages, the oracle evaluator, governance workflow
-and canonical execution remain deferred.
-
-Checkpoint 4 remains deferred; its blocked draft was not restored or reused in
-this migration. Oracle v0.5.0 §2.4.1 resolves the ResearchSpec_hash source and
-placement. No additional normative ambiguity was encountered during this rebind.
-This record claims component verification only, not full Slice 1 acceptance.
+The complete Slice 1 acceptance remains defined by its frozen Definition of Done.
+No canonical or hidden-seed run is generated or released by these checkpoints.
+No HTE, economics, policy selection, guardrail decisions, ML/AI/agents or reporting
+UI is implemented. Checkpoint 4 component verification does not claim full Slice 1
+acceptance.
