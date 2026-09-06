@@ -21,3 +21,8 @@ dist/
 # Preserve the supplied source archive for the targeted CP6 review.
 /Onboarding_Intervention_Decision_Lab_Slice1_ab7652a.zip
 /Onboarding_Intervention_Decision_Lab_Slice1_ab7652a.zip:Zone.Identifier
+
+# Non-canonical demonstration outputs and supplied accepted source archive.
+/outputs/
+/Onboarding_Intervention_Decision_Lab_Slice1_db507f0.zip
+/Onboarding_Intervention_Decision_Lab_Slice1_db507f0.zip:Zone.Identifier

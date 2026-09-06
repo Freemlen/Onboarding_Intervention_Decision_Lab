@@ -206,3 +206,7 @@ pending incidents from durably confirmed history. Exact retries reconcile the
 registry after pre-write or uncertain post-write failures, without reviving the
 failed run. Its filesystem and fresh-process regressions run in the first complete
 suite batch above.
+
+An explicitly [NON_CANONICAL_DEMO end-to-end runner](examples/README.md) composes
+the accepted Slice 1 capabilities with fixed public fabricated inputs. It saves
+its isolated artifacts and copied numerical summary under outputs/demo_slice1/.
