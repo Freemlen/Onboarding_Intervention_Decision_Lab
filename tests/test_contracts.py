@@ -40,15 +40,15 @@ def verified(release_files):
 @pytest.fixture(scope="session")
 def twins(release_files):
     return (
-        release_files["ResearchSpec_v0.2.6.md"].decode(),
-        release_files["ResearchSpec_v0.2.6.yaml"].decode(),
+        release_files["ResearchSpec_v0.2.7.md"].decode(),
+        release_files["ResearchSpec_v0.2.7.yaml"].decode(),
     )
 
 
 def test_membership_matches_authoritative_index_and_oracle(release_files, verified):
-    index = release_files["Contract_Bundle_v0.2.6.md"].decode()
+    index = release_files["Contract_Bundle_v0.2.7.md"].decode()
     index_names = re.findall(r"^\| (\S+\.(?:md|yaml)) \|", index, re.MULTILINE)
-    oracle = release_files["Oracle_Benchmark_Spec_v0.4.0.md"].decode()
+    oracle = release_files["Oracle_Benchmark_Spec_v0.5.0.md"].decode()
     oracle_section = oracle.split("### 2.1 ")[1].split("### 2.2 ")[0]
     oracle_names = re.findall(r"^\d+\. \x60([^\x60]+)\x60$", oracle_section, re.MULTILINE)
     assert len(index_names) == len(oracle_names) == len(verified.contract_hashes) == 11
@@ -68,7 +68,7 @@ def test_frozen_contract_set_digest_and_independent_preimage(verified):
     ) + "]"
     assert sha256(preimage.encode()).hexdigest() == verified.contract_set_hash
     assert verified.contract_set_hash == (
-        "553a91e4f76084659a23c62c95456fc2315c3a4a31b4d9cc23264e8d5895fc21"
+        "f64f09173ee14e1e3a2a5963e3ef9eb66941cf1852f295b68503a1ccd89255bf"
     )
 
 
@@ -76,10 +76,13 @@ def test_frozen_contract_set_digest_and_independent_preimage(verified):
 def test_every_release_file_missing_or_changed_is_rejected(release_files, name):
     changed = dict(release_files)
     del changed[name]
-    with pytest.raises(ContractError, match="RELEASE_MEMBERSHIP"):
+    # Oracle §2.4.1: missing named twins fail source validity before integrity.
+    missing_code = ("RESEARCHSPEC_SOURCE_INVALID" if name.startswith("ResearchSpec_")
+                    else "RESEARCHSPEC_RELEASE_INTEGRITY_MISMATCH")
+    with pytest.raises(ContractError, match=missing_code):
         verify_release_bytes(changed)
     changed[name] = release_files[name] + b"\n"
-    with pytest.raises(ContractError, match="FILE_SHA256_MISMATCH"):
+    with pytest.raises(ContractError, match="RESEARCHSPEC_RELEASE_INTEGRITY_MISMATCH"):
         verify_release_bytes(changed)
 
 
@@ -88,14 +91,14 @@ def test_every_release_file_missing_or_changed_is_rejected(release_files, name):
     "unknown.md", "SHA256SUMS.txt.extra", "../outside.md",
 ])
 def test_extra_files_cannot_become_release_or_normative_inputs(release_files, name):
-    with pytest.raises(ContractError, match="RELEASE_MEMBERSHIP"):
+    with pytest.raises(ContractError, match="RESEARCHSPEC_RELEASE_INTEGRITY_MISMATCH"):
         verify_release_bytes({**release_files, name: b"fabricated"})
 
 
 def test_missing_manifest_rejected(release_files):
     files = dict(release_files)
     del files["SHA256SUMS.txt"]
-    with pytest.raises(ContractError, match="RELEASE_MEMBERSHIP"):
+    with pytest.raises(ContractError, match="RESEARCHSPEC_RELEASE_INTEGRITY_MISMATCH"):
         verify_release_bytes(files)
 
 
@@ -106,35 +109,35 @@ def test_missing_normative_checksum_rejected(release_files, name):
         line for line in files["SHA256SUMS.txt"].splitlines()
         if not line.endswith(b"  " + name.encode())
     ) + b"\n"
-    with pytest.raises(ContractError, match="MISSING_OR_EXTRA_MANIFEST_MEMBER"):
+    with pytest.raises(ContractError, match="RESEARCHSPEC_RELEASE_INTEGRITY_MISMATCH"):
         verify_release_bytes(files)
 
 
 def test_extra_manifest_member_rejected(release_files):
     files = dict(release_files)
     files["SHA256SUMS.txt"] += b"a" * 64 + b"  unexpected.md\n"
-    with pytest.raises(ContractError, match="MISSING_OR_EXTRA_MANIFEST_MEMBER"):
+    with pytest.raises(ContractError, match="RESEARCHSPEC_RELEASE_INTEGRITY_MISMATCH"):
         verify_release_bytes(files)
 
 
 def test_rehashing_modified_contract_does_not_reauthorize_it(release_files):
     files = dict(release_files)
-    name = "ResearchSpec_v0.2.6.yaml"
-    files[name] = files[name].replace(b"bundle_release: 0.2.6", b"bundle_release: 0.9.9")
+    name = "ResearchSpec_v0.2.7.yaml"
+    files[name] = files[name].replace(b"bundle_release: 0.2.7", b"bundle_release: 0.9.9")
     replacement = sha256(files[name]).hexdigest().encode()
     files["SHA256SUMS.txt"] = files["SHA256SUMS.txt"].replace(
         RELEASE_HASHES[name].encode(), replacement,
     )
-    with pytest.raises(ContractError, match="MANIFEST_DIFFERS_FROM_FROZEN_RELEASE"):
+    with pytest.raises(ContractError, match="RESEARCHSPEC_TWIN_PARITY_MISMATCH"):
         verify_release_bytes(files)
 
 
 def test_matching_changed_twins_still_fail_frozen_hashes(release_files):
     files = dict(release_files)
-    for name in ("ResearchSpec_v0.2.6.md", "ResearchSpec_v0.2.6.yaml"):
+    for name in ("ResearchSpec_v0.2.7.md", "ResearchSpec_v0.2.7.yaml"):
         files[name] = files[name].replace(b"OIDL-ONBOARDING-ASSIST-001", b"FABRICATED-ALTERED-STUDY")
         assert files[name] != release_files[name]
-    with pytest.raises(ContractError, match="FILE_SHA256_MISMATCH"):
+    with pytest.raises(ContractError, match="RESEARCHSPEC_RELEASE_INTEGRITY_MISMATCH"):
         verify_release_bytes(files)
 
 
@@ -302,17 +305,17 @@ def test_required_version_and_link_checks(verified, release_files, mutation):
     else:
         identity["required_linked_contracts"]["unknown"] = "unknown"
     texts = {name: data.decode() for name, data in release_files.items()}
-    fixtures = load_yaml_mapping(texts["Golden_Fixtures_v0.2.6.yaml"])
+    fixtures = load_yaml_mapping(texts["Golden_Fixtures_v0.2.7.yaml"])
     with pytest.raises(ContractError, match="RELEASE_IDENTITY"):
         validate_versions(spec, texts, fixtures)
 
 
 def test_linked_document_header_and_fixture_version_check(verified, release_files):
     texts = {name: data.decode() for name, data in release_files.items()}
-    fixtures = load_yaml_mapping(texts["Golden_Fixtures_v0.2.6.yaml"])
+    fixtures = load_yaml_mapping(texts["Golden_Fixtures_v0.2.7.yaml"])
     changed = dict(texts)
     name = "Statistical_Analysis_Plan_v0.4.0.md"
-    changed[name] = changed[name].replace("**SAP version:** \x600.4.0\x60", "**SAP version:** \x600.2.6\x60")
+    changed[name] = changed[name].replace("**SAP version:** \x600.4.0\x60", "**SAP version:** \x600.2.7\x60")
     with pytest.raises(ContractError, match="LINKED_ARTIFACT_VERSION_MISMATCH"):
         validate_versions(verified.research_spec, changed, fixtures)
     fixtures["fixture_contract_version"] = "0.0.0"
@@ -329,7 +332,7 @@ def copy_release(tmp_path):
 
 @pytest.mark.parametrize("kind", ["symlink", "directory", "fifo"])
 def test_nonregular_release_members_rejected_before_read(copy_release, kind):
-    member = copy_release / "ResearchSpec_v0.2.6.yaml"
+    member = copy_release / "ResearchSpec_v0.2.7.yaml"
     member.unlink()
     if kind == "symlink":
         member.symlink_to(CONTRACTS / member.name)
@@ -366,7 +369,7 @@ def test_validation_records_envelopes_membership_and_determinism(verified, tmp_p
         assert raw.endswith(b"\n") and not raw.startswith(b"\xef\xbb\xbf")
         value = json.loads(raw)
         assert set(value) == {"schema_version", "run_id", "created_at_utc", "payload"}
-        assert value["schema_version"] == "0.2.6"
+        assert value["schema_version"] == "0.2.7"
     hashes = records["contract_hashes.json"]["payload"]
     assert {x["path"] for x in hashes} == set(NORMATIVE_PATHS)
     assert all(set(x) == {"path", "sha256"} for x in hashes)
@@ -397,7 +400,7 @@ def test_cli_success_does_not_create_output(copy_release, capsys):
     assert main(["spec", "validate", "--contracts", str(copy_release)]) == 0
     assert set(copy_release.parent.iterdir()) == before
     captured = capsys.readouterr()
-    assert "frozen release 0.2.6" in captured.out
+    assert "frozen release 0.2.7" in captured.out
     assert "11 normative members" in captured.out
     assert not captured.err
 
@@ -447,7 +450,7 @@ def test_module_cli_in_fresh_process_uses_only_public_release():
 def test_validated_spec_cannot_be_mutated_through_returned_mapping(verified):
     spec = verified.research_spec
     spec["specification"]["bundle_release"] = "FABRICATED_MUTATION"
-    assert verified.research_spec["specification"]["bundle_release"] == "0.2.6"
+    assert verified.research_spec["specification"]["bundle_release"] == "0.2.7"
 
 
 @pytest.mark.parametrize("text", ['a: "\\ud800"', '"\\ud800": value'])

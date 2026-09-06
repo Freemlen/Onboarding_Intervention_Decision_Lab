@@ -1,21 +1,22 @@
-# Onboarding Intervention Decision Lab — Contracts v0.2.6
+# Onboarding Intervention Decision Lab — v0.2.7
 
-Start with **Contract_Bundle_v0.2.6.md**. Its eleven listed files are the sole normative authority. All implementation behavior is self-contained; no previous bundle, review, architecture, research report or conversation supplies a missing rule.
+Start with **Contract_Bundle_v0.2.7.md**. Its eleven named artifacts are the complete normative authority; no old bundle, review, architecture report or conversation is required to determine implementation behavior.
 
-This release repairs **R6 — Balance-diagnostic covariate set and encoding**. SAP §4.3 freezes seven existing baseline source fields, fifteen encodings per scope, three scopes, full denominators and complete-input rules, exact numeric/zero/sign conventions and structured outputs. The optional Lin basis is separate and unchanged. The primary method is still version 0.3.0; the SAP is version 0.4.0 and the newly explicit balance method is version 1.0.0.
+This is the consolidated R7 ResearchSpec_hash repair. The field is the exact-file SHA-256 of **ResearchSpec_v0.2.7.yaml**, not a Markdown, semantic-tree, twin-pair or bundle digest. Both source files must pass release integrity and complete typed parity. Exhaustive domain, context placement and fail-closed behavior are in **Oracle_Benchmark_Spec_v0.5.0.md §2.4.1** and mirrored in both twins.
 
-## Normative contents
+Released ResearchSpec_hash (recompute from the named file):
+`6bb6d6acc8cf13fb86f229f1e71601b328b87c791ea65912444f0da98403a4fe`
 
-Contract Bundle; standalone Architecture; ResearchSpec Markdown/YAML twins; DGP; SAP; Decision; Guardrail; Oracle; Slice 1 Definition of Done; Golden Fixtures. Consult the index for exact paths and versions.
+The source twins do not embed this digest. The existing runtime validated-spec manifest and required results/claims store it at their frozen locations. R5 scan/release schemas retain their existing transitive contract bindings; no new artifact or circular dependency is introduced.
 
-## Informative evidence
+## Contents and evidence
 
-Finding_Resolution_Matrix_v0.2.6.md explains the source evidence and accepted minimum repair. CHANGELOG_v0.2.6.md records versions and invariants. Final_Consistency_and_Regression_Audit_v0.2.6.md and validation_results.json state what was checked and what was not. The golden catalogue retains 69 prior cases and adds 28 diagnostic cases.
+The normative set includes Bundle, Architecture, ResearchSpec Markdown/YAML, DGP, SAP, Decision, Guardrail, Oracle, Slice 1 and Golden Fixtures. The resolution matrix, change log, targeted audit and validation JSON are informative evidence. SHA256SUMS.txt covers all other release files. The ZIP is only transport.
 
-SHA256SUMS.txt covers every release file except itself. Hash exact UTF-8/LF file bytes; do not reserialize a file before verifying. The transport ZIP is outside this member set.
+The validation report records 50 targeted checks, all passed; 23 new R7 cases complement 97 retained cases. It distinguishes mathematical/byte/text checks from tests not performed. No implementation code, secret input or generated canonical cohort is included.
 
-## Implementation handoff
+## Handoff
 
-Use the existing immutable contract/benchmark rebinding procedure before continuing the stopped design audit. Preserve old committed contracts, approval records, runs and exposure lineage; do not silently relabel an already committed run or overwrite its hashes. No reseeding is authorized. Resume only under the newly approved contract identity and existing human gates. This bundle does not certify completed implementation checkpoints.
+Use the existing immutable contract/approval rebind and linked-run rules before continuing authoritative artifact emission. Do not relabel committed v0.2.6 artifacts, overwrite approvals or reset exposure lineage. No reseeding is authorized. Human approvals, runtime isolation, release authentication and all implementation acceptance tests remain mandatory.
 
-**GO FOR SLICE 1 IMPLEMENTATION.** Contract-readiness only; all runtime acceptance, isolation, provenance, fixture, hidden-seed and human-approval requirements remain mandatory. The release contains no application code and no canonical raw seed.
+**Contract readiness: GO FOR SLICE 1 IMPLEMENTATION.**

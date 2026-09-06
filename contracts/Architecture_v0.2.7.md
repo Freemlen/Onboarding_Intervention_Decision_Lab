@@ -1,9 +1,9 @@
-# Architecture v0.2.6 — Standalone Local Contract
+# Architecture v0.2.7 — Standalone Local Contract
 
 **Project:** Onboarding Intervention Decision Lab  
-**Version:** 0.2.6  
+**Version:** 0.2.7  
 **Status:** FINAL_PRE_IMPLEMENTATION  
-**Authority:** The eleven-file set in Contract_Bundle_v0.2.6.md. This is a complete architecture contract, not a delta requiring another document.
+**Authority:** The eleven-file set in Contract_Bundle_v0.2.7.md. This is a complete architecture contract, not a delta requiring another document.
 
 ## 1. Product and architectural boundary
 
@@ -66,7 +66,7 @@ Records carry approver identity, role, UTC time, scope, predecessor hashes and r
 
 ## 6. Provenance, hashing and reproducibility
 
-Every authoritative result binds dataset, specifications, method version, code/environment identity and run. Numerically reproducible results and exact-byte integrity are different concepts. Oracle §2 fixes both. Deterministic data payloads exclude run metadata; run JSON envelopes preserve it; the closed archive may legitimately differ across runs.
+Every authoritative result binds dataset, specifications, method version, code/environment identity and run. Numerically reproducible results and exact-byte integrity are different concepts. Oracle §2 fixes both; §2.4.1 fixes ResearchSpec_hash as the released YAML member digest while preserving full twin parity. Deterministic data payloads exclude run metadata; run JSON envelopes preserve it; the closed archive may legitimately differ across runs.
 
 Analyst data, oracle data and pre-unblind archive each have an acyclic payload/manifest/sidecar boundary. All payload members are hashed; no manifest or digest is a member of its own package. Within the existing release capability, Oracle §2.5.2 makes analyst_leakage_scan.json a dataset-grounded immutable validation record carrying both aliases. Workflow/custody adapters create it from locally verified finalized analyst bytes without a future release hash; then obtain the signed release, cross-authenticate unchanged scan/manifests/commitments, and only then enter ANALYST_PACKAGE_RELEASED after lock L. The scanner has analyst/public inputs only. No new layer, gate, lifecycle state, package or receipt is added. Release authentication is mandatory for downstream consumers, never backfilled into the scan. Dataset release and Gate H bind exact manifest hashes externally. An analysis freeze record references predecessors, never the future archive hash. Later comparisons/approvals cannot be inserted into the closed archive.
 
@@ -82,7 +82,7 @@ The full decision object keeps recommended_policy, evidence_status and operation
 
 ## 8. Tests and completion
 
-Golden_Fixtures_v0.2.6.yaml supplies exact fabricated estimator/boundary/clock/governance cases. They are not canonical data or simulation-performance evidence. Slice 1 §7 adds quota, temporal, projection, sequence, leakage, independence, profile, lineage and hash-DAG acceptance. Hidden null/adverse/serious-breach fixtures remain scoped exactly by DGP/Oracle/Slice 1; do not infer a canonical seed from them.
+Golden_Fixtures_v0.2.7.yaml supplies exact fabricated estimator/boundary/clock/governance cases. They are not canonical data or simulation-performance evidence. Slice 1 §7 adds quota, temporal, projection, sequence, leakage, independence, profile, lineage and hash-DAG acceptance. Hidden null/adverse/serious-breach fixtures remain scoped exactly by DGP/Oracle/Slice 1; do not infer a canonical seed from them.
 
 Remaining engineering discretion is limited to physical package/module layout, CLI syntax, pinned libraries and permitted serialization details. Frozen formulas, durations, denominators, thresholds, scopes, visibility and approval rules are not implementation choices. Unsupported or inconsistent input fails with explicit provenance rather than initiating a new design.
 

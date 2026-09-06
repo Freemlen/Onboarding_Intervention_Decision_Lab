@@ -1,8 +1,8 @@
-# ResearchSpec v0.2.6
+# ResearchSpec v0.2.7
 
 **Project:** Onboarding Intervention Decision Lab  
 **Status:** FINAL_PRE_IMPLEMENTATION  
-**Normative twin:** `ResearchSpec_v0.2.6.yaml`
+**Normative twin:** `ResearchSpec_v0.2.7.yaml`
 
 The sections below are a lossless human-readable rendering of the complete typed ResearchSpec tree. Field names are retained for direct lookup. Quoted values are strings; unquoted numbers, `true`/`false`, and `null` retain their machine types. Ordered items retain YAML sequence order. Requirements incorporated by linked-contract reference are the same in both twins.
 
@@ -10,35 +10,35 @@ The sections below are a lossless human-readable rendering of the complete typed
 
 **Root field:** `specification`
 
-- **`document_id`**: `"ResearchSpec_v0.2.6"`
+- **`document_id`**: `"ResearchSpec_v0.2.7"`
 - **`study_id`**: `"OIDL-ONBOARDING-ASSIST-001"`
-- **`version`**: `"0.2.6"`
+- **`version`**: `"0.2.7"`
 - **`status`**: `"FINAL_PRE_IMPLEMENTATION"`
-- **`human_readable_twin`**: `"ResearchSpec_v0.2.6.md"`
+- **`human_readable_twin`**: `"ResearchSpec_v0.2.7.md"`
 - **`required_linked_contracts`**:
   - **`dgp_parameter_card`**: `"DGP_Parameter_Sheet_v0.3.0"`
   - **`statistical_analysis_plan`**: `"Statistical_Analysis_Plan_v0.4.0"`
   - **`decision_rule`**: `"Decision_Rule_Spec_v0.3.0"`
   - **`guardrails`**: `"Guardrail_Spec_v0.3.0"`
-  - **`oracle_protocol`**: `"Oracle_Benchmark_Spec_v0.4.0"`
-  - **`architecture`**: `"Architecture_v0.2.6"`
-  - **`contract_bundle`**: `"Contract_Bundle_v0.2.6"`
-  - **`slice_1`**: `"Slice_1_Definition_of_Done_v0.2.6"`
-  - **`golden_fixtures`**: `"Golden_Fixtures_v0.2.6"`
+  - **`oracle_protocol`**: `"Oracle_Benchmark_Spec_v0.5.0"`
+  - **`architecture`**: `"Architecture_v0.2.7"`
+  - **`contract_bundle`**: `"Contract_Bundle_v0.2.7"`
+  - **`slice_1`**: `"Slice_1_Definition_of_Done_v0.2.7"`
+  - **`golden_fixtures`**: `"Golden_Fixtures_v0.2.7"`
 - **`equivalence_rule`**:
   - **`normative`**: `true`
   - **`rule`**: `"Markdown and YAML encode the same complete typed normative tree. Markdown is a lossless sectioned rendering of this tree: identical keys, ordered lists, scalar values, types, formulas, rationales and prohibitions. A mismatch fails release; neither form may be silently preferred. Linked-contract requirements are incorporated identically by reference in both twins."`
-- **`bundle_release`**: `"0.2.6"`
+- **`bundle_release`**: `"0.2.7"`
 - **`semantic_versions`**:
-  - **`research_spec`**: `"0.2.6"`
-  - **`architecture`**: `"0.2.6"`
+  - **`research_spec`**: `"0.2.7"`
+  - **`architecture`**: `"0.2.7"`
   - **`dgp`**: `"0.3.0"`
   - **`sap`**: `"0.4.0"`
   - **`decision_rule`**: `"0.3.0"`
   - **`guardrails`**: `"0.3.0"`
-  - **`oracle_protocol`**: `"0.4.0"`
-  - **`slice_1`**: `"0.2.6"`
-  - **`golden_fixtures`**: `"0.2.6"`
+  - **`oracle_protocol`**: `"0.5.0"`
+  - **`slice_1`**: `"0.2.7"`
+  - **`golden_fixtures`**: `"0.2.7"`
 
 ## 1. Scope and claim boundary
 
@@ -985,7 +985,7 @@ The sections below are a lossless human-readable rendering of the complete typed
   - **`condition`**: `"V_Q=0 AND tau_Q!=0 by exact rational sufficient-statistic arithmetic before binary64 conversion"`
 - **`zero_se_interpretation`**: `"Computational/limiting normal conventions, not an exact finite-sample test or proof of certainty."`
 - **`zero_se_rules_apply_to_later_interaction`**: `true`
-- **`golden_fixtures`**: `"Golden_Fixtures_v0.2.6.yaml"`
+- **`golden_fixtures`**: `"Golden_Fixtures_v0.2.7.yaml"`
 - **`adjustment_basis_unchanged`**: `true`
 - **`kyc_subtype_adjustment_rationale`**: `"KYC subtypes are intentionally omitted from the frozen Lin basis. Binary-friction assignment-block indicators do not represent separate subtype main effects."`
 - **`arithmetic_contract`**:
@@ -1470,7 +1470,7 @@ The sections below are a lossless human-readable rendering of the complete typed
   - **`manifest_authentication`**: `"Dataset release binds exact data manifest hashes and immutable scan-file hash; local scan creation verifies analyst bytes/manifest/sidecar without a future release record. Downstream use requires signed-release cross-authentication under Oracle section 2.5.2. Gate H binds exact archive manifest and digest."`
   - **`exact_integrity_not_normalized`**: `true`
   - **`reproducibility_projection`**: `"Only declared deterministic_result objects exclude run IDs, wall-clock/approval/exposure/archive metadata; exact envelopes remain integrity-committed. No arbitrary normalization masks."`
-  - **`authoritative_details`**: `"Oracle sections 2.4–2.6 (mandatory alias domains in 2.5.1; exhaustive two-stage scan/release fields, order and rejection in 2.5.2) and 6."`
+  - **`authoritative_details`**: `"Oracle sections 2.4–2.6 (ResearchSpec_hash domain/placement/validation in 2.4.1; mandatory data-alias domains in 2.5.1; unchanged exhaustive two-stage scan/release fields, order and rejection in 2.5.2) and 6."`
   - **`deterministic_data_representation`**: `"Inside analyst/oracle data payloads, deterministic object/map metadata and schemas use YAML; tabular members use pinned typed lossless serialization. Run JSON envelopes stay outside data payloads. Archive payloads contain exact copies of run records."`
   - **`mandatory_data_hash_domains`**:
     - **`dataset_package_hash`**:
@@ -1547,8 +1547,64 @@ The sections below are a lossless human-readable rendering of the complete typed
       - `"DATASET_RELEASE_BINDING_MISMATCH"`
       - `"DATASET_RELEASE_NOT_AUTHENTICATED"`
       - `"CIRCULAR_PROVENANCE_FIELD"`
-    - **`fixture_reference`**: `"Golden_Fixtures_v0.2.6.yaml pre_release_scan_provenance_fixtures"`
-- **`placement_rule`**: `"Dataset-grounded records carry both frozen aliases per hashing.mandatory_data_hash_domains. The pre-release scan and signed release carry them in payload.provenance with the exact producer-side lifecycle in hashing.pre_release_scan_provenance and Oracle section 2.5.2; neither has deterministic_result or a dataset_release_record_sha256. Ordinary downstream records require signed-release authentication and its exact hash in surrounding provenance. Run/profile/approval/exposure and volatile scan/manifest/release hashes never enter deterministic_result; no arbitrary exclusion mask."`
+    - **`fixture_reference`**: `"Golden_Fixtures_v0.2.7.yaml pre_release_scan_provenance_fixtures"`
+  - **`research_spec_hash`**:
+    - **`field_name`**: `"ResearchSpec_hash"`
+    - **`semantic_meaning`**: `"Exact released YAML ResearchSpec serialization integrity fingerprint; not a formatting-invariant semantic-tree or twin-pair digest."`
+    - **`source_artifact`**: `"ResearchSpec_v0.2.7.yaml"`
+    - **`source_path_base`**: `"RELEASE_ROOT"`
+    - **`preimage`**: `"All original finalized source-file bytes, including final LF; UTF-8, no BOM, LF line endings. No external prefix, filename/schema token, normalization, trimming, parsing/reserialization or hash-of-hex operation. The source text itself, including its filenames/versions/method definition, is included in full."`
+    - **`algorithm`**: `"SHA-256"`
+    - **`representation`**: `"Exactly 64 lowercase hexadecimal characters, stored as a non-null string."`
+    - **`domain_method_id`**: `"OIDL-RESEARCHSPEC-YAML-FILE-SHA256-v1"`
+    - **`canonicalization`**: `"NONE"`
+    - **`method_id_added_as_prefix_or_suffix`**: `false`
+    - **`existing_commitment_alias`**: `"Exact file-member digest for ResearchSpec_v0.2.7.yaml in verified contract_hashes.json and SHA256SUMS.txt; not either manifest digest, contract_set_hash or a package digest."`
+    - **`serialization_choice_rationale`**: `"Explicitly select the machine-readable typed mapping member while retaining independent full Markdown reconstruction and exact integrity of both equally normative twins. Reuse existing exact-file hashing rather than introduce semantic canonicalization."`
+    - **`twins_rule`**: `"Single logical ResearchSpec_hash sourced from YAML. Ordinary Markdown and YAML file digests may differ. Both files and complete typed parity must validate; choosing a hash source does not create normative precedence."`
+    - **`computed_value_in_either_twin`**: `false`
+    - **`validated_spec_manifest_location`**: `"validated_spec_manifest.json -> payload.provenance.ResearchSpec_hash; pre-dataset record, no deterministic_result or future data hashes."`
+    - **`deterministic_result_location`**: `"payload.deterministic_result.ResearchSpec_hash; authoritative for registered calculated/diagnostic/comparison results, including randomization_audit, baseline_balance and primary_itt_result. Allowed copies must agree."`
+    - **`no_deterministic_result_location`**: `"payload.provenance.ResearchSpec_hash on ordinary required result/claim/scope/freeze records without deterministic_result."`
+    - **`rendering_rule`**: `"Copy the authoritative record value when rendering its ResearchSpec fingerprint; do not hash the report or Markdown twin."`
+    - **`existing_member_binding_rule`**: `"Other exact schemas binding contract_set_hash or linked contract members retain those transitive references; no additional scalar field is inferred. Named exact-file digests still mean their own file bytes."`
+    - **`r5_scan_release_schema`**: `"No ResearchSpec_hash field is added to analyst_leakage_scan.json or dataset_release_record.json. Existing exhaustive Oracle section 2.5.2 schemas and their contract-set/benchmark/schema bindings remain unchanged."`
+    - **`validation_order`**:
+      - Item 1:
+        - **`stage`**: `"SOURCE_AND_PARSE"`
+        - **`failure_code`**: `"RESEARCHSPEC_SOURCE_INVALID"`
+      - Item 2:
+        - **`stage`**: `"COMPLETE_TYPED_PARITY"`
+        - **`failure_code`**: `"RESEARCHSPEC_TWIN_PARITY_MISMATCH"`
+      - Item 3:
+        - **`stage`**: `"SCHEMA_RELEASE_AND_LINKED_IDENTITIES"`
+        - **`failure_code`**: `"RESEARCHSPEC_SCHEMA_RELEASE_MISMATCH"`
+      - Item 4:
+        - **`stage`**: `"RELEASE_AND_EXISTING_COMMITMENT_INTEGRITY"`
+        - **`failure_code`**: `"RESEARCHSPEC_RELEASE_INTEGRITY_MISMATCH"`
+      - Item 5:
+        - **`stage`**: `"DIRECT_FIELD_PLACEMENT"`
+        - **`failure_code`**: `"RESEARCHSPEC_HASH_PLACEMENT_VIOLATION"`
+      - Item 6:
+        - **`stage`**: `"VALUE_AND_DOMAIN"`
+        - **`failure_code`**: `"RESEARCHSPEC_HASH_MISMATCH"`
+    - **`schema_bindings`**:
+      - **`run_envelope_schema_version`**: `"0.2.7"`
+      - **`research_spec_version`**: `"0.2.7"`
+      - **`bundle_release`**: `"0.2.7"`
+      - **`oracle_protocol_version`**: `"0.5.0"`
+    - **`validation_timing`**: `"Source/parity/release validation precedes validated-spec manifest construction and benchmark commitment. Initial construction writes the newly computed digest; it does not require its own future output. Existing commitments are always checked when present. Downstream dataset authentication remains independently mandatory."`
+    - **`failure_behavior`**: `"First failing R7 stage supplies its primary code; FAILED execution retains last valid state and immutable evidence, prohibits authoritative acceptance/unblind, and never falls back to another hash source. Oracle section 2.4.1 is exhaustive."`
+    - **`formatting_changes`**:
+      - **`yaml_bytes_change_preserving_tree`**: `"ResearchSpec_hash changes; exact-file rather than semantic commitment."`
+      - **`markdown_only_change_with_identical_yaml_bytes`**: `"ResearchSpec_hash unchanged; Markdown-member and contract-set/release commitments change, so old release approval is invalid."`
+      - **`semantic_change_both_twins`**: `"YAML bytes and ResearchSpec_hash change."`
+      - **`semantic_change_one_twin`**: `"Typed parity failure even if YAML digest matches."`
+      - **`new_release`**: `"Version/link identities must be updated and approved under existing rules; no in-place frozen edit or hash normalization across releases."`
+    - **`no_new_artifact_or_package`**: `true`
+    - **`authoritative_details`**: `"Oracle section 2.4.1, including exhaustive context placement, source/parse and identity checks, immutable binding rules and rejection behavior."`
+    - **`fixture_reference`**: `"Golden_Fixtures_v0.2.7.yaml researchspec_hash_fixtures"`
+- **`placement_rule`**: `"Dataset-grounded records carry both frozen aliases per hashing.mandatory_data_hash_domains. The pre-release scan and signed release carry them in payload.provenance with the exact producer-side lifecycle in hashing.pre_release_scan_provenance and Oracle section 2.5.2; neither has deterministic_result or a dataset_release_record_sha256. Ordinary downstream records require signed-release authentication and its exact hash in surrounding provenance. Run/profile/approval/exposure and volatile scan/manifest/release hashes never enter deterministic_result; no arbitrary exclusion mask. ResearchSpec_hash uses hashing.research_spec_hash and Oracle section 2.4.1: inside a registered deterministic_result, otherwise payload.provenance on required ordinary records; the pre-dataset validated-spec manifest carries it, while the two exhaustive R5 scan/release schemas retain transitive contract-set bindings without a new scalar."`
 - **`pre_release_record_schema_scope`**: `"For analyst_leakage_scan.json and dataset_release_record.json only, the exhaustive validation/governance field schemas in Oracle section 2.5.2 replace analysis-specific every_result_and_claim_requires fields. Both remain dataset-grounded with both aliases and all registered benchmark/contract/profile/exposure bindings. No other downstream result or claim is exempted."`
 
 ## 20. Human governance, run profiles and exposure lineage

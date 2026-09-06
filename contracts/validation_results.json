@@ -1,8 +1,8 @@
 {
-  "release": "0.2.6",
-  "task": "Targeted R6 contract repair and R1-R5 regression; no general review",
-  "source_bundle": "Onboarding_Intervention_Decision_Lab_Contracts_v0.2.5.zip",
-  "source_bundle_sha256": "bf74e9d6826136be6a8a9023f43ab7d38dcef7551d41235ce14604d1b9d8e662",
+  "release": "0.2.7",
+  "task": "Targeted R7 domain repair and R1–R6 regression; not a general review",
+  "source_bundle": "Onboarding_Intervention_Decision_Lab_Contracts_v0.2.6.zip",
+  "source_bundle_sha256": "d3b70ec9525672d6036170e6447a44b07ed1a32932262cea7300b418fc89bc54",
   "canonical_seed_requested": false,
   "canonical_seed_used": false,
   "product_implementation_written": false,
@@ -13,969 +13,461 @@
       "status": "PASS",
       "category": "EXACT_BYTE_CHECK",
       "detail": {
-        "manifest_members_verified": 16,
-        "source_zip_sha256": "bf74e9d6826136be6a8a9023f43ab7d38dcef7551d41235ce14604d1b9d8e662"
+        "members": 16,
+        "zip_sha256": "d3b70ec9525672d6036170e6447a44b07ed1a32932262cea7300b418fc89bc54"
       }
     },
     {
       "id": "RESEARCHSPEC_LOSSLESS_TYPED_PARITY",
       "status": "PASS",
-      "category": "INDEPENDENT_RECONSTRUCTION",
+      "category": "INDEPENDENT_MARKDOWN_RECONSTRUCTION",
       "detail": {
         "root_fields": 23,
-        "typed_scalar_leaves": 1392,
-        "differences": 0
+        "typed_scalar_leaves": 1434,
+        "original_and_repaired_parity": true
       }
-    },
-    {
-      "id": "R6_EXHAUSTIVE_SELECTION_AND_SCOPE",
-      "status": "PASS",
-      "category": "STATIC_CROSS_ARTIFACT_CHECK",
-      "detail": {
-        "source_variables": 7,
-        "all_existing_DGP_fields": true,
-        "diagnostics_per_scope": 15,
-        "scopes": 3,
-        "total_rows": 45,
-        "new_DGP_covariates": 0,
-        "blocking_variables_in_SMD_catalogue": false
-      }
-    },
-    {
-      "id": "R3_PRIMARY_INFERENCE_AND_M1_BASIS_PRESERVED",
-      "status": "PASS",
-      "category": "EXACT_TEXT_COMPARISON",
-      "detail": "SAP §§5–12 and §§14–16 exact after linked-reference updates; §2.5 basis and M1 rationale unchanged; primary method stays 0.3.0."
     },
     {
       "id": "PRESERVED_DGP_Parameter_Sheet",
       "status": "PASS",
-      "category": "EXACT_TEXT_COMPARISON",
-      "detail": {
-        "file": "DGP_Parameter_Sheet_v0.3.0.md",
-        "whole_text_identical_after_release_and_link_rebind": true
-      }
+      "category": "WHOLE_DOCUMENT_COMPARISON",
+      "detail": "Identical after only linked-release/reference updates."
+    },
+    {
+      "id": "PRESERVED_Statistical_Analysis_Plan",
+      "status": "PASS",
+      "category": "WHOLE_DOCUMENT_COMPARISON",
+      "detail": "Identical after only linked-release/reference updates."
     },
     {
       "id": "PRESERVED_Decision_Rule_Spec",
       "status": "PASS",
-      "category": "EXACT_TEXT_COMPARISON",
-      "detail": {
-        "file": "Decision_Rule_Spec_v0.3.0.md",
-        "whole_text_identical_after_release_and_link_rebind": true
-      }
+      "category": "WHOLE_DOCUMENT_COMPARISON",
+      "detail": "Identical after only linked-release/reference updates."
     },
     {
       "id": "PRESERVED_Guardrail_Spec",
       "status": "PASS",
-      "category": "EXACT_TEXT_COMPARISON",
+      "category": "WHOLE_DOCUMENT_COMPARISON",
+      "detail": "Identical after only linked-release/reference updates."
+    },
+    {
+      "id": "ARCHITECTURE_UNCHANGED",
+      "status": "PASS",
+      "category": "WHOLE_DOCUMENT_COMPARISON",
+      "detail": "Only release references and one scoped hash-domain cross-reference added."
+    },
+    {
+      "id": "PRESERVED_R5",
+      "status": "PASS",
+      "category": "EXACT_SECTION_COMPARISON",
+      "detail": "Behavior byte-identical after linked-release/Oracle identity refresh only."
+    },
+    {
+      "id": "PRESERVED_R4",
+      "status": "PASS",
+      "category": "EXACT_SECTION_COMPARISON",
+      "detail": "Behavior byte-identical after linked-release/Oracle identity refresh only."
+    },
+    {
+      "id": "PRESERVED_ORACLE_TRUTH",
+      "status": "PASS",
+      "category": "EXACT_SECTION_COMPARISON",
+      "detail": "Behavior byte-identical after linked-release/Oracle identity refresh only."
+    },
+    {
+      "id": "PRESERVED_PROFILE_AND_LATER_GOVERNANCE",
+      "status": "PASS",
+      "category": "EXACT_SECTION_COMPARISON",
+      "detail": "Behavior byte-identical after linked-release/Oracle identity refresh only."
+    },
+    {
+      "id": "RESEARCHSPEC_ALL_PROTECTED_SUBTREES",
+      "status": "PASS",
+      "category": "COMPLETE_TYPED_TREE_COMPARISON",
+      "detail": "Only hash-domain subtree, hash-reference/placement text and release/Oracle identity changes; randomization/balance and R5 lifecycle untouched."
+    },
+    {
+      "id": "R7_VALID_YAML_BYTE_ALIAS",
+      "status": "PASS",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "file": "Guardrail_Spec_v0.3.0.md",
-        "whole_text_identical_after_release_and_link_rebind": true
+        "accepted": true,
+        "ResearchSpec_hash": "72151ce38a97efaf77756d99afc201ff12c537eabb8ebeb29b50f11aefea7290"
       }
     },
     {
-      "id": "PRESERVED_Oracle_Benchmark_Spec",
+      "id": "R7_WRONG_HASH_REJECTED",
       "status": "PASS",
-      "category": "EXACT_TEXT_COMPARISON",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "file": "Oracle_Benchmark_Spec_v0.4.0.md",
-        "whole_text_identical_after_release_and_link_rebind": true
+        "accepted": false,
+        "failure_code": "RESEARCHSPEC_HASH_MISMATCH"
       }
     },
     {
-      "id": "PRESERVED_Architecture",
+      "id": "R7_MARKDOWN_DIGEST_IS_NOT_RESEARCHSPEC_HASH",
       "status": "PASS",
-      "category": "EXACT_TEXT_COMPARISON",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "file": "Architecture_v0.2.6.md",
-        "whole_text_identical_after_release_and_link_rebind": true
+        "accepted": false,
+        "failure_code": "RESEARCHSPEC_HASH_MISMATCH"
       }
     },
     {
-      "id": "R1_R5_AND_CORE_RESEARCHSPEC_TYPED_PRESERVATION",
+      "id": "R7_PARITY_WITH_DIFFERENT_FILE_HASHES",
       "status": "PASS",
-      "category": "TYPED_TREE_COMPARISON",
-      "detail": "ResearchSpec tree unchanged apart from explicit R6 diagnostic subtree, SAP semantic identity and release/linked-file rebind. Includes DGP, clocks, population, assignment, primary, HTE, policies, margins, R4 domains and R5 lifecycle."
-    },
-    {
-      "id": "R6_BINARY_BERNOULLI_DENOMINATOR",
-      "status": "PASS",
-      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "diagnostic_rows": 1,
-        "exact_midpoint_rounding_certified": true,
-        "expected": [
-          [
-            "language_service_match",
-            0.5345224838248488,
-            "NONZERO_VARIANCE"
-          ]
-        ]
+        "accepted": true,
+        "ResearchSpec_hash": "72151ce38a97efaf77756d99afc201ff12c537eabb8ebeb29b50f11aefea7290",
+        "typed_parity": true,
+        "file_member_hashes_equal": false
       }
     },
     {
-      "id": "R6_LANGUAGE_MATCH_POSITIVE_ORIENTATION",
+      "id": "R7_SEMANTIC_CHANGE_BOTH_NEW_VALUE",
       "status": "PASS",
-      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "diagnostic_rows": 1,
-        "exact_midpoint_rounding_certified": true,
-        "expected": [
-          [
-            "language_service_match",
-            1.1547005383792515,
-            "NONZERO_VARIANCE"
-          ]
-        ]
+        "accepted": true,
+        "ResearchSpec_hash": "c064d9a02cc432f6db2fc0ebc8c3cfecd8b1b881bab38d9ab35a3f26884f77b5",
+        "hash_differs_from_base": true,
+        "hash_layer_only": true
       }
     },
     {
-      "id": "R6_CATEGORICAL_ALL_LEVELS_AND_ORDER",
+      "id": "R7_SEMANTIC_CHANGE_STALE_ALIAS_REJECTED",
       "status": "PASS",
-      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "diagnostic_rows": 3,
-        "exact_midpoint_rounding_certified": true,
-        "expected": [
-          [
-            "acquisition_channel__ORGANIC",
-            0.5345224838248488,
-            "NONZERO_VARIANCE"
-          ],
-          [
-            "acquisition_channel__PAID",
-            -0.5345224838248488,
-            "NONZERO_VARIANCE"
-          ],
-          [
-            "acquisition_channel__AFFILIATE",
-            0,
-            "NONZERO_VARIANCE"
-          ]
-        ]
+        "accepted": false,
+        "failure_code": "RESEARCHSPEC_HASH_MISMATCH"
       }
     },
     {
-      "id": "R6_CATEGORICAL_ABSENT_LEVELS_RETAINED",
+      "id": "R7_YAML_FORMAT_ONLY_CHANGES_HASH",
       "status": "PASS",
-      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "diagnostic_rows": 3,
-        "exact_midpoint_rounding_certified": true,
-        "expected": [
-          [
-            "device_verification_route__MOBILE_APP",
-            0,
-            "ZERO_VARIANCE_EQUAL"
-          ],
-          [
-            "device_verification_route__MOBILE_WEB",
-            0,
-            "ZERO_VARIANCE_EQUAL"
-          ],
-          [
-            "device_verification_route__DESKTOP_WEB",
-            0,
-            "ZERO_VARIANCE_EQUAL"
-          ]
-        ]
+        "accepted": true,
+        "ResearchSpec_hash": "bf034db984ba863dd621d856a026d654fab51e0958f9978c4322a07fcf63b3ec",
+        "typed_tree_equals_base": true,
+        "hash_differs_from_base": true,
+        "hash_layer_only": true
       }
     },
     {
-      "id": "R6_ORDERED_CATEGORY_NOT_NUMERIC_SCORE",
+      "id": "R7_YAML_FORMAT_ONLY_STALE_HASH_REJECTED",
       "status": "PASS",
-      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "diagnostic_rows": 3,
-        "exact_midpoint_rounding_certified": true,
-        "expected": [
-          [
-            "declared_experience__LOW",
-            -0.5345224838248488,
-            "NONZERO_VARIANCE"
-          ],
-          [
-            "declared_experience__MEDIUM",
-            0.5345224838248488,
-            "NONZERO_VARIANCE"
-          ],
-          [
-            "declared_experience__HIGH",
-            0,
-            "NONZERO_VARIANCE"
-          ]
-        ]
+        "accepted": false,
+        "failure_code": "RESEARCHSPEC_HASH_MISMATCH"
       }
     },
     {
-      "id": "R6_CONTINUOUS_STEPS_SAMPLE_VARIANCE",
+      "id": "R7_MARKDOWN_FORMAT_ONLY_SAME_SPEC_HASH",
       "status": "PASS",
-      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "diagnostic_rows": 1,
-        "exact_midpoint_rounding_certified": true,
-        "expected": [
-          [
-            "pre_t0_completed_step_count",
-            1.0,
-            "NONZERO_VARIANCE"
-          ]
-        ]
+        "accepted": true,
+        "ResearchSpec_hash": "72151ce38a97efaf77756d99afc201ff12c537eabb8ebeb29b50f11aefea7290",
+        "typed_tree_equals_base": true,
+        "hash_equals_base": true,
+        "markdown_member_changes": true,
+        "hash_layer_only": true
       }
     },
     {
-      "id": "R6_CONTINUOUS_UNEQUAL_ARM_POOLING",
+      "id": "R7_MARKDOWN_MUTATION_FAILS_COMMITTED_INTEGRITY",
       "status": "PASS",
-      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "diagnostic_rows": 1,
-        "exact_midpoint_rounding_certified": true,
-        "expected": [
-          [
-            "pre_t0_completed_step_count",
-            0.4629100498862757,
-            "NONZERO_VARIANCE"
-          ]
-        ]
+        "accepted": false,
+        "failure_code": "RESEARCHSPEC_RELEASE_INTEGRITY_MISMATCH"
       }
     },
     {
-      "id": "R6_ZERO_VARIANCE_EQUAL",
+      "id": "R7_TWIN_SEMANTIC_MISMATCH_REJECTED",
       "status": "PASS",
-      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "diagnostic_rows": 1,
-        "exact_midpoint_rounding_certified": true,
-        "expected": [
-          [
-            "pre_t0_completed_step_count",
-            0,
-            "ZERO_VARIANCE_EQUAL"
-          ]
-        ]
+        "accepted": false,
+        "failure_code": "RESEARCHSPEC_TWIN_PARITY_MISMATCH"
       }
     },
     {
-      "id": "R6_ZERO_VARIANCE_UNEQUAL_POSITIVE",
+      "id": "R7_RELEASE_SCHEMA_MISMATCH",
       "status": "PASS",
-      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "diagnostic_rows": 1,
-        "exact_midpoint_rounding_certified": true,
-        "expected": [
-          [
-            "language_service_match",
-            null,
-            "ZERO_VARIANCE_UNEQUAL_POSITIVE"
-          ]
-        ]
+        "accepted": false,
+        "failure_code": "RESEARCHSPEC_SCHEMA_RELEASE_MISMATCH"
       }
     },
     {
-      "id": "R6_ZERO_VARIANCE_UNEQUAL_NEGATIVE",
+      "id": "R7_OLD_RESEARCHSPEC_IN_NEW_RELEASE",
       "status": "PASS",
-      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "diagnostic_rows": 1,
-        "exact_midpoint_rounding_certified": true,
-        "expected": [
-          [
-            "language_service_match",
-            null,
-            "ZERO_VARIANCE_UNEQUAL_NEGATIVE"
-          ]
-        ]
+        "accepted": false,
+        "failure_code": "RESEARCHSPEC_SCHEMA_RELEASE_MISMATCH"
       }
     },
     {
-      "id": "R6_EXACT_BALANCE_POSITIVE_VARIANCE",
+      "id": "R7_VALID_PRE_DATASET_MANIFEST",
       "status": "PASS",
-      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "diagnostic_rows": 1,
-        "exact_midpoint_rounding_certified": true,
-        "expected": [
-          [
-            "language_service_match",
-            0,
-            "NONZERO_VARIANCE"
-          ]
-        ]
+        "accepted": true,
+        "ResearchSpec_hash": "72151ce38a97efaf77756d99afc201ff12c537eabb8ebeb29b50f11aefea7290",
+        "future_data_hash_required": false
       }
     },
     {
-      "id": "R6_RAW_LOAD_EXACT_MOMENTS",
+      "id": "R7_VALID_ORDINARY_SCOPE_PROVENANCE",
       "status": "PASS",
-      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "diagnostic_rows": 1,
-        "exact_midpoint_rounding_certified": true,
-        "expected": [
-          [
-            "day_shift_load_index",
-            0.408248290463863,
-            "NONZERO_VARIANCE"
-          ]
-        ]
+        "accepted": true,
+        "ResearchSpec_hash": "72151ce38a97efaf77756d99afc201ff12c537eabb8ebeb29b50f11aefea7290"
       }
     },
     {
-      "id": "R6_SHIFT_LEVEL_ORDER_NOT_ALPHABETICAL",
+      "id": "R7_WRONG_RESULT_PLACEMENT",
       "status": "PASS",
-      "category": "EXACT_RATIONAL_AND_BINARY64_MIDPOINT_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "diagnostic_rows": 3,
-        "exact_midpoint_rounding_certified": true,
-        "expected": [
-          [
-            "registration_shift__DAY",
-            -0.5345224838248488,
-            "NONZERO_VARIANCE"
-          ],
-          [
-            "registration_shift__EVENING",
-            0,
-            "NONZERO_VARIANCE"
-          ],
-          [
-            "registration_shift__NIGHT",
-            0.5345224838248488,
-            "NONZERO_VARIANCE"
-          ]
-        ]
+        "accepted": false,
+        "failure_code": "RESEARCHSPEC_HASH_PLACEMENT_VIOLATION"
       }
     },
     {
-      "id": "R6_INPUT_ORDER_INVARIANCE",
+      "id": "R7_DISAGREEING_DUPLICATE_ALIAS",
       "status": "PASS",
-      "category": "EXPLICIT_PERMUTATION_AND_EXACT_ARITHMETIC",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "distinct_treatment_control_permutations": 686,
-        "bit_value_and_status_invariance": true
+        "accepted": false,
+        "failure_code": "RESEARCHSPEC_HASH_MISMATCH"
       }
     },
     {
-      "id": "R6_COMPLETE_SCOPES_EXCLUDED_STRUCTURAL_NA",
+      "id": "R7_YAML_CRLF_REJECTED",
       "status": "PASS",
-      "category": "FULL_LOGICAL_OUTPUT_SCHEMA_AND_MOMENT_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "scopes": [
-          {
-            "id": "OVERALL",
-            "n1": 4,
-            "n0": 4
-          },
-          {
-            "id": "KYC_FRICTION_0",
-            "n1": 2,
-            "n0": 2
-          },
-          {
-            "id": "KYC_FRICTION_1",
-            "n1": 2,
-            "n0": 2
-          }
-        ],
-        "variables_per_scope": 7,
-        "rows": 45,
-        "excluded_structural_NA_ignored_not_imputed": true,
-        "missingness_indicators": 0
+        "accepted": false,
+        "failure_code": "RESEARCHSPEC_SOURCE_INVALID"
       }
     },
     {
-      "id": "R6_MISSING_RANDOMIZED_SOURCE",
+      "id": "R7_YAML_NO_FINAL_LF_REJECTED",
       "status": "PASS",
-      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "expected_reason_codes": [
-          "MISSING_REQUIRED_BASELINE_DATA"
-        ],
-        "derived_reason_codes": [
-          "MISSING_REQUIRED_BASELINE_DATA"
-        ],
-        "authoritative_success_not_allowed": true
+        "accepted": false,
+        "failure_code": "RESEARCHSPEC_SOURCE_INVALID"
       }
     },
     {
-      "id": "R6_NULL_RANDOMIZED_STEP",
+      "id": "R7_YAML_BOM_REJECTED",
       "status": "PASS",
-      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "expected_reason_codes": [
-          "MISSING_REQUIRED_BASELINE_DATA"
-        ],
-        "derived_reason_codes": [
-          "MISSING_REQUIRED_BASELINE_DATA"
-        ],
-        "authoritative_success_not_allowed": true
+        "accepted": false,
+        "failure_code": "RESEARCHSPEC_SOURCE_INVALID"
       }
     },
     {
-      "id": "R6_RANDOMIZED_STRUCTURAL_NA",
+      "id": "R7_YAML_DUPLICATE_KEY_REJECTED",
       "status": "PASS",
-      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "expected_reason_codes": [
-          "STRUCTURAL_NA_IN_RANDOMIZED_BALANCE"
-        ],
-        "derived_reason_codes": [
-          "STRUCTURAL_NA_IN_RANDOMIZED_BALANCE"
-        ],
-        "authoritative_success_not_allowed": true
+        "accepted": false,
+        "failure_code": "RESEARCHSPEC_SOURCE_INVALID"
       }
     },
     {
-      "id": "R6_UNKNOWN_CATEGORY",
+      "id": "R7_VALID_ACTUAL_RELEASED_RESEARCHSPEC",
       "status": "PASS",
-      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "expected_reason_codes": [
-          "INVALID_BALANCE_SOURCE_VALUE"
-        ],
-        "derived_reason_codes": [
-          "INVALID_BALANCE_SOURCE_VALUE"
-        ],
-        "authoritative_success_not_allowed": true
+        "accepted": true,
+        "ResearchSpec_hash": "6bb6d6acc8cf13fb86f229f1e71601b328b87c791ea65912444f0da98403a4fe",
+        "typed_parity": true,
+        "file_member_hashes_equal": false,
+        "schema_version": "0.2.7",
+        "oracle_protocol_version": "0.5.0"
       }
     },
     {
-      "id": "R6_POST_T0_SOURCE",
+      "id": "R7_R5_EXHAUSTIVE_SCHEMAS_UNCHANGED",
       "status": "PASS",
-      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
+      "category": "NEW_R7_NORMATIVE_FIXTURE_CHECK",
       "detail": {
-        "expected_reason_codes": [
-          "POST_T0_BALANCE_SOURCE"
-        ],
-        "derived_reason_codes": [
-          "POST_T0_BALANCE_SOURCE"
-        ],
-        "authoritative_success_not_allowed": true
+        "ResearchSpec_hash_field_in_scan": false,
+        "ResearchSpec_hash_field_in_release": false,
+        "binding_via_existing_contract_set_hash": true,
+        "scan_has_future_release_hash": false,
+        "downstream_acceptance_without_release_authentication": false
       }
     },
     {
-      "id": "R6_MISSING_SOURCE_TIME",
-      "status": "PASS",
-      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
-      "detail": {
-        "expected_reason_codes": [
-          "MISSING_REQUIRED_BASELINE_DATA"
-        ],
-        "derived_reason_codes": [
-          "MISSING_REQUIRED_BASELINE_DATA"
-        ],
-        "authoritative_success_not_allowed": true
-      }
-    },
-    {
-      "id": "R6_STEP_OUT_OF_DOMAIN",
-      "status": "PASS",
-      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
-      "detail": {
-        "expected_reason_codes": [
-          "INVALID_BALANCE_SOURCE_VALUE"
-        ],
-        "derived_reason_codes": [
-          "INVALID_BALANCE_SOURCE_VALUE"
-        ],
-        "authoritative_success_not_allowed": true
-      }
-    },
-    {
-      "id": "R6_NONFINITE_LOAD",
-      "status": "PASS",
-      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
-      "detail": {
-        "expected_reason_codes": [
-          "INVALID_BALANCE_SOURCE_VALUE"
-        ],
-        "derived_reason_codes": [
-          "INVALID_BALANCE_SOURCE_VALUE"
-        ],
-        "authoritative_success_not_allowed": true
-      }
-    },
-    {
-      "id": "R6_MISSING_ARM_IN_SUBGROUP",
-      "status": "PASS",
-      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
-      "detail": {
-        "expected_reason_codes": [
-          "INSUFFICIENT_BALANCE_ARM_SIZE"
-        ],
-        "derived_reason_codes": [
-          "INSUFFICIENT_BALANCE_ARM_SIZE"
-        ],
-        "authoritative_success_not_allowed": true
-      }
-    },
-    {
-      "id": "R6_OMITTED_REFERENCE_LEVEL",
-      "status": "PASS",
-      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
-      "detail": {
-        "expected_reason_codes": [
-          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
-        ],
-        "derived_reason_codes": [
-          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
-        ],
-        "authoritative_success_not_allowed": true
-      }
-    },
-    {
-      "id": "R6_REVERSED_LANGUAGE_SIGN",
-      "status": "PASS",
-      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
-      "detail": {
-        "expected_reason_codes": [
-          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
-        ],
-        "derived_reason_codes": [
-          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
-        ],
-        "authoritative_success_not_allowed": true
-      }
-    },
-    {
-      "id": "R6_PROJECTION_MISMATCH",
-      "status": "PASS",
-      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
-      "detail": {
-        "expected_reason_codes": [
-          "BASELINE_BALANCE_PROJECTION_MISMATCH"
-        ],
-        "derived_reason_codes": [
-          "BASELINE_BALANCE_PROJECTION_MISMATCH"
-        ],
-        "authoritative_success_not_allowed": true
-      }
-    },
-    {
-      "id": "R6_CATALOGUE_ORDER_CHANGED",
-      "status": "PASS",
-      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
-      "detail": {
-        "expected_reason_codes": [
-          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
-        ],
-        "derived_reason_codes": [
-          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
-        ],
-        "authoritative_success_not_allowed": true
-      }
-    },
-    {
-      "id": "R6_INCOMPLETE_ZERO_STATUS",
-      "status": "PASS",
-      "category": "EXPLICIT_INPUT_OR_CANDIDATE_OUTPUT_REJECTION_CHECK",
-      "detail": {
-        "expected_reason_codes": [
-          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
-        ],
-        "derived_reason_codes": [
-          "BALANCE_CATALOGUE_OR_ENCODING_MISMATCH"
-        ],
-        "authoritative_success_not_allowed": true
-      }
-    },
-    {
-      "id": "R3_EQUAL_BLOCKS_POSITIVE",
-      "status": "PASS",
-      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
-      "detail": {
-        "max_absolute_numeric_difference": 0,
-        "zero_branch_exact": true
-      }
-    },
-    {
-      "id": "R3_UNEQUAL_BLOCK_WEIGHTS",
-      "status": "PASS",
-      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
-      "detail": {
-        "max_absolute_numeric_difference": 0,
-        "zero_branch_exact": true
-      }
-    },
-    {
-      "id": "R3_ZERO_EFFECT_NONZERO_SE",
-      "status": "PASS",
-      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
-      "detail": {
-        "max_absolute_numeric_difference": 0,
-        "zero_branch_exact": true
-      }
-    },
-    {
-      "id": "R3_NEGATIVE_EFFECT",
-      "status": "PASS",
-      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
-      "detail": {
-        "max_absolute_numeric_difference": 0,
-        "zero_branch_exact": true
-      }
-    },
-    {
-      "id": "R3_ONE_ZERO_VARIANCE_BLOCK",
-      "status": "PASS",
-      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
-      "detail": {
-        "max_absolute_numeric_difference": 0,
-        "zero_branch_exact": true
-      }
-    },
-    {
-      "id": "R3_ALL_ZERO",
-      "status": "PASS",
-      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
-      "detail": {
-        "max_absolute_numeric_difference": 0,
-        "zero_branch_exact": true
-      }
-    },
-    {
-      "id": "R3_ALL_ONE",
-      "status": "PASS",
-      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
-      "detail": {
-        "max_absolute_numeric_difference": 0,
-        "zero_branch_exact": true
-      }
-    },
-    {
-      "id": "R3_ZERO_SE_POSITIVE",
-      "status": "PASS",
-      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
-      "detail": {
-        "max_absolute_numeric_difference": 0,
-        "zero_branch_exact": true
-      }
-    },
-    {
-      "id": "R3_ZERO_SE_NEGATIVE",
-      "status": "PASS",
-      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
-      "detail": {
-        "max_absolute_numeric_difference": 0,
-        "zero_branch_exact": true
-      }
-    },
-    {
-      "id": "R3_ZERO_SE_CANCELLING_BLOCK_EFFECTS",
-      "status": "PASS",
-      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
-      "detail": {
-        "max_absolute_numeric_difference": 0,
-        "zero_branch_exact": true
-      }
-    },
-    {
-      "id": "R3_NON_DYADIC_CANONICAL_CANCELLATION",
-      "status": "PASS",
-      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
-      "detail": {
-        "max_absolute_numeric_difference": 0,
-        "zero_branch_exact": true
-      }
-    },
-    {
-      "id": "R3_GENERAL_UNEQUAL_ALLOCATION_CANCELLATION",
-      "status": "PASS",
-      "category": "EXACT_RATIONAL_PRIMARY_AND_FROZEN_NORMAL_FORMULA_CHECK",
-      "detail": {
-        "max_absolute_numeric_difference": 0,
-        "zero_branch_exact": true
-      }
-    },
-    {
-      "id": "R3_CANCELLATION_AND_ARM_FAILURE_REGRESSION",
-      "status": "PASS",
-      "category": "EXPLICIT_PERMUTATION_AND_BOUNDARY_CHECK",
-      "detail": {
-        "canonical_order_arm_cases": 64,
-        "general_unequal_block_permutations": 6,
-        "empty_singleton_rejections": 2
-      }
-    },
-    {
-      "id": "R1_REPEATED_FAILURE_PROJECTION_REGRESSION",
-      "status": "PASS",
-      "category": "EXPLICIT_LIFECYCLE_PROJECTION_CHECK",
-      "detail": {
-        "occurrence_fixtures": 9,
-        "reverse_input_order_cases": 9,
-        "negative_projection_cases": 3
-      }
-    },
-    {
-      "id": "R2_RESTRICTION_REMINDER_REGRESSION",
-      "status": "PASS",
-      "category": "EXPLICIT_STATE_PREDICATE_CHECK",
-      "detail": {
-        "restriction_reminder_cases": 12,
-        "incomplete_input_rejections": 2
-      }
-    },
-    {
-      "id": "R4_LITERAL_HASH_DOMAIN_REGRESSION",
-      "status": "PASS",
-      "category": "EXACT_BYTE_AND_CANONICAL_PREIMAGE_CHECK",
-      "detail": {
-        "aliases_same_domain": true,
-        "literal_run_specimens": 6,
-        "distinct_envelopes_same_deterministic_result": true,
-        "recursive_hashes": false
-      }
-    },
-    {
-      "id": "R5_ALL_LITERAL_ARTIFACT_HASHES",
+      "id": "R7_SOURCE_SPECIMEN_BYTES",
       "status": "PASS",
       "category": "EXACT_BYTE_CHECK",
       "detail": {
-        "literal_file_specimens": 16,
-        "schema_rebind_propagated_through_all_digest_edges": true
+        "specimens": 10,
+        "file_hashes": 20
       }
     },
     {
-      "id": "R5_VALID_LOCAL_THEN_AUTHENTICATED_RELEASE",
+      "id": "R3_PRIMARY_12_FIXTURES",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
+      "category": "EXACT_RATIONAL_AND_NORMAL_ARITHMETIC",
       "detail": {
-        "expected_reason_codes": [],
-        "checked_reason_codes": [],
-        "phase": "COMPLETE_ORDER",
-        "approval_is_fixture_prerequisite_not_real_signature_test": true
+        "cases": 12,
+        "tolerance": 1e-12,
+        "zero_exact": true
       }
     },
     {
-      "id": "R5_WRONG_SIGNED_SCAN_HASH",
+      "id": "R3_SMALL_ARM_REJECTION",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
+      "category": "SUFFICIENT_STATISTICS_PRECONDITION",
       "detail": {
-        "expected_reason_codes": [
-          "LEAKAGE_SCAN_HASH_MISMATCH"
-        ],
-        "checked_reason_codes": [
-          "LEAKAGE_SCAN_HASH_MISMATCH"
-        ],
-        "phase": "RELEASE_AUTHENTICATION",
-        "approval_is_fixture_prerequisite_not_real_signature_test": true
+        "cases": 2
       }
     },
     {
-      "id": "R5_WRONG_ANALYST_CONTENT_DIGEST",
+      "id": "R3_NON_DYADIC_CANCELLATION_ORDERS",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
+      "category": "EXACT_RATIONAL_ARITHMETIC",
       "detail": {
-        "expected_reason_codes": [
-          "SCAN_LOCAL_PROVENANCE_MISMATCH"
-        ],
-        "checked_reason_codes": [
-          "SCAN_LOCAL_PROVENANCE_MISMATCH"
-        ],
-        "phase": "PRE_RELEASE_SCAN_CREATION",
-        "approval_is_fixture_prerequisite_not_real_signature_test": true
+        "cases": 64
       }
     },
     {
-      "id": "R5_MUTATE_SCAN_AFTER_SIGNING",
+      "id": "R3_UNEQUAL_ALLOCATION_ORDERS",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
+      "category": "EXACT_RATIONAL_ARITHMETIC",
       "detail": {
-        "expected_reason_codes": [
-          "LEAKAGE_SCAN_HASH_MISMATCH",
-          "SCAN_IMMUTABILITY_VIOLATION"
-        ],
-        "checked_reason_codes": [
-          "LEAKAGE_SCAN_HASH_MISMATCH",
-          "SCAN_IMMUTABILITY_VIOLATION"
-        ],
-        "phase": "RELEASE_AUTHENTICATION",
-        "approval_is_fixture_prerequisite_not_real_signature_test": true
+        "cases": 6
       }
     },
     {
-      "id": "R5_DOWNSTREAM_BEFORE_RELEASE_AUTHENTICATION",
+      "id": "R1_REPEATED_FAILURE_PROJECTED",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
+      "category": "EXPLICIT_EVENT_ARITHMETIC",
       "detail": {
-        "expected_reason_codes": [
-          "DATASET_RELEASE_NOT_AUTHENTICATED"
-        ],
-        "checked_reason_codes": [
-          "DATASET_RELEASE_NOT_AUTHENTICATED"
-        ],
-        "phase": "DOWNSTREAM_SCAN_ACCEPTANCE",
-        "approval_is_fixture_prerequisite_not_real_signature_test": true
+        "cases": 9,
+        "new_random_draws": 0
       }
     },
     {
-      "id": "R5_INVALID_RELEASE_APPROVER_ROLE",
+      "id": "R2_REMINDER_RESTRICTION",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
+      "category": "EXPLICIT_PREDICATE_ARITHMETIC",
       "detail": {
-        "expected_reason_codes": [
-          "DATASET_RELEASE_APPROVAL_INVALID"
-        ],
-        "checked_reason_codes": [
-          "DATASET_RELEASE_APPROVAL_INVALID"
-        ],
-        "phase": "RELEASE_AUTHENTICATION",
-        "approval_is_fixture_prerequisite_not_real_signature_test": true
+        "cases": 12,
+        "new_random_draws": 0
       }
     },
     {
-      "id": "R5_FUTURE_RELEASE_HASH_NULL_PLACEHOLDER_FORBIDDEN",
+      "id": "R4_MEMBER_DIGEST_AND_ALIAS_BYTE_FIXTURES",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
+      "category": "EXACT_BYTE_CHECK",
       "detail": {
-        "expected_reason_codes": [
-          "CIRCULAR_PROVENANCE_FIELD"
-        ],
-        "checked_reason_codes": [
-          "CIRCULAR_PROVENANCE_FIELD"
-        ],
-        "phase": "PRE_RELEASE_SCAN_CREATION",
-        "approval_is_fixture_prerequisite_not_real_signature_test": true
+        "member_count": 2,
+        "run_examples": 2,
+        "content_alias_unchanged": true
       }
     },
     {
-      "id": "R5_RELEASE_SELF_HASH_FORBIDDEN",
+      "id": "R5_EXISTING_BYTE_AND_LIFECYCLE_SCENARIOS",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
+      "category": "BYTE_HASH_AND_FIXTURE_CONDITION_CHECK",
       "detail": {
-        "expected_reason_codes": [
-          "CIRCULAR_PROVENANCE_FIELD"
-        ],
-        "checked_reason_codes": [
-          "CIRCULAR_PROVENANCE_FIELD"
-        ],
-        "phase": "RELEASE_AUTHENTICATION",
-        "approval_is_fixture_prerequisite_not_real_signature_test": true
+        "scenarios": 12,
+        "byte_specimens_checked": 16,
+        "real_approval_enforcement_tested": false
       }
     },
     {
-      "id": "R5_RELEASE_SCHEMA_PROJECTION_OMISSION",
+      "id": "R6_ALL_SINGLE_VARIABLE_FIXTURES",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
+      "category": "EXACT_RATIONAL_HIGH_PRECISION_CHECK",
       "detail": {
-        "expected_reason_codes": [
-          "DATASET_RELEASE_BINDING_MISMATCH"
-        ],
-        "checked_reason_codes": [
-          "DATASET_RELEASE_BINDING_MISMATCH"
-        ],
-        "phase": "RELEASE_AUTHENTICATION",
-        "approval_is_fixture_prerequisite_not_real_signature_test": true
+        "cases": 13,
+        "conversion_precision_decimal_digits": 220,
+        "binary64_value_comparison": "EXACT"
       }
     },
     {
-      "id": "R5_RELEASE_PROFILE_MISMATCH",
+      "id": "R6_THREE_SCOPE_FULL_PROJECTED_MOMENTS",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
+      "category": "EXACT_RATIONAL_HIGH_PRECISION_CHECK",
       "detail": {
-        "expected_reason_codes": [
-          "DATASET_RELEASE_BINDING_MISMATCH"
-        ],
-        "checked_reason_codes": [
-          "DATASET_RELEASE_BINDING_MISMATCH"
-        ],
-        "phase": "RELEASE_AUTHENTICATION",
-        "approval_is_fixture_prerequisite_not_real_signature_test": true
+        "scopes": 3,
+        "rows": 45,
+        "excluded_persons": 2
       }
     },
     {
-      "id": "R5_RELEASE_MANIFEST_HASH_MISMATCH",
+      "id": "LEGACY_FIXTURE_PRESERVATION",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
+      "category": "EXACT_TYPED_DATA_COMPARISON",
+      "detail": "All 97 existing cases retained; non-byte fixtures identical; only envelope/Oracle identities and dependent specimen hashes refreshed."
+    },
+    {
+      "id": "ACYCLIC_COMMITMENT_GRAPH",
+      "status": "PASS",
+      "category": "DEPENDENCY_CHECK",
       "detail": {
-        "expected_reason_codes": [
-          "DATASET_RELEASE_BINDING_MISMATCH"
-        ],
-        "checked_reason_codes": [
-          "DATASET_RELEASE_BINDING_MISMATCH"
-        ],
-        "phase": "RELEASE_AUTHENTICATION",
-        "approval_is_fixture_prerequisite_not_real_signature_test": true
+        "nodes": 17,
+        "edges": 21,
+        "topological_order_exists": true,
+        "new_artifacts": 0,
+        "R5_scan_release_schema_additions": 0
       }
     },
     {
-      "id": "R5_ARCHIVE_PRESERVES_ORIGINAL_SCAN",
+      "id": "SOURCE_HASH_NOT_SELF_EMBEDDED",
       "status": "PASS",
-      "category": "EXPLICIT_BYTE_BINDING_AND_PHASE_CHECK",
+      "category": "EXACT_CONTENT_CHECK",
       "detail": {
-        "expected_reason_codes": [],
-        "checked_reason_codes": [],
-        "phase": "ARCHIVE_COPY",
-        "approval_is_fixture_prerequisite_not_real_signature_test": true
+        "ResearchSpec_hash": "6bb6d6acc8cf13fb86f229f1e71601b328b87c791ea65912444f0da98403a4fe",
+        "source_byte_length": 100242
       }
     },
     {
-      "id": "R5_R6_COMMITMENT_DAG_AND_PROJECTION",
+      "id": "R7_DISPOSITION",
       "status": "PASS",
-      "category": "DIRECTED_GRAPH_CHECK",
+      "category": "TARGETED_CLAUSE_VERIFICATION",
       "detail": {
-        "nodes": 19,
-        "topological_order": [
-          "contracts",
-          "lock_L",
-          "benchmark",
-          "data_bytes",
-          "content_digests",
-          "manifests_sidecars",
-          "scan_bytes",
-          "scan_hash",
-          "signed_release",
-          "release_hash",
-          "cross_authentication",
-          "analyst_release",
-          "baseline_balance",
-          "randomization_audit",
-          "projection_equality",
-          "primary",
-          "freeze",
-          "archive",
-          "gate_H"
-        ],
-        "no_scan_release_descendant_hash_dependency": true,
-        "two_balance_artifacts_do_not_hash_each_other": true,
-        "no_new_runtime_artifact": true
-      }
-    },
-    {
-      "id": "LEGACY_FIXTURE_CATALOGUE_PRESERVATION",
-      "status": "PASS",
-      "category": "TYPED_FIXTURE_COMPARISON",
-      "detail": {
-        "legacy_cases_retained": 69,
-        "new_R6_cases": 28,
-        "total_normative_cases": 97,
-        "legacy_explicit_math_rule_inputs_and_expectations_preserved": true,
-        "only_legacy_byte_envelopes_and_dependent_hashes_rebound": true
-      }
-    },
-    {
-      "id": "RELEASE_MEMBER_VERSION_AND_REFERENCE_CHECK",
-      "status": "PASS",
-      "category": "STATIC_CONSISTENCY_CHECK",
-      "detail": {
-        "normative_members": 11,
-        "stale_normative_release_or_SAP_references": 0,
-        "ambiguous_SMD_selector_removed": true,
-        "UTF8_LF_final_newline": true
+        "finding": "ACCEPT",
+        "source_researchspec_field": "provenance_and_claim_permissions.every_result_and_claim_requires",
+        "source_domain_not_enumerated": true,
+        "source_Oracle_2_4_exact_byte_rule_not_twin_selector": true
       }
     }
   ],
   "summary": {
-    "passed": 71,
-    "failed": 0,
-    "total": 71
+    "checks": 50,
+    "pass": 50,
+    "fail": 0,
+    "new_R7_cases": 23,
+    "previous_cases_retained": 97,
+    "total_normative_cases": 120,
+    "ResearchSpec_hash": "6bb6d6acc8cf13fb86f229f1e71601b328b87c791ea65912444f0da98403a4fe",
+    "researchspec_typed_roots": 23,
+    "researchspec_scalar_leaves": 1434
   },
   "limitations": [
-    "Checks are of written contracts, explicit fabricated inputs, expected output schemas, exact arithmetic, literal byte specimens and dependencies, not application runtime acceptance.",
-    "No canonical cohort, hidden seed, raw canonical seed, real leakage scan, actual human approval/signature enforcement or user Checkpoint implementation was accessed, executed or certified.",
-    "R1-R5 regression combines entire-text/typed preservation with new evaluations of their existing lifecycle, arithmetic, hash and provenance fixtures; no full general adversarial review was repeated.",
-    "Older timing/completeness/governance fixture definitions are retained unchanged and compared, not all reexecuted in this targeted diagnostic repair.",
-    "The miniature scope fixture does not satisfy canonical population quotas or shared-day DGP conditions; those existing acceptance obligations are unchanged."
+    "Checks exercise released text, independently reconstructed typed trees, explicit fabricated fixture arithmetic, exact byte hashes and fixture failure conditions. They are not application acceptance tests.",
+    "No canonical or hidden seed/cohort, empirical power/coverage, actual leakage scanner, signature/approval enforcement, user checkpoint, runtime isolation, or hidden-seed replay was executed.",
+    "R6 finite SMD fixture rounding was independently evaluated at 220 decimal digits and compared exactly as binary64; no claim of implementing a general-purpose production rounding engine.",
+    "Release manifest/ZIP verification is a separate final packaging step; no self-hash or ZIP digest is stored here."
   ]
 }

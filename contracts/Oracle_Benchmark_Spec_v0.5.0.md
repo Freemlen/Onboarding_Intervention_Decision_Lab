@@ -1,7 +1,7 @@
-# Oracle Benchmark Spec v0.3.0
+# Oracle Benchmark Spec v0.5.0
 
 **Study:** `OIDL-ONBOARDING-ASSIST-001`  
-**Version:** `0.4.0`  
+**Version:** `0.5.0`  
 **Status:** `FINAL_PRE_IMPLEMENTATION`  
 **Authoritative term:** **truth-sequestered synthetic benchmark**
 
@@ -65,23 +65,23 @@ The custodian verifies and hashes generated oracle content without exposing it t
 
 ## 2. Freeze and commitment set
 
-The benchmark is not committed until all items below are frozen.
+The benchmark is not committed until all items below are frozen. ResearchSpec identity and every use of `ResearchSpec_hash` follow §2.4.1; no twin or semantic-tree domain may be selected by the implementation.
 
 ### 2.1 Normative pre-implementation contract artifacts
 
-The committed normative set is exactly the eleven files in `Contract_Bundle_v0.2.6.md §2`:
+The committed normative set is exactly the eleven files in `Contract_Bundle_v0.2.7.md §2`:
 
-1. `Contract_Bundle_v0.2.6.md`
-2. `Architecture_v0.2.6.md`
-3. `ResearchSpec_v0.2.6.md`
-4. `ResearchSpec_v0.2.6.yaml`
+1. `Contract_Bundle_v0.2.7.md`
+2. `Architecture_v0.2.7.md`
+3. `ResearchSpec_v0.2.7.md`
+4. `ResearchSpec_v0.2.7.yaml`
 5. `DGP_Parameter_Sheet_v0.3.0.md`
 6. `Statistical_Analysis_Plan_v0.4.0.md`
 7. `Decision_Rule_Spec_v0.3.0.md`
 8. `Guardrail_Spec_v0.3.0.md`
-9. `Oracle_Benchmark_Spec_v0.4.0.md`
-10. `Slice_1_Definition_of_Done_v0.2.6.md`
-11. `Golden_Fixtures_v0.2.6.yaml`
+9. `Oracle_Benchmark_Spec_v0.5.0.md`
+10. `Slice_1_Definition_of_Done_v0.2.7.md`
+11. `Golden_Fixtures_v0.2.7.yaml`
 
 `contract_hashes.json` enumerates exactly these relative paths and lowercase SHA-256 values in its payload. Release README, change log, finding matrix, final audit and validation results are informational, not alternative normative authority. `SHA256SUMS.txt` covers the complete release except itself, including those informational files; it is not an extra runtime contract. No earlier bundle, prior review, evidence package, Architecture v0.1 or external research document is an implementation dependency.
 
@@ -125,9 +125,64 @@ All digests are lowercase hexadecimal SHA-256. Release Markdown/YAML/text files 
 
 Per-block sequence bytes are the ASCII 0/1 labels in one-based slot order, exactly N_b characters with no delimiter or newline. Metadata must not be added to either bitstring or bare mapping.
 
-All other JSON artifact **files** use a run envelope with required `schema_version`, `run_id`, `created_at_utc`, and `payload`. Schema versions are `0.2.6` for run/envelope contracts in this release; method versions such as DGP `0.3.0` remain distinct. Named top-level commitment bindings specified in §2.6 are also required. Field content uses finite numbers or explicit null/reason status, never NaN/Infinity. Exact serialization settings are pinned by the implementation/environment manifest; exact-byte integrity is always verified using original bytes, not parser reserialization.
+All other JSON artifact **files** use a run envelope with required `schema_version`, `run_id`, `created_at_utc`, and `payload`. Schema versions are `0.2.7` for run/envelope contracts in this release; method versions such as DGP `0.3.0` remain distinct. Named top-level commitment bindings specified in §2.6 are also required. Field content uses finite numbers or explicit null/reason status, never NaN/Infinity. Exact serialization settings are pinned by the implementation/environment manifest; exact-byte integrity is always verified using original bytes, not parser reserialization.
 
 For deterministic payload comparisons, canonicalize the `payload` value to UTF-8 JSON with recursively sorted object keys and original array order, no insignificant whitespace or newline. Its number tokens are the implementation's fixed finite binary64 round-trip JSON rendering, pinned with the environment; integers remain integers. The algorithm ID is `OIDL-DETERMINISTIC-PAYLOAD-JSON-v1`. This is an engineering reproducibility hash, not a substitute for exact-byte integrity. Canonical package member-list hashing below has only strings and therefore no floating-number rendering ambiguity.
+
+### 2.4.1 ResearchSpec_hash — single exact-file commitment
+
+**Meaning and deliberate serialization choice.** `ResearchSpec_hash` (case-sensitive) is the integrity fingerprint of the **complete released YAML ResearchSpec serialization**, not a formatting-invariant semantic-tree hash and not a digest of the pair of twins. This release deliberately designates `ResearchSpec_v0.2.7.yaml` as its one source. The YAML is the typed mapping consumed at specification validation; the Markdown is its independently reconstructed, equally normative human-readable twin. Selecting the YAML member for this one fingerprint does **not** grant it interpretive precedence. Both original files must pass exact release integrity and complete typed parity before this fingerprint is admissible.
+
+This reuses the existing exact-file SHA-256/member-checksum mechanism in §§2.1,2.4. No semantic-tree canonicalizer, new package, second ResearchSpec fingerprint, or new artifact is introduced. `OIDL-DETERMINISTIC-PAYLOAD-JSON-v1` is not used: it hashes registered result projections with an environment-pinned numeric renderer, not ResearchSpec file identity.
+
+| Property | Exhaustive rule |
+|---|---|
+| Field | `ResearchSpec_hash`, a string of exactly 64 lowercase hexadecimal characters |
+| Source | The file at the exact release-root-relative path `ResearchSpec_v0.2.7.yaml`; never select a twin by discovery order or extension fallback |
+| Preimage | Every original finalized byte of that file, in order, from byte zero through its last byte, including its final LF. Release text is UTF-8 without BOM and with LF line endings, as §2.4 requires. Missing final LF, CR/CRLF, BOM or invalid UTF-8 is invalid input, not an invitation to normalize. |
+| Operation | Lowercase hexadecimal SHA-256 of those raw bytes. Do not parse, reserialize, trim, normalize Unicode/whitespace, substitute newline conventions, concatenate a filename/version/domain prefix, or hash an existing hex digest. |
+| Domain identity | `OIDL-RESEARCHSPEC-YAML-FILE-SHA256-v1`. This names the source/domain and raw-byte operation; canonicalization is `NONE`. The identifier is not separately prefixed/appended; its literal occurrence within the YAML definition is ordinary source content and is included. No extra per-result method field is required because the committed Oracle/ResearchSpec contracts fix it. |
+| Existing alias | Exactly the file-member SHA-256 for `ResearchSpec_v0.2.7.yaml` in the verified `contract_hashes.json` enumeration and the matching `SHA256SUMS.txt` line; not the hash of either enumeration/manifest file or `contract_set_hash` |
+| Twin relation | A single value associated with the parity-validated research contract, sourced only from YAML bytes. The Markdown member has its own ordinary release-file digest, which normally differs; do not call that digest `ResearchSpec_hash` or require the two member digests to agree. |
+
+The content of neither twin may contain its own computed `ResearchSpec_hash` value. They contain this definition, not the computed digest. Compute the value only after both twins are finalized. Fixture expected digests and runtime/informative records are outside the hash preimage. A reference to a fixture filename/version is not a dependency on that fixture's future file hash.
+
+#### Storage and all-use interpretation
+
+The following mapping is exhaustive. It applies to both run profiles, pre-unblind records and post-unblind comparisons. Every required use of `ResearchSpec_hash` in this bundle has this same domain; no caller may reinterpret it.
+
+| Existing record/context | Required storage or binding |
+|---|---|
+| `validated_spec_manifest.json` | Store the validated value in `payload.provenance.ResearchSpec_hash`. This is the existing pre-dataset specification-validation record, not a numerical result; no `deterministic_result` is created for it. The existing prohibition on future data-package aliases/release hashes applies. |
+| Calculated result/diagnostic/comparison with a registered `deterministic_result` | The authoritative field is `payload.deterministic_result.ResearchSpec_hash`. This includes `randomization_audit.json`, `baseline_balance.json` and `primary_itt_result.json`, and any later profile-authorized result with such an object. Any duplicate copy must equal the authoritative value. |
+| Ordinary result, claim, scope or freeze record required by ResearchSpec `every_result_and_claim_requires` but without `deterministic_result` | `payload.provenance.ResearchSpec_hash`. The value is mandatory; no null placeholder. Other registered provenance fields and scope exceptions remain unchanged. |
+| Human-readable rendering of an authoritative record | Copy the corresponding record's same value wherever its ResearchSpec fingerprint is rendered; do not hash the report or the Markdown twin instead. No second authoritative numerical result is created. |
+| Exact member enumerations (`contract_hashes.json`, release checksums, committed contract copies) | Keep the existing file-path/member-digest representations. The YAML member's digest is the alias source. The Markdown member's distinct digest remains mandatory. No competing `ResearchSpec_hash` field is added to the enumeration. |
+| Benchmark/approval bindings, generation metadata, data-package manifests and other exact governance schemas that already bind the contract set or linked contract members, without requiring this scalar field | Preserve those existing bindings; resolve the YAML member through the verified committed contract set. Do not add a new mandatory scalar merely because a record refers to specifications. An expressly named exact Markdown file digest still means that file digest, not this logical scalar. |
+| `analyst_leakage_scan.json` and `dataset_release_record.json` | Keep the exhaustive §2.5.2 schemas unchanged: **do not add `ResearchSpec_hash`** to either. Their existing `contract_set_hash`, benchmark and schema bindings commit and authenticate both normative twins transitively. Their specific schema exemption still overrides the analysis-specific field list. |
+
+Thus the spec reference belongs **inside** `deterministic_result` where that registered object exists, unlike volatile scan/manifest/release-file hashes. It is fixed across runs using the same released YAML bytes. Run IDs, approvals and exposure metadata remain outside. Specification validation obtains it before any dataset exists; it never requires a future dataset release. Downstream dataset consumers must additionally perform the unchanged R4/R5 release authentication: a valid ResearchSpec fingerprint cannot substitute for that authentication.
+
+#### Validation, schema and release bindings
+
+Validate in the following order; the first failing R7 stage gives the listed primary reason. This does not suppress other already-required contract/data validation. Failure sets execution status FAILED, retains the last valid lifecycle state, preserves evidence, blocks authoritative acceptance and authorized unblinding, and permits no fallback twin/hash/domain. Failure evidence is not a validated result and may report observed/expected values with an explicit failure label; it must not label an invalid fingerprint as approved provenance.
+
+1. **Source/parse validity — `RESEARCHSPEC_SOURCE_INVALID`.** Both exact named twins must exist as original valid release text. Apply the existing strict typed parsing and duplicate-key rules; reject unparseable/malformed representation, BOM, CR, missing final LF or invalid UTF-8. Do not repair input bytes while hashing.
+2. **Typed parity — `RESEARCHSPEC_TWIN_PARITY_MISMATCH`.** Reconstruct the complete Markdown tree under Contract Bundle §3 and compare it with the YAML tree including types, values and ordered lists. An exact YAML digest never overrides a twin disagreement.
+3. **Schema/release identity — `RESEARCHSPEC_SCHEMA_RELEASE_MISMATCH`.** Require the paths, `specification.document_id=ResearchSpec_v0.2.7`, `specification.version=0.2.7`, `specification.bundle_release=0.2.7`, `specification.human_readable_twin=ResearchSpec_v0.2.7.md`, linked identities and semantic-version map to equal Contract Bundle §2. Run/envelope schema is `0.2.7`; where present, the existing `research_spec_version` and `run_envelope_schema_version` bindings equal it and `oracle_protocol_version=0.5.0`. Method/DGP versions remain their distinct registered values. A correct digest with an old run/research/release identity is rejected.
+4. **Complete release/commitment integrity — `RESEARCHSPEC_RELEASE_INTEGRITY_MISMATCH`.** Independently hash both original twins and every other required release/contract member, verify `SHA256SUMS.txt`, the exact eleven-member `contract_hashes.json` enumeration when constructed, and all existing approved/benchmark `contract_set_hash` bindings when present. Verify unique exact source paths and the same YAML digest in each member enumeration. Initial source validation can precede creation of the runtime enumeration/benchmark; it constructs that enumeration from these verified bytes. No existing later commitment may be omitted from a check because it is inconvenient. Parity alone is not byte integrity or approval.
+5. **Field placement — `RESEARCHSPEC_HASH_PLACEMENT_VIOLATION`.** Where the table requires a direct scalar, require it at the exact path, as a non-null string; a copy only in another location is insufficient. Do not invent a `deterministic_result` for the spec manifest or either §2.5.2 record. Fields forbidden by those exhaustive schemas remain forbidden.
+6. **Value/domain — `RESEARCHSPEC_HASH_MISMATCH`.** Recompute the raw YAML digest and require every mandatory scalar, its allowed copies, and the value in the validated-spec manifest to equal it exactly and have 64 lowercase hexadecimal characters. During initial validated-spec manifest construction, compute and write this value rather than requiring that not-yet-created output as an input. Subsequent validation checks the finalized manifest and all existing bindings. A Markdown-member, semantic-tree, bundle, manifest or hash-of-hex digest is rejected even if well-formed.
+
+No `ResearchSpec_hash` is added to the signed scan/release records, and neither record is rewritten. Before scan creation, their already-required committed-contract validation includes the source, parity and release checks above; after release, their same contract-set/schema bindings must still match. This is an upstream contract check, not another provenance phase, artifact, approval or dependency on a descendant.
+
+#### Changes and reproducibility
+
+A change to the YAML bytes, even whitespace/comments/quoting that preserves the entire typed tree, changes `ResearchSpec_hash` (subject to the ordinary SHA-256 collision assumption). A Markdown-only formatting/navigation change with **identical YAML bytes** leaves this scalar unchanged, but changes the Markdown member digest and the contract-set/release integrity commitments. A semantic change in both twins changes the YAML serialization and therefore this scalar; a semantic change in only one twin fails parity. A schema-version change is part of the YAML bytes and is separately validated, not silently folded in as an extra hash prefix.
+
+These statements describe the hash function, not permission to edit a frozen release in place. Any changed committed byte invalidates the old approved contract set and requires the existing versioned-release/approval/linked-new-run procedure. A legitimate later release also updates the YAML version/link identities, so its value ordinarily changes even for a change motivated only by Markdown presentation. Neither parity nor an unchanged YAML fingerprint restores approval of an altered Markdown member. Same-release/same-source-byte reproducibility keeps this scalar; comparisons across different releases must not normalize it away.
+
+The dependency is finalized ResearchSpec source bytes → member digest / `ResearchSpec_hash` → validated-spec/approved contract bindings → benchmark → packages → immutable scan → signed release → results/archive. The source contains no own digest; the existing contract-set digest is not substituted for it. The data aliases, package membership, truth payload, R5 two-stage authentication and all approval/exposure semantics are unchanged.
 
 ### 2.5 Acyclic package membership and digest exclusions
 
@@ -149,7 +204,7 @@ A signed `dataset_release_record.json` outside both data packages binds the exac
 
 Do not place the archive digest into analysis_freeze_record, causal/decision scope records, or decision_record before computing it: those records reference predecessor artifact hashes and an archive ID, not their own descendant root hash. oracle_unblind_approval, comparison, close record and exposure-registry updates are outside the archive and excluded from its digest.
 
-**Integrity versus reproducibility.** Exact package member digests and manifest-file hashes are integrity commitments and are never normalized. Data payloads have no volatile metadata, so identical code/environment/seed/config/profile produce identical analyst/oracle payload digests. Run envelopes and the pre-unblind archive legitimately differ with run IDs, approvals and wall-clock times. Compare their canonical `payload` projections for reproducibility only where the artifact declares a `deterministic_result` subobject. `deterministic_result` contains all calculated values, deterministic warnings/deviations, schema/method/config IDs and data/spec/code/environment references (the two mandatory data aliases are mapped in §2.5.1), but no run ID, wall-clock timestamp, approvals, exposure-registry history, archive ID or ancestor run reference. Hash that subobject exactly; no implementation-selected exclusion masks or normalization rules are allowed. Those omitted governance fields remain exact-byte committed in the envelope/archive.
+**Integrity versus reproducibility.** Exact package member digests and manifest-file hashes are integrity commitments and are never normalized. Data payloads have no volatile metadata, so identical code/environment/seed/config/profile produce identical analyst/oracle payload digests. Run envelopes and the pre-unblind archive legitimately differ with run IDs, approvals and wall-clock times. Compare their canonical `payload` projections for reproducibility only where the artifact declares a `deterministic_result` subobject. `deterministic_result` contains all calculated values, deterministic warnings/deviations, schema/method/config IDs and data/spec/code/environment references (`ResearchSpec_hash` is mapped in §2.4.1; the two mandatory data aliases are mapped in §2.5.1), but no run ID, wall-clock timestamp, approvals, exposure-registry history, archive ID or ancestor run reference. Hash that subobject exactly; no implementation-selected exclusion masks or normalization rules are allowed. Those omitted governance fields remain exact-byte committed in the envelope/archive.
 
 ### 2.5.1 Mandatory result data-hash domains
 
@@ -195,7 +250,7 @@ Required scan fields (all paths below start at the run-envelope `payload`):
 | provenance.exposure_lineage_id; provenance.analysis_exposure_class; provenance.prior_exposure_record_hashes; provenance.parent_run_id | Exact values from that commitment; parent_run_id retains its registered nullability |
 | schema_bindings | The exact map defined below, using analyst member schemas only |
 
-The root `schema_version`, `run_id` and `created_at_utc` use §2.4; run_id must match the benchmark. Required `schema_bindings` keys are `run_envelope_schema_version`=`0.2.6`, `research_spec_version`=`0.2.6`, `oracle_protocol_version`=`0.4.0`, and `analyst_member_schemas`. The last is the complete array of `{path, logical_schema}` projections of the finalized analyst manifest's member records sorted by path; values and types must match exactly. Logical schema definitions remain the existing payload members, not new schema content invented by the scan.
+The root `schema_version`, `run_id` and `created_at_utc` use §2.4; run_id must match the benchmark. Required `schema_bindings` keys are `run_envelope_schema_version`=`0.2.7`, `research_spec_version`=`0.2.7`, `oracle_protocol_version`=`0.5.0`, and `analyst_member_schemas`. The last is the complete array of `{path, logical_schema}` projections of the finalized analyst manifest's member records sorted by path; values and types must match exactly. Logical schema definitions remain the existing payload members, not new schema content invented by the scan.
 
 `dataset_release_record_sha256`, `analyst_leakage_scan_sha256`, a scan self-hash, and any field claiming `RELEASE_AUTHENTICATED` are **absent**, not null placeholders, anywhere in this scan. The absent release hash remains absent in this SAME file after release and in its archived copy. All fields and bytes, including timestamps, diagnostics and whitespace, are finalized once. Only then compute SHA-256 of the complete scan file; hold that predecessor digest for release signing outside the scan. Local byte verification alone never permits downstream analyst use or entry into ANALYST_PACKAGE_RELEASED. A FAIL scan may be retained as failure evidence but cannot authorize signing a release.
 
@@ -264,7 +319,7 @@ The dependency graph remains: analyst/oracle payloads → content digests → ro
 
 `benchmark_commitment.json` requires these top-level fields in addition to its `payload`:
 
-- schema_version = 0.2.6;
+- schema_version = 0.2.7;
 - run_id (nonempty unique local string);
 - created_at_utc (UTC with six fractional digits);
 - assignment_sequence_commitment_path;

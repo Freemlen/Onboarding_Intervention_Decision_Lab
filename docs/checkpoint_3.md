@@ -1,10 +1,10 @@
 # Checkpoint 3 — sequential generation and observed projection
 
 Authority: the eleven normative files in
-[Contract Bundle v0.2.6](../contracts/Contract_Bundle_v0.2.6.md).
-Originally accepted under v0.2.4; current clause references are rebound to v0.2.6
+[Contract Bundle v0.2.7](../contracts/Contract_Bundle_v0.2.7.md).
+Originally accepted under v0.2.4; current clause references are rebound to v0.2.7
 without changing the accepted component behavior. Oracle references now mean
-protocol v0.4.0 and SAP references mean plan v0.4.0. See the [rebind record](contract_rebind_v0.2.6.md).
+protocol v0.5.0 and SAP references mean plan v0.4.0. See the [rebind record](contract_rebind_v0.2.7.md).
 This document records implementation traceability; it supplies no methodology.
 All 16 release checksums were verified before edits and again before commit.
 Checkpoint 2 parent: f9923a8997e13c734e58e51ea6f8c1364b1bb867.

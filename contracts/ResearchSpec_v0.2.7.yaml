@@ -1,36 +1,36 @@
 specification:
-  document_id: ResearchSpec_v0.2.6
+  document_id: ResearchSpec_v0.2.7
   study_id: OIDL-ONBOARDING-ASSIST-001
-  version: 0.2.6
+  version: 0.2.7
   status: FINAL_PRE_IMPLEMENTATION
-  human_readable_twin: ResearchSpec_v0.2.6.md
+  human_readable_twin: ResearchSpec_v0.2.7.md
   required_linked_contracts:
     dgp_parameter_card: DGP_Parameter_Sheet_v0.3.0
     statistical_analysis_plan: Statistical_Analysis_Plan_v0.4.0
     decision_rule: Decision_Rule_Spec_v0.3.0
     guardrails: Guardrail_Spec_v0.3.0
-    oracle_protocol: Oracle_Benchmark_Spec_v0.4.0
-    architecture: Architecture_v0.2.6
-    contract_bundle: Contract_Bundle_v0.2.6
-    slice_1: Slice_1_Definition_of_Done_v0.2.6
-    golden_fixtures: Golden_Fixtures_v0.2.6
+    oracle_protocol: Oracle_Benchmark_Spec_v0.5.0
+    architecture: Architecture_v0.2.7
+    contract_bundle: Contract_Bundle_v0.2.7
+    slice_1: Slice_1_Definition_of_Done_v0.2.7
+    golden_fixtures: Golden_Fixtures_v0.2.7
   equivalence_rule:
     normative: true
-    rule: 'Markdown and YAML encode the same complete typed normative tree. Markdown is a lossless sectioned rendering
-      of this tree: identical keys, ordered lists, scalar values, types, formulas, rationales and prohibitions.
-      A mismatch fails release; neither form may be silently preferred. Linked-contract requirements are incorporated
-      identically by reference in both twins.'
-  bundle_release: 0.2.6
+    rule: 'Markdown and YAML encode the same complete typed normative tree. Markdown is a lossless sectioned
+      rendering of this tree: identical keys, ordered lists, scalar values, types, formulas, rationales and
+      prohibitions. A mismatch fails release; neither form may be silently preferred. Linked-contract requirements
+      are incorporated identically by reference in both twins.'
+  bundle_release: 0.2.7
   semantic_versions:
-    research_spec: 0.2.6
-    architecture: 0.2.6
+    research_spec: 0.2.7
+    architecture: 0.2.7
     dgp: 0.3.0
     sap: 0.4.0
     decision_rule: 0.3.0
     guardrails: 0.3.0
-    oracle_protocol: 0.4.0
-    slice_1: 0.2.6
-    golden_fixtures: 0.2.6
+    oracle_protocol: 0.5.0
+    slice_1: 0.2.7
+    golden_fixtures: 0.2.7
 scope_and_claim_boundary:
   scope: SYNTHETIC_PORTFOLIO_BENCHMARK_ONLY
   one_use_case: true
@@ -60,10 +60,10 @@ scope_and_claim_boundary:
   - UNKNOWN_INTERNAL_FACT
   numerical_quantity_role: SYNTHETIC_ASSUMPTION
 product_decision:
-  research_question: Among unique newly registered synthetic customers who are still unfunded and eligible at
-    a fixed 12-hour landmark, what is the customer-level causal effect of assignment to a standardized neutral
-    onboarding-assistance package on the probability of first successful commercial activation by seven days after
-    registration?
+  research_question: Among unique newly registered synthetic customers who are still unfunded and eligible
+    at a fixed 12-hour landmark, what is the customer-level causal effect of assignment to a standardized neutral
+    onboarding-assistance package on the probability of first successful commercial activation by seven days
+    after registration?
   confirmatory_hte_question: Does the assignment effect differ between customers with and without a recoverable
     KYC-friction state observed before the landmark?
   reference_rollout_period_days: 28
@@ -136,15 +136,15 @@ unit_and_cohort:
     screened_out_nonrandomized_n: 5000
     causal_estimands_reference_randomized_n: 50000
   canonical_screened_generation:
-    authoritative_rule: DGP Parameter Sheet sections 2.2-2.6, 4, 5.1 and 17.1.1 completely specify all 55000 screened
-      persons.
+    authoritative_rule: DGP Parameter Sheet sections 2.2-2.6, 4, 5.1 and 17.1.1 completely specify all 55000
+      screened persons.
     excluded_period_assignment: Within each exact exclusion reason, rank under excluded_period|{reason}; assign
       one quarter to each of P1,P2,P3,P4.
     excluded_market_assignment: Within reason/period, rank under excluded_market|{reason}|P{k}; assign NORMAL
       80%, PAYMENT_CONSTRAINED 20%; no eligible quotas change.
-    excluded_source_state: Three KYC-restricted exclusions have their identical source-state name and null friction/step
-      count. Other four exclusions have NO_OBSERVED_KYC_FRICTION, friction=0, and the existing no-friction step
-      distribution.
+    excluded_source_state: Three KYC-restricted exclusions have their identical source-state name and null
+      friction/step count. Other four exclusions have NO_OBSERVED_KYC_FRICTION, friction=0, and the existing
+      no-friction step distribution.
     no_window_semantics: NO_PERMITTED_CALLING_WINDOW has valid contact routes; sample a whole UTC-second instant
       from the noncallable-support complement in its assigned period, without a DAY/EVENING/NIGHT restriction.
       Its shift/load and their source timestamps are null, structural N/A; their full-length draws are ignored.
@@ -156,10 +156,10 @@ unit_and_cohort:
       initiation R+1s and settlement Tick(R+1min,T0,u) only for that exclusion. Absent/inapplicable occurrence
       timestamps are null.'
     default_flags: Activation journey/telephone/email/window/maturity/unique registration pass; prior outreach
-      and successful deposit by T0 false. Override only the exact reason-specific fields in DGP section 2.6. Restricted
-      KYC state and journey-in-principle failure describe the same exclusion.
-    missing_baseline_behavior: Unregistered null/missing applicable source field is a hard contract failure; missing
-      data do not form another canonical exclusion quota.
+      and successful deposit by T0 false. Override only the exact reason-specific fields in DGP section 2.6.
+      Restricted KYC state and journey-in-principle failure describe the same exclusion.
+    missing_baseline_behavior: Unregistered null/missing applicable source field is a hard contract failure;
+      missing data do not form another canonical exclusion quota.
     null_source_timestamp_rule: An inapplicable field has both null value and null source timestamp; all applicable
       registration-context source timestamps equal R.
 clock_semantics:
@@ -233,18 +233,18 @@ clock_semantics:
       anchor.
     package_enrollment: Intended treatment at T0; contaminated control at T0+1 microsecond, even if no attempt;
       no enrollment timestamp when no package.
-    first_exposure: Reached initial call start, otherwise seen email at followup sent +1 hour; no timestamp if
-      E=0.
+    first_exposure: Reached initial call start, otherwise seen email at followup sent +1 hour; no timestamp
+      if E=0.
     substantive_package_help: Initial accepted-help completion or completed requested callback, never exposure-only;
       BAU help has its own timestamp.
-    first_substantive_help: t_J is the minimum of existing substantive package-help and BAU-help times, not a
-      non-help exposure time.
+    first_substantive_help: t_J is the minimum of existing substantive package-help and BAU-help times, not
+      a non-help exposure time.
     verification_anchor: max(T0,t_J when J=1); r=1 for no friction but no post-T0 resolution event is emitted
       for that group.
     funding_anchor: max(T0, applicable resolved verification time, t_E when E=1, t_J when J=1).
     downstream_mapping: Original Dirichlet draws become node-specific conditional fractions with reserved terminal
-      microseconds. Funding cannot precede its active E/J/verification inputs; settlement is strictly later than
-      initiation; reversal is strictly later than settlement.
+      microseconds. Funding cannot precede its active E/J/verification inputs; settlement is strictly later
+      than initiation; reversal is strictly later than settlement.
     observed_projection: Only assignment-selected events enter analyst records; all absent occurrence timestamps
       are null with structural N/A, not imputed timestamps.
     draw_registry_precision: Initial-call and callback-completion registered timing uniforms map to microsecond
@@ -262,9 +262,9 @@ eligibility:
   - id: PERMITTED_CONTACT_ROUTES
     rule: Verified and permissibly contactable telephone route plus permitted registered-email follow-up route.
   - id: CALLING_WINDOW_AVAILABLE
-    rule: At least one continuous 30-minute initial-call scheduling interval is fully contained in permitted local
-      hours after T0_i and ends no later than R_i + 24h - 15 minutes. The 15-minute buffer is the required 5-minute
-      follow-up delay plus a 10-minute synthetic processing margin.
+    rule: At least one continuous 30-minute initial-call scheduling interval is fully contained in permitted
+      local hours after T0_i and ends no later than R_i + 24h - 15 minutes. The 15-minute buffer is the required
+      5-minute follow-up delay plus a 10-minute synthetic processing margin.
   - id: NO_PRIOR_MANUAL_CAMPAIGN
     rule: No prior manual onboarding or conversion-oriented campaign outreach from registration through T0_i.
   - id: MATURE_PRIMARY_WINDOW
@@ -284,11 +284,12 @@ eligibility:
   - PRIOR_MANUAL_CAMPAIGN_OUTREACH
   - IMMATURE_PRIMARY_WINDOW
   - DUPLICATE_OR_PREVIOUSLY_ENROLLED_PERSON
-  post_assignment_hard_restriction_strategy: Use DGP §7.5.1 hard_restriction_by(t) and proactive_stop_by(t); prohibit
-    proactive starts at/after stop, retain the assigned arm for ITT, and do not resimulate the frozen generation
-    path.
-  calling_window_boundary: Evaluate lengths of continuous intersections of (T0,R+24h-15min] with permitted local
-    [09:00,20:00). A component duration >=30 minutes passes; lower/upper endpoint exclusion is retained for scheduling.
+  post_assignment_hard_restriction_strategy: Use DGP §7.5.1 hard_restriction_by(t) and proactive_stop_by(t);
+    prohibit proactive starts at/after stop, retain the assigned arm for ITT, and do not resimulate the frozen
+    generation path.
+  calling_window_boundary: Evaluate lengths of continuous intersections of (T0,R+24h-15min] with permitted
+    local [09:00,20:00). A component duration >=30 minutes passes; lower/upper endpoint exclusion is retained
+    for scheduling.
 kyc_modifier:
   source_state_field: kyc_source_state_at_t0
   source_state_timestamp_rule: state_event_timestamp <= T0_i
@@ -322,8 +323,8 @@ kyc_modifier:
     - SANCTIONS_PEP_FRAUD_OR_HARD_INELIGIBILITY
     - APPROPRIATENESS_OR_PRODUCT_RESTRICTION
     ineligible_null_is_not_friction_zero: true
-  interpretation_boundary: Operational recoverability state; not a proxy for vulnerability, risk appetite, customer
-    value, suitability, or appropriateness.
+  interpretation_boundary: Operational recoverability state; not a proxy for vulnerability, risk appetite,
+    customer value, suitability, or appropriateness.
 treatment:
   assignment_field: assigned_onboarding_assistance
   assignment_symbol: Z_i
@@ -377,8 +378,8 @@ treatment:
   - Ask whether the customer wants help.
   - Diagnose a procedural or technical onboarding blockage.
   - Explain official identity or address document, upload, liveness, or status steps.
-  - Explain official payment-method, name-match, reference, currency, processing-time, proof-of-payment, or pending-status
-    steps after applicable gates.
+  - Explain official payment-method, name-match, reference, currency, processing-time, proof-of-payment, or
+    pending-status steps after applicable gates.
   - Provide language or accessibility support available in the synthetic scenario.
   - Direct the customer to official help or reactive support.
   - Explain process and product-navigation terminology neutrally.
@@ -443,8 +444,8 @@ control_bau:
     design_readiness_max_rate: 0.02
     action_if_above_max: Estimate and deterministic decision record may be produced and frozen for diagnosis;
       causal wording is withheld, evidence_status cannot be READY, and no deployment action may be approved.
-    enrollment_clock: T0+1 microsecond for a contaminated control, whether or not an attempt occurs; remains before
-      any resulting interaction.
+    enrollment_clock: T0+1 microsecond for a contaminated control, whether or not an attempt occurs; remains
+      before any resulting interaction.
   hard_restriction_predicate:
     name: hard_restriction_by(t)
     applicable_times: T0 <= t <= H
@@ -454,8 +455,8 @@ control_bau:
     - MANUAL_REVIEW_OR_ENHANCED_DUE_DILIGENCE
     - SANCTIONS_PEP_FRAUD_OR_HARD_INELIGIBILITY
     - APPROPRIATENESS_OR_PRODUCT_RESTRICTION
-    baseline_evidence: KYC source state known at R+6h; all eligible persons have baseline_restriction=false; excluded
-      persons use only baseline state and have no reminder or post-T0 path.
+    baseline_evidence: KYC source state known at R+6h; all eligible persons have baseline_restriction=false;
+      excluded persons use only baseline state and have no reminder or post-T0 path.
     qualifying_product_protection_members:
     - APPROPRIATENESS_WARNING
     - ASSESSMENT_FAILURE
@@ -473,8 +474,8 @@ control_bau:
     - audit_stop_ts
     - audit_restriction_ts
     audit_projection: Earliest explicit evidence of each kind in the complete serious-interaction audit, else
-      present null. Both are deterministically null in all generated configurations; explicit-input fixtures may
-      supply evidence. A serious-breach code alone is not a restriction.
+      present null. Both are deterministically null in all generated configurations; explicit-input fixtures
+      may supply evidence. A serious-breach code alone is not a restriction.
     not_independent_restrictions:
     - OPT_OUT_ALONE
     - COMPLAINT
@@ -484,8 +485,8 @@ control_bau:
     - SERIOUS_BREACH_CODE_WITHOUT_EXPLICIT_RESTRICTION
     missing_inputs: Missing/invalid is never false or structural absence. Canonical generation fails; analyst
       missingness follows Decision §9 and cannot assert a conforming reminder/stop check.
-    active_settled_deposit_formula: Any valid_customer_attributed DEPOSIT with settlement_ts nonnull and <= t
-      and (reversal_ts is null OR reversal_ts > t); future reversal does not erase earlier as-of settlement.
+    active_settled_deposit_formula: Any valid_customer_attributed DEPOSIT with settlement_ts nonnull and <=
+      t and (reversal_ts is null OR reversal_ts > t); future reversal does not erase earlier as-of settlement.
     reminder_not_proactive_stop: The automated BAU reminder uses hard_restriction_by(t), not proactive_stop_by(t);
       opt-out alone does not suppress this frozen reminder.
     no_new_draw_or_subtype_distribution: true
@@ -591,13 +592,13 @@ identification_and_scope:
   - Correct pre-treatment timestamps and no leakage into eligibility, modifier, or adjustment variables.
   - Complete primary-outcome observation through the registration-origin horizon.
   - Stable outcome adjudication across arms.
-  operational_interference_treatment: Individual potential paths have no queue interference. The day/shift load
-    index is synthetic pre-generated context; service wait/abandonment values are deterministic model-implied
+  operational_interference_treatment: Individual potential paths have no queue interference. The day/shift
+    load index is synthetic pre-generated context; service wait/abandonment values are deterministic model-implied
     projections, not observed queue metrics.
-  saturation_transport_boundary: Transport from 50% experimental saturation to other saturation levels is a synthetic
-    scenario assumption, not an identified causal effect.
-  causal_claim_scope: Only the synthetic population, intervention version, T0, BAU, outcome definition, and horizon
-    in this specification.
+  saturation_transport_boundary: Transport from 50% experimental saturation to other saturation levels is a
+    synthetic scenario assumption, not an identified causal effect.
+  causal_claim_scope: Only the synthetic population, intervention version, T0, BAU, outcome definition, and
+    horizon in this specification.
 randomization:
   unit: person_id
   allocation_probability: 0.5
@@ -623,11 +624,11 @@ randomization:
     per_block_sequence_serialization: ASCII bitstring in one-based slot order, exactly N_b characters, no delimiter
       or newline.
     per_block_commitment: Lowercase SHA256 of the exact sequence bitstring bytes, published before outcomes.
-    overall_commitment: Canonical JSON mapping lexicographically sorted block_id to {n_b, sequence_sha256}; SHA256
-      of exact canonical JSON bytes published in benchmark_commitment.json.
+    overall_commitment: Canonical JSON mapping lexicographically sorted block_id to {n_b, sequence_sha256};
+      SHA256 of exact canonical JSON bytes published in benchmark_commitment.json.
     future_sequence_labels_published_pre_assignment: false
-    post_release_verification: Reconstruct observed bitstrings by allocation_sequence_position and compare per-block
-      and overall public commitments.
+    post_release_verification: Reconstruct observed bitstrings by allocation_sequence_position and compare
+      per-block and overall public commitments.
     assignment_sequence_commitment_artifact_role: canonical_cryptographic_payload
     assignment_sequence_commitment_top_level_content: exact_16_block_id_mapping_only
     assignment_sequence_commitment_run_metadata_fields_prohibited:
@@ -695,8 +696,8 @@ randomization:
   - covariate-adaptive algorithm
   - seed chosen after outcome inspection
   allocation_probability_interpretation: 0.5 is the marginal inclusion probability under the committed exact-balance
-    block assignment distribution; not an independent Bernoulli draw or a constant conditional probability after
-    observing preceding slots.
+    block assignment distribution; not an independent Bernoulli draw or a constant conditional probability
+    after observing preceding slots.
   balance_diagnostics:
     authoritative_rule: Statistical_Analysis_Plan_v0.4.0.md section 4.3 is exhaustive for randomization_audit.json
       and its baseline_balance.json projection.
@@ -705,9 +706,9 @@ randomization:
     scope: Existing Slice 1 descriptive baseline audit only. No new covariate, hypothesis, p-value, readiness
       threshold, exclusion, estimator, outcome or HTE analysis.
     selection_rationale: Intentionally select the seven existing pre-T0 adjustment-source fields from SAP section
-      2.5. This is an explicit audit-source selection, not an inference that the sensitivity design matrix defines
-      balance. The diagnostic catalogue uses all categorical levels, positively oriented language match and the
-      original load value; the Lin basis remains unchanged.
+      2.5. This is an explicit audit-source selection, not an inference that the sensitivity design matrix
+      defines balance. The diagnostic catalogue uses all categorical levels, positively oriented language match
+      and the original load value; the Lin basis remains unchanged.
     catalogue:
     - order: 1
       variable_id: acquisition_channel
@@ -725,8 +726,8 @@ randomization:
       - acquisition_channel__ORGANIC
       - acquisition_channel__PAID
       - acquisition_channel__AFFILIATE
-      source_time_rule: 'DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other six
-        fields; all applicable values and their source times must be present at or before T0.'
+      source_time_rule: 'DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other
+        six fields; all applicable values and their source times must be present at or before T0.'
       applicability: Required and applicable for every randomized eligible person in every reported scope.
     - order: 2
       variable_id: device_verification_route
@@ -744,8 +745,8 @@ randomization:
       - device_verification_route__MOBILE_APP
       - device_verification_route__MOBILE_WEB
       - device_verification_route__DESKTOP_WEB
-      source_time_rule: 'DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other six
-        fields; all applicable values and their source times must be present at or before T0.'
+      source_time_rule: 'DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other
+        six fields; all applicable values and their source times must be present at or before T0.'
       applicability: Required and applicable for every randomized eligible person in every reported scope.
     - order: 3
       variable_id: language_service_match
@@ -755,12 +756,12 @@ randomization:
       representation: BINARY_IDENTITY
       level_order: []
       omit_reference_level: false
-      encoding: Logical 1=service language matches; logical 0=does not match. Use x=language_service_match, NOT
-        1-language_service_match. Lossless physical Boolean storage maps true to 1 and false to 0.
+      encoding: Logical 1=service language matches; logical 0=does not match. Use x=language_service_match,
+        NOT 1-language_service_match. Lossless physical Boolean storage maps true to 1 and false to 0.
       diagnostic_ids:
       - language_service_match
-      source_time_rule: 'DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other six
-        fields; all applicable values and their source times must be present at or before T0.'
+      source_time_rule: 'DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other
+        six fields; all applicable values and their source times must be present at or before T0.'
       applicability: Required and applicable for every randomized eligible person in every reported scope.
     - order: 4
       variable_id: declared_experience
@@ -779,8 +780,8 @@ randomization:
       - declared_experience__LOW
       - declared_experience__MEDIUM
       - declared_experience__HIGH
-      source_time_rule: 'DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other six
-        fields; all applicable values and their source times must be present at or before T0.'
+      source_time_rule: 'DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other
+        six fields; all applicable values and their source times must be present at or before T0.'
       applicability: Required and applicable for every randomized eligible person in every reported scope.
     - order: 5
       variable_id: pre_t0_completed_step_count
@@ -794,8 +795,8 @@ randomization:
         sample-variance formula, not five indicators.
       diagnostic_ids:
       - pre_t0_completed_step_count
-      source_time_rule: 'DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other six
-        fields; all applicable values and their source times must be present at or before T0.'
+      source_time_rule: 'DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other
+        six fields; all applicable values and their source times must be present at or before T0.'
       applicability: Required and applicable for every randomized eligible person in every reported scope.
     - order: 6
       variable_id: registration_shift
@@ -813,8 +814,8 @@ randomization:
       - registration_shift__DAY
       - registration_shift__EVENING
       - registration_shift__NIGHT
-      source_time_rule: 'DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other six
-        fields; all applicable values and their source times must be present at or before T0.'
+      source_time_rule: 'DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other
+        six fields; all applicable values and their source times must be present at or before T0.'
       applicability: Required and applicable for every randomized eligible person in every reported scope.
     - order: 7
       variable_id: day_shift_load_index
@@ -824,12 +825,13 @@ randomization:
       representation: NUMERIC_IDENTITY
       level_order: []
       omit_reference_level: false
-      encoding: The original finite binary64 value in the immutable snapshot; no sample restandardization, winsorization,
-        binning or day/shift aggregation. Repeated day/shift values still contribute one observation per person.
+      encoding: The original finite binary64 value in the immutable snapshot; no sample restandardization,
+        winsorization, binning or day/shift aggregation. Repeated day/shift values still contribute one observation
+        per person.
       diagnostic_ids:
       - day_shift_load_index
-      source_time_rule: 'DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other six
-        fields; all applicable values and their source times must be present at or before T0.'
+      source_time_rule: 'DGP section 2.6: source_ts=R+9h for completed step count; source_ts=R for the other
+        six fields; all applicable values and their source times must be present at or before T0.'
       applicability: Required and applicable for every randomized eligible person in every reported scope.
     excluded_from_smd_catalogue:
     - fields:
@@ -837,13 +839,14 @@ randomization:
       - synthetic_market_regime
       - registration_period
       - block_id
-      reason: Assignment/block variables are reported through SAP sections 4.1-4.2 exact arm/block/subgroup counts,
-        not additional SMD rows. kyc_friction additionally defines the two diagnostic scopes.
+      reason: Assignment/block variables are reported through SAP sections 4.1-4.2 exact arm/block/subgroup
+        counts, not additional SMD rows. kyc_friction additionally defines the two diagnostic scopes.
     - fields:
       - kyc_source_state_at_t0
       - local_utc_offset_hours
-      reason: Not selected for the balance catalogue. Source state retains eligibility/modifier and temporal validation;
-        UTC offset retains clock validation. Neither is selected automatically merely because it is observable.
+      reason: Not selected for the balance catalogue. Source state retains eligibility/modifier and temporal
+        validation; UTC offset retains clock validation. Neither is selected automatically merely because it
+        is observable.
     - fields:
       - person_id
       - R
@@ -873,28 +876,29 @@ randomization:
     diagnostic_count_per_scope: 15
     total_diagnostic_rows: 45
     population_and_missingness:
-      population: All 50000 eligible randomized persons, joined one-to-one on person_id to the immutable T0 snapshot
-        and assignment; include every assigned person regardless of delivery, outcome or later events.
-      denominators: Within each scope, n_treatment and n_control count all its assigned persons, once each. Canonical
-        overall counts 25000/25000, F0 17500/17500, F1 7500/7500. No per-field complete-case denominator, block
-        weighting or day/shift clustering.
+      population: All 50000 eligible randomized persons, joined one-to-one on person_id to the immutable T0
+        snapshot and assignment; include every assigned person regardless of delivery, outcome or later events.
+      denominators: Within each scope, n_treatment and n_control count all its assigned persons, once each.
+        Canonical overall counts 25000/25000, F0 17500/17500, F1 7500/7500. No per-field complete-case denominator,
+        block weighting or day/shift clustering.
       excluded_persons: The 5000 nonrandomized screened persons never enter any diagnostic scope. Their DGP-authorized
         structural N/A values, including ineligible-state step counts and no-calling-window shift/load, remain
         in screened validation only.
       randomized_sources: All seven fields and their applicable source timestamps must be present/valid. None
         has structural N/A in the randomized population. Absent, null, unknown-category, nonfinite, wrong-domain
-        or post-T0 values stop the design audit; do not impute, coerce an unknown label to a reference, drop a
-        row/variable/level, or treat N/A as zero.
-      missingness_indicators: None. Missingness is not an allowed state of these randomized baseline fields; reject
-        malformed inputs. Successful per-variable completeness counts equal scope denominators with zero missing/invalid/structural-N/A
-        counts. Missingness reports for fidelity remain separate and unchanged.
+        or post-T0 values stop the design audit; do not impute, coerce an unknown label to a reference, drop
+        a row/variable/level, or treat N/A as zero.
+      missingness_indicators: None. Missingness is not an allowed state of these randomized baseline fields;
+        reject malformed inputs. Successful per-variable completeness counts equal scope denominators with
+        zero missing/invalid/structural-N/A counts. Missingness reports for fidelity remain separate and unchanged.
       minimum_arm_n: 2
       empty_or_singleton_scope: Reject; never omit the scope or manufacture its SMD.
     formulas:
       orientation: treatment (assigned_onboarding_assistance=1) minus control (=0), within the declared scope;
         positive means greater encoded value/proportion in treatment.
-      continuous: m_z=sum x_i/n_z; v_z=(sum x_i^2-(sum x_i)^2/n_z)/(n_z-1). d=m_1-m_0; v_pool=(v_1+v_0)/2; SMD=d/sqrt(v_pool).
-        This is the unweighted mean of arm variances, NOT a sample-size-weighted pooled variance.
+      continuous: m_z=sum x_i/n_z; v_z=(sum x_i^2-(sum x_i)^2/n_z)/(n_z-1). d=m_1-m_0; v_pool=(v_1+v_0)/2;
+        SMD=d/sqrt(v_pool). This is the unweighted mean of arm variances, NOT a sample-size-weighted pooled
+        variance.
       binary_indicator: p_z=c_z/n_z; v_z=p_z*(1-p_z) with NO n/(n-1) correction. d=p_1-p_0; v_pool=(v_1+v_0)/2;
         SMD=d/sqrt(v_pool). The same rule applies to every categorical indicator.
       zero_variance_equal: 'v_pool=0 and d=0 exactly: smd=0, smd_status=ZERO_VARIANCE_EQUAL, pooled_sd=0.'
@@ -902,27 +906,27 @@ randomization:
         pooled_sd=0.'
       zero_variance_negative: 'v_pool=0 and d<0 exactly: smd=null, smd_status=ZERO_VARIANCE_UNEQUAL_NEGATIVE,
         pooled_sd=0.'
-      positive_variance: 'v_pool>0: smd_status=NONZERO_VARIANCE; d=0 yields canonical smd=0 without changing that
-        status.'
+      positive_variance: 'v_pool>0: smd_status=NONZERO_VARIANCE; d=0 yields canonical smd=0 without changing
+        that status.'
       categorical_maximum: max_abs_smd is max of absolute real SMDs over ALL indicator levels (for scalar variables,
         the single row). Compare exact squared ratios d^2/v_pool before rounding. If any row is zero-variance
-        unequal, max_abs_smd=null and max_abs_smd_status=UNBOUNDED; otherwise round the finite maximum once and
-        status=FINITE. Absent levels in both arms remain zero rows.
+        unequal, max_abs_smd=null and max_abs_smd_status=UNBOUNDED; otherwise round the finite maximum once
+        and status=FINITE. Absent levels in both arms remain zero rows.
     arithmetic:
       sufficient_statistics: Exact integer counts/sums for binary indicators and step counts. For day_shift_load_index,
         each stored finite binary64 input denotes its exact dyadic rational. Accumulate sums and squared sums
         as exact rationals; use exact arm means, variances, d and v_pool without intermediate float rounding.
-      zero_and_sign: Use exact rational zero and sign before conversion, independent of row/summation order. No
-        epsilon, tolerance, clipping or subtraction of rounded arm means is permitted.
+      zero_and_sign: Use exact rational zero and sign before conversion, independent of row/summation order.
+        No epsilon, tolerance, clipping or subtraction of rounded arm means is permitted.
       conversion: For every reported number use one correctly rounded binary64 value of the complete mathematical
         expression, round-to-nearest ties-to-even. In particular SMD=RN(d/sqrt(v_pool))=sign(d)*RN(sqrt(d^2/v_pool));
         do NOT divide already-rounded d by already-rounded pooled_sd. The stored pooled_sd is separately RN(sqrt(v_pool)).
-      representation_limit: If any nonzero finite mathematical reported quantity rounds to zero or nonfinite binary64,
-        reject with NUMERIC_REPRESENTATION_LIMIT. Exact zeros serialize as JSON numeric token 0 (positive zero),
-        not -0 or a string; null/status branches are exact.
-      serialization: Use lossless binary64 round-trip JSON under Oracle section 2.4, not decimal-truncated output.
-        Array order is normative; JSON object-key order follows existing canonicalization. Existing primary-statistical
-        arithmetic/CI/p-value conventions are unchanged.
+      representation_limit: If any nonzero finite mathematical reported quantity rounds to zero or nonfinite
+        binary64, reject with NUMERIC_REPRESENTATION_LIMIT. Exact zeros serialize as JSON numeric token 0 (positive
+        zero), not -0 or a string; null/status branches are exact.
+      serialization: Use lossless binary64 round-trip JSON under Oracle section 2.4, not decimal-truncated
+        output. Array order is normative; JSON object-key order follows existing canonicalization. Existing
+        primary-statistical arithmetic/CI/p-value conventions are unchanged.
       fixture_comparison: New balance fixtures require exact integers, labels, nulls, statuses, array ordering
         and correctly rounded binary64 values, NOT the general 1e-12 fixture tolerance.
     output:
@@ -981,12 +985,12 @@ randomization:
       - pooled_sd
       - smd
       - smd_status
-      field_semantics: scopes in declared order; variables in catalogue order; diagnostics in level order. level
-        is the exact string for categorical indicators, otherwise null. count_treatment/control are counts of
-        encoded ones for binary/indicators, otherwise null. Means, arm variances and pooled variance use the selected
-        formula; they are not outcome risks or standard errors. Source_field is the exact unqualified snapshot
-        field from the catalogue. On valid input n_present equals scope n and all other completeness counts are
-        integer zero.
+      field_semantics: scopes in declared order; variables in catalogue order; diagnostics in level order.
+        level is the exact string for categorical indicators, otherwise null. count_treatment/control are counts
+        of encoded ones for binary/indicators, otherwise null. Means, arm variances and pooled variance use
+        the selected formula; they are not outcome risks or standard errors. Source_field is the exact unqualified
+        snapshot field from the catalogue. On valid input n_present equals scope n and all other completeness
+        counts are integer zero.
       fixed_counts: treatment_value=1, control_value=0, unweighted=true, source_variable_count=7, diagnostic_count_per_scope=15,
         scope_count=3.
       array_completeness: Exactly 3 scopes, 7 variables per scope and 15 diagnostic rows per scope; no optional/reference/missingness/block
@@ -1008,17 +1012,17 @@ randomization:
       - BALANCE_CATALOGUE_OR_ENCODING_MISMATCH
       - BASELINE_BALANCE_PROJECTION_MISMATCH
       - NUMERIC_REPRESENTATION_LIMIT
-      action: Fail data/design validation, preserve predecessor records and last valid lifecycle state, emit failure
-        stage/reasons in the existing validation record; do not emit/accept an authoritative successful randomization
-        audit or run the primary analysis. Report all detected reason codes sorted lexicographically, no duplicates.
-        Existing primary/assignment/provenance failures retain their rules.
-      reason_definitions: Missing/null source or source timestamp -> MISSING_REQUIRED_BASELINE_DATA; unknown category,
-        out-of-domain or nonfinite source -> INVALID_BALANCE_SOURCE_VALUE; any declared structural N/A on a required
-        randomized source -> STRUCTURAL_NA_IN_RANDOMIZED_BALANCE (do not additionally label its null as ordinary
-        missing); source timestamp after T0 -> POST_T0_BALANCE_SOURCE; scope arm n<2 -> INSUFFICIENT_BALANCE_ARM_SIZE.
-        Invalid catalogue/order/encoding/output schema -> BALANCE_CATALOGUE_OR_ENCODING_MISMATCH; unequal audit/projection
-        objects -> BASELINE_BALANCE_PROJECTION_MISMATCH. All numeric representation limits use the existing named
-        failure.
+      action: Fail data/design validation, preserve predecessor records and last valid lifecycle state, emit
+        failure stage/reasons in the existing validation record; do not emit/accept an authoritative successful
+        randomization audit or run the primary analysis. Report all detected reason codes sorted lexicographically,
+        no duplicates. Existing primary/assignment/provenance failures retain their rules.
+      reason_definitions: Missing/null source or source timestamp -> MISSING_REQUIRED_BASELINE_DATA; unknown
+        category, out-of-domain or nonfinite source -> INVALID_BALANCE_SOURCE_VALUE; any declared structural
+        N/A on a required randomized source -> STRUCTURAL_NA_IN_RANDOMIZED_BALANCE (do not additionally label
+        its null as ordinary missing); source timestamp after T0 -> POST_T0_BALANCE_SOURCE; scope arm n<2 ->
+        INSUFFICIENT_BALANCE_ARM_SIZE. Invalid catalogue/order/encoding/output schema -> BALANCE_CATALOGUE_OR_ENCODING_MISMATCH;
+        unequal audit/projection objects -> BASELINE_BALANCE_PROJECTION_MISMATCH. All numeric representation
+        limits use the existing named failure.
     sensitivity_basis_relation: Distinct diagnostic representation selected from the same seven source fields;
       SAP section 2.5 remains an optional full-rank Lin basis with omitted reference levels, 1-language_service_match
       and standardized load. No Lin execution is introduced into Slice 1.
@@ -1050,7 +1054,7 @@ primary_statistical_contract:
   zero_se_interpretation: Computational/limiting normal conventions, not an exact finite-sample test or proof
     of certainty.
   zero_se_rules_apply_to_later_interaction: true
-  golden_fixtures: Golden_Fixtures_v0.2.6.yaml
+  golden_fixtures: Golden_Fixtures_v0.2.7.yaml
   adjustment_basis_unchanged: true
   kyc_subtype_adjustment_rationale: KYC subtypes are intentionally omitted from the frozen Lin basis. Binary-friction
     assignment-block indicators do not represent separate subtype main effects.
@@ -1061,16 +1065,16 @@ primary_statistical_contract:
     aggregation: Exact rational weights, arm risks, binary unbiased variances, block contributions, standardized
       arm risks, tau_Q and V_Q; aggregate before any binary64 conversion.
     binary_sample_variance: x_zb*(n_zb-x_zb)/(n_zb*(n_zb-1))
-    exact_zero: Rational numerator is zero; never a floating residual test, arbitrary epsilon, tolerance, or subtraction
-      of rounded standardized risks.
+    exact_zero: Rational numerator is zero; never a floating residual test, arbitrary epsilon, tolerance, or
+      subtraction of rounded standardized risks.
     canonical_half_allocation_identity: tau_Q=2*(sum x_1b-sum x_0b)/N only when n_1b=n_0b in every block; general
       exact rational rule otherwise.
-    conversion: One correctly rounded binary64 conversion per final rational, nearest with ties to even; SE is
-      sqrt(converted V_Q); existing CI and erfc p-value formulas unchanged.
+    conversion: One correctly rounded binary64 conversion per final rational, nearest with ties to even; SE
+      is sqrt(converted V_Q); existing CI and erfc p-value formulas unchanged.
     zero_serialization: Positive zero in memory, JSON number token 0; V_Q=tau_Q=0 implies estimate=variance=SE=ci_lower=ci_upper=0,
       p_value=1, test_statistic=null, zero_se_status=ZERO_SE_ZERO_ESTIMATE.
-    unrepresentable_nonzero: NUMERIC_REPRESENTATION_LIMIT failure if nonzero tau_Q or positive V_Q becomes zero/nonfinite
-      at conversion; no false zero branch.
+    unrepresentable_nonzero: NUMERIC_REPRESENTATION_LIMIT failure if nonzero tau_Q or positive V_Q becomes
+      zero/nonfinite at conversion; no false zero branch.
     later_interaction: Exact tau_1Q-tau_0Q and V_1Q+V_0Q before conversion; same boundary convention; HTE remains
       outside Slice 1.
     ordering: Final block-result arrays sorted by block_id; rational values independent of row, label and aggregation
@@ -1138,8 +1142,8 @@ missingness_maturity_and_deviations:
     zero_denominator: STRUCTURAL_NOT_APPLICABLE, null fraction, completeness gate passes; no fabricated 0%/100%.
     unknown_parent: Child is APPLICABILITY_UNKNOWN and counts against completeness, never structural N/A.
     primary_failure_precedence: Missing primary/baseline/assignment or required deposit lifecycle is hard failure;
-      missing fidelity-only fields preserve primary ITT with diagnostics but block readiness; missing harm status/audit
-      blocks both outreach policies in FULL.
+      missing fidelity-only fields preserve primary ITT with diagnostics but block readiness; missing harm
+      status/audit blocks both outreach policies in FULL.
     slice_1_scope: Report descriptive applicability/missingness only; no evidence_status or deployment readiness
       object.
   deviations:
@@ -1204,8 +1208,8 @@ policy_economics_and_action:
     policy_baseline_contamination_rule: NONE is the implemented BAU environment including the frozen accidental
       control-contamination process.
     assignment_cost_increment_rule: The 1.5 SVU amount is the expected incremental cost of one intended policy
-      assignment relative to that BAU baseline; cost already embedded in common BAU contamination is outside the
-      policy delta and is neither charged again nor credited.
+      assignment relative to that BAU baseline; cost already embedded in common BAU contamination is outside
+      the policy delta and is neither charged again nor credited.
     contamination_accounting_interpretation: Frozen synthetic accounting convention; no estimated contamination
       correction is applied.
   capacity:
@@ -1244,8 +1248,8 @@ policy_economics_and_action:
     familywise_alpha: 0.05
     adjustment: BONFERRONI_SIX_ORIENTATIONS
     critical_value: 2.3939797998185095
-    readiness_rule: Point-recommended policy lower bound versus every other capacity-feasible policy must be strictly
-      greater than zero.
+    readiness_rule: Point-recommended policy lower bound versus every other capacity-feasible policy must be
+      strictly greater than zero.
     equivalent_oriented_one_sided_family_size: 6
     critical_value_formula: Phi_inverse(1 - 0.05/6)
     family_fixed_after_capacity_filtering: true
@@ -1255,7 +1259,8 @@ policy_economics_and_action:
       apply.
     equal_zero_bound_passes: false
   evidence_status_precedence:
-    precondition: Hard data and design validation has passed; otherwise no authoritative decision object is emitted.
+    precondition: Hard data and design validation has passed; otherwise no authoritative decision object is
+      emitted.
     rules:
     - order: 1
       status: GUARDRAIL_BLOCKED
@@ -1285,8 +1290,8 @@ policy_economics_and_action:
     evidence_status: GUARDRAIL_BLOCKED
     statistical_guardrail_action: HOLD
   causal_claim_gate:
-    CAUSAL_CLAIMS_APPROVED: default_operational_action equals statistical_guardrail_action and is eligible for
-      business/protection approval.
+    CAUSAL_CLAIMS_APPROVED: default_operational_action equals statistical_guardrail_action and is eligible
+      for business/protection approval.
     CAUSAL_CLAIMS_WITHHELD: default_operational_action is HOLD regardless of recommended_policy, evidence_status,
       or statistical_guardrail_action.
     CAUSAL_CLAIMS_NOT_REQUESTED: Permitted only in Slice 1, where no decision object exists.
@@ -1327,7 +1332,8 @@ policy_economics_and_action:
       denominator: all randomized treatment persons
       minimum_rate: 0.95
     required_unreachable_followup:
-      denominator: treatment initial attempts unreachable, email permitted, no documented stop at or before attempt+5min
+      denominator: treatment initial attempts unreachable, email permitted, no documented stop at or before
+        attempt+5min
       minimum_rate: 0.99
       zero_denominator: null rate, STRUCTURAL_NOT_APPLICABLE, pass
       unknown_parent_or_stop: null rate, READINESS_MISSING_INPUT, fail
@@ -1403,7 +1409,8 @@ guardrails:
       - event_ts
       - reason_code
       - trigger_deposit_ordinal
-      false_projection: Flag false; all three summary occurrence fields null/structural N/A; no occurrence event.
+      false_projection: Flag false; all three summary occurrence fields null/structural N/A; no occurrence
+        event.
       true_projection: Flag true; exact second-terminal timestamp, fixed reason and triggering deposit ordinal
         required; one matching occurrence event.
       no_new_draw: true
@@ -1431,8 +1438,8 @@ guardrails:
     policy_application: Global treatment-package gate; any failure blocks both TARGETED and BROAD.
     interpretation_limit: Not a subgroup-specific safety estimand and does not establish that TARGETED is safer
       than BROAD.
-  rare_event_interpretation: A non-significant harm test is not evidence of safety. Passing means only that the
-    simultaneous upper bound did not exceed the frozen synthetic margin in this cohort.
+  rare_event_interpretation: A non-significant harm test is not evidence of safety. Passing means only that
+    the simultaneous upper bound did not exceed the frozen synthetic margin in this cohort.
   early_high_risk_use_v1_status: DEFERRED_NOT_IN_V1
   early_high_risk_use_rationale: Would require a downstream trading-use model and an additional outcome surface.
 sample_size_and_mde:
@@ -1493,8 +1500,8 @@ sample_size_and_mde:
   - Conservative overall MDE is below the planned +1.33 pp ITT.
   - Conservative interaction MDE is below the planned +3.10 pp interaction.
   - Provides high precision in the 30% policy segment.
-  - Intentionally leaves the +0.4 pp no-friction effect below ordinary detection while allowing estimation relative
-    to the 1.5 pp break-even threshold.
+  - Intentionally leaves the +0.4 pp no-friction effect below ordinary detection while allowing estimation
+    relative to the 1.5 pp break-even threshold.
   - Keeps all 16 blocks non-sparse with at least 375 persons per arm in the smallest block.
   outcome_responsive_acceptance_tests_prohibited:
   - canonical estimate must be significant
@@ -1523,31 +1530,32 @@ provenance_and_claim_permissions:
   - analysis_exposure_class
   - prior_exposure_record_hashes
   pre_causal_approval_maximum_wording: The block-adjusted randomized difference was X percentage points.
-  post_causal_approval_wording_boundary: May state assignment caused a difference only within the synthetic benchmark
-    and frozen scope.
+  post_causal_approval_wording_boundary: May state assignment caused a difference only within the synthetic
+    benchmark and frozen scope.
   prohibited_claims:
   - Adjacent studies establish the seven-day brokerage effect.
   - Synthetic parameters describe a real market or firm.
   - The project reproduces any firm's internal process.
   hashing:
-    release_manifest: SHA256SUMS.txt lists every released regular file except itself; runtime contract set is
-      the eleven normative paths in Contract Bundle section 2.
-    package_members: All and only regular files under each package payload/; sorted relative POSIX path/hash array;
-      no self-containing digest.
+    release_manifest: SHA256SUMS.txt lists every released regular file except itself; runtime contract set
+      is the eleven normative paths in Contract Bundle section 2.
+    package_members: All and only regular files under each package payload/; sorted relative POSIX path/hash
+      array; no self-containing digest.
     package_digest_method: OIDL-PACKAGE-MEMBERS-SHA256-v1
     excluded_from_own_package: Root manifest and digest sidecar; scans/approvals remain outside package roots.
-    manifest_authentication: Dataset release binds exact data manifest hashes and immutable scan-file hash; local
-      scan creation verifies analyst bytes/manifest/sidecar without a future release record. Downstream use requires
-      signed-release cross-authentication under Oracle section 2.5.2. Gate H binds exact archive manifest and
-      digest.
+    manifest_authentication: Dataset release binds exact data manifest hashes and immutable scan-file hash;
+      local scan creation verifies analyst bytes/manifest/sidecar without a future release record. Downstream
+      use requires signed-release cross-authentication under Oracle section 2.5.2. Gate H binds exact archive
+      manifest and digest.
     exact_integrity_not_normalized: true
     reproducibility_projection: Only declared deterministic_result objects exclude run IDs, wall-clock/approval/exposure/archive
       metadata; exact envelopes remain integrity-committed. No arbitrary normalization masks.
-    authoritative_details: Oracle sections 2.4–2.6 (mandatory alias domains in 2.5.1; exhaustive two-stage scan/release
-      fields, order and rejection in 2.5.2) and 6.
+    authoritative_details: Oracle sections 2.4–2.6 (ResearchSpec_hash domain/placement/validation in 2.4.1;
+      mandatory data-alias domains in 2.5.1; unchanged exhaustive two-stage scan/release fields, order and
+      rejection in 2.5.2) and 6.
     deterministic_data_representation: Inside analyst/oracle data payloads, deterministic object/map metadata
-      and schemas use YAML; tabular members use pinned typed lossless serialization. Run JSON envelopes stay outside
-      data payloads. Archive payloads contain exact copies of run records.
+      and schemas use YAML; tabular members use pinned typed lossless serialization. Run JSON envelopes stay
+      outside data payloads. Archive payloads contain exact copies of run records.
     mandatory_data_hash_domains:
       dataset_package_hash:
         source: analyst_package_manifest.json -> payload.package_content_sha256
@@ -1556,14 +1564,15 @@ provenance_and_claim_permissions:
           File hashes cover finalized exact bytes; root manifest and sidecar excluded.
         algorithm: SHA-256
         method_id: OIDL-PACKAGE-MEMBERS-SHA256-v1
-        alias: Analyst package-content digest; dataset_package_hash and analyst_view_hash must be identical; also
-          equals analyst_package_hash.txt without its LF. Not manifest, release, ZIP or combined oracle digest.
+        alias: Analyst package-content digest; dataset_package_hash and analyst_view_hash must be identical;
+          also equals analyst_package_hash.txt without its LF. Not manifest, release, ZIP or combined oracle
+          digest.
         placement: payload.deterministic_result.dataset_package_hash for calculation/comparison results; payload.provenance.dataset_package_hash
           for records without deterministic_result.
         authentication: Recompute finalized analyst bytes/member digest and match manifest plus sidecar. Oracle
-          section 2.5.2 permits producer-side local verification for immutable pre-release scan creation and construction
-          of its signed release; all downstream consumption requires valid signed-release authentication of unchanged
-          scan/manifest/content bindings.
+          section 2.5.2 permits producer-side local verification for immutable pre-release scan creation and
+          construction of its signed release; all downstream consumption requires valid signed-release authentication
+          of unchanged scan/manifest/content bindings.
       analyst_view_hash:
         source: analyst_package_manifest.json -> payload.package_content_sha256
         preimage: UTF-8 canonical JSON array of exactly {path,sha256} per regular analyst payload file, paths
@@ -1571,29 +1580,30 @@ provenance_and_claim_permissions:
           File hashes cover finalized exact bytes; root manifest and sidecar excluded.
         algorithm: SHA-256
         method_id: OIDL-PACKAGE-MEMBERS-SHA256-v1
-        alias: Analyst package-content digest; dataset_package_hash and analyst_view_hash must be identical; also
-          equals analyst_package_hash.txt without its LF. Not manifest, release, ZIP or combined oracle digest.
+        alias: Analyst package-content digest; dataset_package_hash and analyst_view_hash must be identical;
+          also equals analyst_package_hash.txt without its LF. Not manifest, release, ZIP or combined oracle
+          digest.
         placement: payload.deterministic_result.analyst_view_hash for calculation/comparison results; payload.provenance.analyst_view_hash
           for records without deterministic_result.
         authentication: Recompute finalized analyst bytes/member digest and match manifest plus sidecar. Oracle
-          section 2.5.2 permits producer-side local verification for immutable pre-release scan creation and construction
-          of its signed release; all downstream consumption requires valid signed-release authentication of unchanged
-          scan/manifest/content bindings.
+          section 2.5.2 permits producer-side local verification for immutable pre-release scan creation and
+          construction of its signed release; all downstream consumption requires valid signed-release authentication
+          of unchanged scan/manifest/content bindings.
     volatile_predecessor_hashes:
       analyst_package_manifest_sha256: SHA-256 of whole original manifest bytes; only payload.provenance.
       dataset_release_record_sha256: SHA-256 of whole original signed release record bytes; only payload.provenance
-        of downstream records. Absent permanently in the pre-release scan and in the release record itself; no
-        null placeholder or later backfill.
+        of downstream records. Absent permanently in the pre-release scan and in the release record itself;
+        no null placeholder or later backfill.
       analyst_leakage_scan_sha256: SHA-256 of whole finalized scan-file bytes. Required in payload.provenance
-        of the signed release and downstream records attesting scan acceptance; absent in the scan itself; never
-        in deterministic_result.
+        of the signed release and downstream records attesting scan acceptance; absent in the scan itself;
+        never in deterministic_result.
     no_recursive_result_data_binding: No result/alias/scan/release enters analyst payload. Pre-dataset commitments/spec
       approvals cannot bind future data. The immutable dataset-grounded scan carries both aliases but no future
-      release hash; release carries both aliases and the scan hash but no self-hash. Original scan/release bytes
-      are copied unchanged into the archive.
+      release hash; release carries both aliases and the scan hash but no self-hash. Original scan/release
+      bytes are copied unchanged into the archive.
     pre_release_scan_provenance:
-      authoritative_contract: Oracle section 2.5.2; exact field paths, bindings, ordered actions, rejection reasons
-        and signature semantics are incorporated in full.
+      authoritative_contract: Oracle section 2.5.2; exact field paths, bindings, ordered actions, rejection
+        reasons and signature semantics are incorporated in full.
       scan_artifact: analyst_leakage_scan.json
       dataset_grounded: true
       has_deterministic_result: false
@@ -1629,8 +1639,8 @@ provenance_and_claim_permissions:
       release_authentication: After signing, reverify unchanged scan bytes, PASS status, all alias/manifest/member/sidecar/release/commitment/schema/profile/exposure
         bindings and approval. Oracle package verification remains custody-side; analyst consumers verify only
         its signed opaque association.
-      authenticated_phase: RELEASE_AUTHENTICATED is a derived verification relationship, not a scan field or new
-        run state.
+      authenticated_phase: RELEASE_AUTHENTICATED is a derived verification relationship, not a scan field or
+        new run state.
       ordered_actions:
       - FINALIZE_PACKAGES_MANIFESTS_SIDECARS
       - LOCAL_BYTE_VERIFICATION_AND_LEAKAGE_SCAN
@@ -1639,10 +1649,10 @@ provenance_and_claim_permissions:
       - SIGN_AND_FINALIZE_RELEASE
       - HASH_RELEASE_AND_CROSS_AUTHENTICATE
       - ENTER_ANALYST_PACKAGE_RELEASED_AFTER_EXISTING_LOCK_L
-      downstream_precondition: Valid release authentication; local verification or a cached status alone is insufficient.
-        Apply Oracle section 2.5.2 failures and retain last valid lifecycle state.
-      downstream_provenance: Both aliases in their registered locations; exact analyst manifest and signed release
-        hashes in payload.provenance. Records attesting acceptance of scan, including data_contract_validation.json,
+      downstream_precondition: Valid release authentication; local verification or a cached status alone is
+        insufficient. Apply Oracle section 2.5.2 failures and retain last valid lifecycle state.
+      downstream_provenance: Both aliases in their registered locations; exact analyst manifest and signed
+        release hashes in payload.provenance. Records attesting acceptance of scan, including data_contract_validation.json,
         also bind exact scan hash there.
       post_signing_scan_mutation_allowed: false
       new_receipt_package_gate_or_lifecycle_state: false
@@ -1657,15 +1667,94 @@ provenance_and_claim_permissions:
       - DATASET_RELEASE_BINDING_MISMATCH
       - DATASET_RELEASE_NOT_AUTHENTICATED
       - CIRCULAR_PROVENANCE_FIELD
-      fixture_reference: Golden_Fixtures_v0.2.6.yaml pre_release_scan_provenance_fixtures
-  placement_rule: Dataset-grounded records carry both frozen aliases per hashing.mandatory_data_hash_domains.
+      fixture_reference: Golden_Fixtures_v0.2.7.yaml pre_release_scan_provenance_fixtures
+    research_spec_hash:
+      field_name: ResearchSpec_hash
+      semantic_meaning: Exact released YAML ResearchSpec serialization integrity fingerprint; not a formatting-invariant
+        semantic-tree or twin-pair digest.
+      source_artifact: ResearchSpec_v0.2.7.yaml
+      source_path_base: RELEASE_ROOT
+      preimage: All original finalized source-file bytes, including final LF; UTF-8, no BOM, LF line endings.
+        No external prefix, filename/schema token, normalization, trimming, parsing/reserialization or hash-of-hex
+        operation. The source text itself, including its filenames/versions/method definition, is included
+        in full.
+      algorithm: SHA-256
+      representation: Exactly 64 lowercase hexadecimal characters, stored as a non-null string.
+      domain_method_id: OIDL-RESEARCHSPEC-YAML-FILE-SHA256-v1
+      canonicalization: NONE
+      method_id_added_as_prefix_or_suffix: false
+      existing_commitment_alias: Exact file-member digest for ResearchSpec_v0.2.7.yaml in verified contract_hashes.json
+        and SHA256SUMS.txt; not either manifest digest, contract_set_hash or a package digest.
+      serialization_choice_rationale: Explicitly select the machine-readable typed mapping member while retaining
+        independent full Markdown reconstruction and exact integrity of both equally normative twins. Reuse
+        existing exact-file hashing rather than introduce semantic canonicalization.
+      twins_rule: Single logical ResearchSpec_hash sourced from YAML. Ordinary Markdown and YAML file digests
+        may differ. Both files and complete typed parity must validate; choosing a hash source does not create
+        normative precedence.
+      computed_value_in_either_twin: false
+      validated_spec_manifest_location: validated_spec_manifest.json -> payload.provenance.ResearchSpec_hash;
+        pre-dataset record, no deterministic_result or future data hashes.
+      deterministic_result_location: payload.deterministic_result.ResearchSpec_hash; authoritative for registered
+        calculated/diagnostic/comparison results, including randomization_audit, baseline_balance and primary_itt_result.
+        Allowed copies must agree.
+      no_deterministic_result_location: payload.provenance.ResearchSpec_hash on ordinary required result/claim/scope/freeze
+        records without deterministic_result.
+      rendering_rule: Copy the authoritative record value when rendering its ResearchSpec fingerprint; do not
+        hash the report or Markdown twin.
+      existing_member_binding_rule: Other exact schemas binding contract_set_hash or linked contract members
+        retain those transitive references; no additional scalar field is inferred. Named exact-file digests
+        still mean their own file bytes.
+      r5_scan_release_schema: No ResearchSpec_hash field is added to analyst_leakage_scan.json or dataset_release_record.json.
+        Existing exhaustive Oracle section 2.5.2 schemas and their contract-set/benchmark/schema bindings remain
+        unchanged.
+      validation_order:
+      - stage: SOURCE_AND_PARSE
+        failure_code: RESEARCHSPEC_SOURCE_INVALID
+      - stage: COMPLETE_TYPED_PARITY
+        failure_code: RESEARCHSPEC_TWIN_PARITY_MISMATCH
+      - stage: SCHEMA_RELEASE_AND_LINKED_IDENTITIES
+        failure_code: RESEARCHSPEC_SCHEMA_RELEASE_MISMATCH
+      - stage: RELEASE_AND_EXISTING_COMMITMENT_INTEGRITY
+        failure_code: RESEARCHSPEC_RELEASE_INTEGRITY_MISMATCH
+      - stage: DIRECT_FIELD_PLACEMENT
+        failure_code: RESEARCHSPEC_HASH_PLACEMENT_VIOLATION
+      - stage: VALUE_AND_DOMAIN
+        failure_code: RESEARCHSPEC_HASH_MISMATCH
+      schema_bindings:
+        run_envelope_schema_version: 0.2.7
+        research_spec_version: 0.2.7
+        bundle_release: 0.2.7
+        oracle_protocol_version: 0.5.0
+      validation_timing: Source/parity/release validation precedes validated-spec manifest construction and
+        benchmark commitment. Initial construction writes the newly computed digest; it does not require its
+        own future output. Existing commitments are always checked when present. Downstream dataset authentication
+        remains independently mandatory.
+      failure_behavior: First failing R7 stage supplies its primary code; FAILED execution retains last valid
+        state and immutable evidence, prohibits authoritative acceptance/unblind, and never falls back to another
+        hash source. Oracle section 2.4.1 is exhaustive.
+      formatting_changes:
+        yaml_bytes_change_preserving_tree: ResearchSpec_hash changes; exact-file rather than semantic commitment.
+        markdown_only_change_with_identical_yaml_bytes: ResearchSpec_hash unchanged; Markdown-member and contract-set/release
+          commitments change, so old release approval is invalid.
+        semantic_change_both_twins: YAML bytes and ResearchSpec_hash change.
+        semantic_change_one_twin: Typed parity failure even if YAML digest matches.
+        new_release: Version/link identities must be updated and approved under existing rules; no in-place
+          frozen edit or hash normalization across releases.
+      no_new_artifact_or_package: true
+      authoritative_details: Oracle section 2.4.1, including exhaustive context placement, source/parse and
+        identity checks, immutable binding rules and rejection behavior.
+      fixture_reference: Golden_Fixtures_v0.2.7.yaml researchspec_hash_fixtures
+  placement_rule: 'Dataset-grounded records carry both frozen aliases per hashing.mandatory_data_hash_domains.
     The pre-release scan and signed release carry them in payload.provenance with the exact producer-side lifecycle
-    in hashing.pre_release_scan_provenance and Oracle section 2.5.2; neither has deterministic_result or a dataset_release_record_sha256.
-    Ordinary downstream records require signed-release authentication and its exact hash in surrounding provenance.
-    Run/profile/approval/exposure and volatile scan/manifest/release hashes never enter deterministic_result;
-    no arbitrary exclusion mask.
-  pre_release_record_schema_scope: For analyst_leakage_scan.json and dataset_release_record.json only, the exhaustive
-    validation/governance field schemas in Oracle section 2.5.2 replace analysis-specific every_result_and_claim_requires
+    in hashing.pre_release_scan_provenance and Oracle section 2.5.2; neither has deterministic_result or a
+    dataset_release_record_sha256. Ordinary downstream records require signed-release authentication and its
+    exact hash in surrounding provenance. Run/profile/approval/exposure and volatile scan/manifest/release
+    hashes never enter deterministic_result; no arbitrary exclusion mask. ResearchSpec_hash uses hashing.research_spec_hash
+    and Oracle section 2.4.1: inside a registered deterministic_result, otherwise payload.provenance on required
+    ordinary records; the pre-dataset validated-spec manifest carries it, while the two exhaustive R5 scan/release
+    schemas retain transitive contract-set bindings without a new scalar.'
+  pre_release_record_schema_scope: For analyst_leakage_scan.json and dataset_release_record.json only, the
+    exhaustive validation/governance field schemas in Oracle section 2.5.2 replace analysis-specific every_result_and_claim_requires
     fields. Both remain dataset-grounded with both aliases and all registered benchmark/contract/profile/exposure
     bindings. No other downstream result or claim is exempted.
 governance:
@@ -1729,8 +1818,8 @@ governance:
     - RUNNING
     - SUCCEEDED
     - FAILED
-    hard_failure_rule: Set run_execution_status to FAILED, record failure_stage and reason_codes, retain the last
-      valid governance lifecycle state, and prohibit unblinding.
+    hard_failure_rule: Set run_execution_status to FAILED, record failure_stage and reason_codes, retain the
+      last valid governance lifecycle state, and prohibit unblinding.
     failure_is_governance_transition: false
   causal_claim_state_rules:
     causal_wording_approved: CAUSAL_CLAIMS_APPROVED
@@ -1812,10 +1901,10 @@ governance:
     classification_enum:
     - PRE_EXPOSURE_SEQUESTERED_TRUTH
     - POST_UNBLIND_REANALYSIS
-    registry_rule: Custodian-owned local append-only signed chain, attested genesis; unknown registry fails closed.
-      Oracle section 12 is exhaustive.
-    prior_exposure_action: Any prior analyst-facing sequestered-truth exposure forces all later runs of that lineage
-      to POST_UNBLIND_REANALYSIS, with prior exposure hashes and parent run.
+    registry_rule: Custodian-owned local append-only signed chain, attested genesis; unknown registry fails
+      closed. Oracle section 12 is exhaustive.
+    prior_exposure_action: Any prior analyst-facing sequestered-truth exposure forces all later runs of that
+      lineage to POST_UNBLIND_REANALYSIS, with prior exposure hashes and parent run.
     new_run_restores_blindness: false
     new_profile_restores_blindness: false
     new_dgp_version_same_seed_restores_blindness: false
@@ -1824,10 +1913,10 @@ governance:
     authorized_generation_is_analyst_exposure: false
     public_targets_are_exposure: false
   approval_role_reference: Architecture section 5; gate records preserve each required accountable role.
-  analyst_package_release_precondition: Within the existing BENCHMARK_COMMITTED -> ANALYST_PACKAGE_RELEASED transition,
-    complete Oracle section 2.5.2 scan finalization, exact hashing, signed release and cross-authentication before
-    the existing lock-L-gated release. The two verification phases add no lifecycle state or approval gate; failure
-    retains the last valid state and blocks unblinding.
+  analyst_package_release_precondition: Within the existing BENCHMARK_COMMITTED -> ANALYST_PACKAGE_RELEASED
+    transition, complete Oracle section 2.5.2 scan finalization, exact hashing, signed release and cross-authentication
+    before the existing lock-L-gated release. The two verification phases add no lifecycle state or approval
+    gate; failure retains the last valid state and blocks unblinding.
 truth_sequestered_benchmark:
   authoritative_term: TRUTH_SEQUESTERED_SYNTHETIC_BENCHMARK
   prohibited_term: VALIDATION_OF_THE_ESTIMATOR
@@ -1900,8 +1989,8 @@ truth_sequestered_benchmark:
     - HTE test
     - subgroup finite-schedule and interaction summary
     - guardrail decision result
-    authoritative_details: Oracle section 1.2 and DGP section 16; generated primitives necessary for event realization
-      are retained, not analyzed as guardrails in Slice 1.
+    authoritative_details: Oracle section 1.2 and DGP section 16; generated primitives necessary for event
+      realization are retained, not analyzed as guardrails in Slice 1.
 non_goals:
 - real or proprietary customer data
 - observational identification, matching, weighting, or propensity scores

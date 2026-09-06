@@ -1,4 +1,4 @@
-"""Pure v0.2.6 validation (Bundle §§2–4; Oracle §§2.1, 2.4–2.6)."""
+"""Pure v0.2.7 validation (Bundle §§2–4; Oracle §§2.1, 2.4–2.6)."""
 
 from dataclasses import dataclass
 from hashlib import sha256
@@ -9,7 +9,7 @@ import re
 import yaml
 
 from .release_identity import (
-    BALANCE_METHOD_ID, BALANCE_METHOD_VERSION,
+    BALANCE_METHOD_ID, BALANCE_METHOD_VERSION, RESEARCH_SPEC_SOURCE, RESEARCH_SPEC_TWIN,
     LINKED_CONTRACTS, NORMATIVE_PATHS, RELEASE, RELEASE_HASHES, SEMANTIC_VERSIONS,
 )
 
@@ -233,14 +233,14 @@ def canonical_json(value) -> bytes:
     ).encode("utf-8")
 
 
-def validate_versions(spec: dict, texts: dict[str, str], fixtures: dict) -> None:
-    """Check release/schema identity and independently versioned linked methods."""
+def validate_specification_identity(spec: dict) -> None:
+    """Full ResearchSpec identity and linked maps: Bundle §§2–4."""
     identity = spec.get("specification")
     expected = {
-        "document_id": "ResearchSpec_v0.2.6",
+        "document_id": "ResearchSpec_v0.2.7",
         "version": RELEASE,
         "bundle_release": RELEASE,
-        "human_readable_twin": "ResearchSpec_v0.2.6.md",
+        "human_readable_twin": "ResearchSpec_v0.2.7.md",
         "required_linked_contracts": LINKED_CONTRACTS,
         "semantic_versions": SEMANTIC_VERSIONS,
     }
@@ -249,12 +249,17 @@ def validate_versions(spec: dict, texts: dict[str, str], fixtures: dict) -> None
         for key, value in expected.items()
     ):
         raise ContractError("RELEASE_IDENTITY", "UNSUPPORTED_OR_MISSING_VERSION_LINK")
+
+
+def validate_versions(spec: dict, texts: dict[str, str], fixtures: dict) -> None:
+    """Check release/schema identity and independently versioned linked methods."""
+    validate_specification_identity(spec)
     headers = {
-        "Contract_Bundle_v0.2.6.md": ("Release", RELEASE),
-        "Architecture_v0.2.6.md": ("Version", RELEASE),
-        "Slice_1_Definition_of_Done_v0.2.6.md": ("Version", RELEASE),
+        "Contract_Bundle_v0.2.7.md": ("Release", RELEASE),
+        "Architecture_v0.2.7.md": ("Version", RELEASE),
+        "Slice_1_Definition_of_Done_v0.2.7.md": ("Version", RELEASE),
         "Statistical_Analysis_Plan_v0.4.0.md": ("SAP version", "0.4.0"),
-        "Oracle_Benchmark_Spec_v0.4.0.md": ("Version", "0.4.0"),
+        "Oracle_Benchmark_Spec_v0.5.0.md": ("Version", "0.5.0"),
         **{f"{name}_v0.3.0.md": ("Version", "0.3.0") for name in (
             "DGP_Parameter_Sheet", "Decision_Rule_Spec", "Guardrail_Spec",
         )},
@@ -280,11 +285,128 @@ def validate_versions(spec: dict, texts: dict[str, str], fixtures: dict) -> None
             raise ContractError("RELEASE_IDENTITY", "BALANCE_METHOD_VERSION_MISMATCH")
 
 
+def _research_failure(code: str):
+    raise ContractError("RESEARCHSPEC_VALIDATION", code) from None
+
+
+def research_spec_file_hash(raw: bytes) -> str:
+    """Oracle §2.4.1: SHA-256 of raw UTF-8/LF bytes, including final LF.
+
+    This pure byte operation grants no release/parity/approval validity.
+    No parsing, reserialization or domain prefix enters the preimage.
+    """
+    if type(raw) is not bytes or not raw.endswith(b"\n"):
+        _research_failure("RESEARCHSPEC_SOURCE_INVALID")
+    try:
+        release_text(raw)
+    except ContractError:
+        _research_failure("RESEARCHSPEC_SOURCE_INVALID")
+    return sha256(raw).hexdigest()
+
+
+def load_research_sources(markdown_raw: bytes, yaml_raw: bytes) -> dict:
+    """R7 stages 1–2 only; reduced Golden specimens are not approved releases."""
+    # Validate BOTH source representations before checking parity.
+    research_spec_file_hash(markdown_raw)
+    research_spec_file_hash(yaml_raw)
+    try:
+        human = load_markdown_tree(markdown_raw.decode("utf-8"))
+        machine = load_yaml_mapping(yaml_raw.decode("utf-8"))
+    except ContractError:
+        _research_failure("RESEARCHSPEC_SOURCE_INVALID")
+    if not typed_equal(human, machine):
+        _research_failure("RESEARCHSPEC_TWIN_PARITY_MISMATCH")
+    return machine
+
+
+def validate_research_schema_bindings(bindings: dict) -> None:
+    """R7 stage 3: check registered identity copies when supplied, without a run."""
+    expected = {
+        "document_id": "ResearchSpec_v0.2.7", "version": RELEASE,
+        "bundle_release": RELEASE, "human_readable_twin": RESEARCH_SPEC_TWIN,
+        "schema_version": RELEASE, "run_envelope_schema_version": RELEASE,
+        "research_spec_version": RELEASE, "oracle_protocol_version": "0.5.0",
+    }
+    if type(bindings) is not dict or any(
+        key in bindings and not typed_equal(bindings[key], value)
+        for key, value in expected.items()
+    ):
+        _research_failure("RESEARCHSPEC_SCHEMA_RELEASE_MISMATCH")
+
+
+def validate_research_member_hashes(markdown_raw: bytes, yaml_raw: bytes,
+                                   markdown_member_hash: str, yaml_member_hash: str) -> str:
+    """R7 stage 4 member-alias check; complete release verification is separate."""
+    actual = research_spec_file_hash(yaml_raw)
+    if (research_spec_file_hash(markdown_raw) != markdown_member_hash
+            or actual != yaml_member_hash):
+        _research_failure("RESEARCHSPEC_RELEASE_INTEGRITY_MISMATCH")
+    return actual
+
+
+def validate_research_hash_placement(record: dict, record_kind: str, expected_hash: str) -> None:
+    """Pure R7 stages 5–6 on explicit typed records; never emit a runtime result.
+
+    Source/parity/release integrity and each record's complete schema are
+    independent prerequisites. This narrowly checks the new scalar's locations.
+    """
+    locations = {
+        "VALIDATED_SPEC_MANIFEST": "provenance",
+        "RESULT_WITH_DETERMINISTIC_RESULT": "deterministic_result",
+        "ORDINARY_RECORD_WITHOUT_DETERMINISTIC_RESULT": "provenance",
+    }
+    forbidden = {"ANALYST_LEAKAGE_SCAN", "DATASET_RELEASE_RECORD", "MEMBER_ENUMERATION"}
+    if (type(record) is not dict or type(record_kind) is not str
+            or record_kind not in locations.keys() | forbidden):
+        _research_failure("RESEARCHSPEC_HASH_PLACEMENT_VIOLATION")
+
+    try:
+        _typed_tree(record, "RESEARCHSPEC_VALIDATION")
+    except (ContractError, RecursionError):
+        _research_failure("RESEARCHSPEC_HASH_PLACEMENT_VIOLATION")
+
+    def copies(value):
+        if type(value) is dict:
+            for key, child in value.items():
+                if key == "ResearchSpec_hash":
+                    yield child
+                else:
+                    yield from copies(child)
+        elif type(value) is list:
+            for child in value:
+                yield from copies(child)
+
+    if record_kind in forbidden:
+        if any(True for _ in copies(record)):
+            _research_failure("RESEARCHSPEC_HASH_PLACEMENT_VIOLATION")
+        payload = record.get("payload")
+        if (record_kind != "MEMBER_ENUMERATION" and type(payload) is dict
+                and "deterministic_result" in payload):
+            _research_failure("RESEARCHSPEC_HASH_PLACEMENT_VIOLATION")
+        return
+    payload = record.get("payload")
+    location = locations[record_kind]
+    if type(payload) is not dict or type(payload.get(location)) is not dict:
+        _research_failure("RESEARCHSPEC_HASH_PLACEMENT_VIOLATION")
+    if location == "provenance" and "deterministic_result" in payload:
+        _research_failure("RESEARCHSPEC_HASH_PLACEMENT_VIOLATION")
+    if type(payload[location].get("ResearchSpec_hash")) is not str:
+        _research_failure("RESEARCHSPEC_HASH_PLACEMENT_VIOLATION")
+    if record_kind == "VALIDATED_SPEC_MANIFEST":
+        future = {"dataset_package_hash", "analyst_view_hash", "dataset_release_record_sha256"}
+        if future & (payload.keys() | payload[location].keys()):
+            _research_failure("RESEARCHSPEC_HASH_PLACEMENT_VIOLATION")
+    if (type(expected_hash) is not str or re.fullmatch(r"[0-9a-f]{64}", expected_hash) is None
+            or any(type(value) is not str or value != expected_hash for value in copies(record))):
+        _research_failure("RESEARCHSPEC_HASH_MISMATCH")
+
+
 @dataclass(frozen=True)
 class VerifiedRelease:
     _research_spec_json: bytes
     contract_hashes: tuple[tuple[str, str], ...]
     release_hashes: tuple[tuple[str, str], ...]
+    research_spec_hash: str
 
     @property
     def research_spec(self) -> dict:
@@ -301,24 +423,35 @@ class VerifiedRelease:
 
 
 def verify_release_bytes(files: dict[str, bytes]) -> VerifiedRelease:
-    """Authenticate the entire frozen release before interpreting contract content."""
-    if set(files) != set(RELEASE_HASHES) | {"SHA256SUMS.txt"}:
-        raise ContractError("RELEASE_MEMBERSHIP", "MISSING_OR_EXTRA_RELEASE_FILE")
-    manifest = parse_sha256sums(release_text(files["SHA256SUMS.txt"]))
-    if manifest.keys() != RELEASE_HASHES.keys():
-        raise ContractError("RELEASE_MEMBERSHIP", "MISSING_OR_EXTRA_MANIFEST_MEMBER")
-    if manifest != RELEASE_HASHES:
-        raise ContractError("RELEASE_INTEGRITY", "MANIFEST_DIFFERS_FROM_FROZEN_RELEASE")
-    for path in sorted(manifest):
-        if sha256(files[path]).hexdigest() != manifest[path]:
-            raise ContractError("RELEASE_INTEGRITY", "FILE_SHA256_MISMATCH")
+    """R7 ordered validation; no source fingerprint is approved before integrity."""
+    if type(files) is not dict:
+        _research_failure("RESEARCHSPEC_SOURCE_INVALID")
+    spec = load_research_sources(files.get(RESEARCH_SPEC_TWIN), files.get(RESEARCH_SPEC_SOURCE))
+    try:
+        validate_specification_identity(spec)
+    except ContractError:
+        _research_failure("RESEARCHSPEC_SCHEMA_RELEASE_MISMATCH")
+    try:
+        if set(files) != set(RELEASE_HASHES) | {"SHA256SUMS.txt"}:
+            raise ContractError("RELEASE_MEMBERSHIP", "MISSING_OR_EXTRA_RELEASE_FILE")
+        manifest = parse_sha256sums(release_text(files["SHA256SUMS.txt"]))
+        if manifest.keys() != RELEASE_HASHES.keys():
+            raise ContractError("RELEASE_MEMBERSHIP", "MISSING_OR_EXTRA_MANIFEST_MEMBER")
+        if manifest != RELEASE_HASHES:
+            raise ContractError("RELEASE_INTEGRITY", "MANIFEST_DIFFERS_FROM_FROZEN_RELEASE")
+        for path in sorted(manifest):
+            if sha256(files[path]).hexdigest() != manifest[path]:
+                raise ContractError("RELEASE_INTEGRITY", "FILE_SHA256_MISMATCH")
+    except (ContractError, TypeError, ValueError, KeyError):
+        _research_failure("RESEARCHSPEC_RELEASE_INTEGRITY_MISMATCH")
     texts = {path: release_text(files[path]) for path in sorted(manifest)}
-    spec = load_research_twins(
-        texts["ResearchSpec_v0.2.6.md"], texts["ResearchSpec_v0.2.6.yaml"],
-    )
-    fixtures = load_yaml_mapping(texts["Golden_Fixtures_v0.2.6.yaml"])
+    fixtures = load_yaml_mapping(texts["Golden_Fixtures_v0.2.7.yaml"])
     validate_versions(spec, texts, fixtures)
+    fingerprint = validate_research_member_hashes(
+        files[RESEARCH_SPEC_TWIN], files[RESEARCH_SPEC_SOURCE],
+        manifest[RESEARCH_SPEC_TWIN], manifest[RESEARCH_SPEC_SOURCE],
+    )
     return VerifiedRelease(
         canonical_json(spec), tuple((path, manifest[path]) for path in sorted(NORMATIVE_PATHS)),
-        tuple(sorted(manifest.items())),
+        tuple(sorted(manifest.items())), fingerprint,
     )

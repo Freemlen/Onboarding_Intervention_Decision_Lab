@@ -1,4 +1,4 @@
-"""v0.2.6 schema rebind only: no SMD arithmetic, audit or release emission."""
+"""v0.2.7 schema rebind only: no SMD arithmetic, audit or release emission."""
 
 from copy import deepcopy
 import re
@@ -45,7 +45,7 @@ OUTPUT_FIELDS = {
 
 @pytest.fixture(scope="session")
 def golden(release_files):
-    return load_yaml_mapping(release_files["Golden_Fixtures_v0.2.6.yaml"].decode())
+    return load_yaml_mapping(release_files["Golden_Fixtures_v0.2.7.yaml"].decode())
 
 
 def diagnostic_ids(variable, levels):
@@ -179,7 +179,7 @@ def test_balance_catalogue_and_schema_mutations_fail_full_typed_parity(twins, pa
 
 @pytest.mark.parametrize("name", ["Contract_Bundle_v0.2.5.md", "Statistical_Analysis_Plan_v0.3.0.md"])
 def test_prior_release_or_sap_cannot_enter_current_membership(release_files, name):
-    with pytest.raises(ContractError, match="MISSING_OR_EXTRA_RELEASE_FILE"):
+    with pytest.raises(ContractError, match="RESEARCHSPEC_RELEASE_INTEGRITY_MISMATCH"):
         verify_release_bytes({**release_files, name: b"FABRICATED_STALE_IDENTITY"})
 
 

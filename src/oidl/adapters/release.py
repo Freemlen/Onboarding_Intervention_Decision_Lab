@@ -6,8 +6,11 @@ from pathlib import Path
 import re
 import stat
 
-from oidl.domain.contracts import ContractError, VerifiedRelease, canonical_json, verify_release_bytes
-from oidl.domain.release_identity import RELEASE, RELEASE_HASHES
+from oidl.domain.contracts import (
+    ContractError, VerifiedRelease, canonical_json, verify_release_bytes,
+    validate_research_hash_placement,
+)
+from oidl.domain.release_identity import RELEASE, RELEASE_HASHES, RESEARCH_SPEC_SOURCE, RESEARCH_SPEC_TWIN
 
 
 def load_release(directory: Path) -> VerifiedRelease:
@@ -16,6 +19,8 @@ def load_release(directory: Path) -> VerifiedRelease:
         if directory.is_symlink() or not directory.is_dir():
             raise ContractError("RELEASE_IO", "REGULAR_RELEASE_DIRECTORY_REQUIRED")
         entries = {path.name: path for path in directory.iterdir()}
+        if not {RESEARCH_SPEC_SOURCE, RESEARCH_SPEC_TWIN} <= entries.keys():
+            raise ContractError("RESEARCHSPEC_VALIDATION", "RESEARCHSPEC_SOURCE_INVALID")
         if entries.keys() != RELEASE_HASHES.keys() | {"SHA256SUMS.txt"}:
             raise ContractError("RELEASE_MEMBERSHIP", "MISSING_OR_EXTRA_RELEASE_FILE")
         for path in entries.values():
@@ -50,15 +55,21 @@ def validation_records(release: VerifiedRelease, run_id: str, created_at_utc: st
             "created_at_utc": created_at_utc, "payload": payload,
         }
 
-    return {
+    records = {
         "contract_hashes.json": envelope(release.contract_members()),
         "validated_spec_manifest.json": envelope({
             "validation_status": "PASSED", "bundle_release": RELEASE,
             "contract_set_hash": release.contract_set_hash,
             "contract_set_hash_method_id": "OIDL-PACKAGE-MEMBERS-SHA256-v1",
             "research_spec": release.research_spec,
+            # Oracle v0.5.0 §2.4.1: pre-dataset provenance, no result object.
+            "provenance": {"ResearchSpec_hash": release.research_spec_hash},
         }),
     }
+    validate_research_hash_placement(
+        records["validated_spec_manifest.json"], "VALIDATED_SPEC_MANIFEST", release.research_spec_hash,
+    )
+    return records
 
 
 def write_validation_records(output: Path, records: dict) -> None:
