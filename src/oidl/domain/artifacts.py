@@ -18,6 +18,7 @@ from .release_identity import RELEASE
 
 PACKAGE_METHOD = "OIDL-PACKAGE-MEMBERS-SHA256-v1"
 SIDECARS = {
+    "ARCHIVE": ("pre_unblind_archive_manifest.json", "pre_unblind_archive_hash.txt"),
     "ANALYST": ("analyst_package_manifest.json", "analyst_package_hash.txt"),
     "ORACLE": ("oracle_package_manifest.json", "oracle_package_commitment_hash.txt"),
 }

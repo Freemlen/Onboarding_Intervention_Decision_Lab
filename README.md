@@ -1,8 +1,9 @@
 # Onboarding Intervention Decision Lab
 
-Checkpoints 1–4: frozen contract release **v0.2.7** validation, population and
-journey construction, analyst-package release and descriptive design audit.
-This is not completion of Slice 1 or approval of a benchmark run.
+Checkpoints 1–6 implement the frozen **v0.2.7** Slice 1 workflow with
+explicit non-secret fixtures: contract validation, population/journey construction,
+analyst release, primary ITT, freeze, authorized oracle access and comparison.
+Fixture completion does not authorize or execute a canonical benchmark run.
 See [Checkpoint 2 quotas](docs/checkpoint_2.md) and
 [Checkpoint 3 clauses, logical tables and test coverage](docs/checkpoint_3.md).
 The [v0.2.7 rebind checkpoint](docs/contract_rebind_v0.2.7.md) records the identity
@@ -29,8 +30,14 @@ From the repository root:
 ```sh
 (cd contracts && sha256sum -c SHA256SUMS.txt)
 PYTHONPATH=src .venv/bin/python -m oidl spec validate --contracts contracts
-.venv/bin/python -m pytest -q
+.venv/bin/python -m pytest -q --ignore=tests/test_checkpoint6.py --ignore=tests/test_primary_artifacts.py
+.venv/bin/python -m pytest -q tests/test_primary_artifacts.py
+.venv/bin/python -m pytest -q tests/test_checkpoint6.py
 ```
+
+The three non-overlapping pytest batches execute the complete suite while releasing
+the full-size session fixtures between processes. This keeps verification within
+the current WSL memory budget; no test is omitted.
 
 Rebind verification: **515 tests passed in 127.78 seconds**; see [the v0.2.7 checkpoint](docs/contract_rebind_v0.2.7.md).
 The complete accepted 456-test suite is retained, with R7 source/domain/placement
@@ -160,3 +167,22 @@ See [Checkpoint 5 clause traceability, API and verification](docs/checkpoint_5.m
 The CP4 workflow remains available unchanged; its validator can also return the
 freshly reconciled observed inputs for immediate analyst reuse without skipping
 any validation. No canonical hidden-seed run is generated.
+
+
+## Checkpoint 6 freeze and authorized comparison
+
+[Checkpoint 6 traceability and custody handoff](docs/checkpoint_6.md) covers the
+immutable analysis freeze, Gates E–H, closed archive, secret-free seed verification
+receipt, exposure append, overall oracle comparison and benchmark close.
+
+Gate H is the signed human authorization before truth access. The comparison
+uses algebraically signed errors and binds the original authorization; it has
+no additional signatory or approval gate. Post-unblind checks compare frozen
+primary values without invoking the estimator or fitting generation parameters.
+Only the exact Slice 1 oracle components and comparison fields are permitted.
+
+The public freeze API accepts only analyst/public bytes. Separate explicit
+custody and local workflow adapters enforce the access sequence. No canonical
+secret is requested, discovered, printed or included in artifacts. Actual human
+approvals, canonical execution and the contract's hidden NULL/ADVERSE runs remain
+custodian responsibilities after implementation acceptance.
