@@ -1,5 +1,8 @@
 """Explicit CP6 filesystem capabilities; no implicit truth/secret discovery."""
 from pathlib import Path
+import os
+import stat
+from oidl.adapters.exposure import ExposureRegistry
 from oidl.adapters.artifacts import (
     _read_regular, read_package, write_package, write_record, append_registry_record)
 from oidl.domain.artifacts import digest, parse_record, require
@@ -46,12 +49,22 @@ class FreezeFileStore:
             require(dict(current.files) == dict(archive.files), "CLOSED_ARCHIVE_MUTATION")
 
     def registry_records(self):
-        require(self.registry_directory.is_dir(), "EXPOSURE_REGISTRY_REQUIRED")
-        paths = sorted(self.registry_directory.iterdir())
-        require(bool(paths) and all(p.name == f"{i:06d}.json" for i,p in enumerate(paths)),
-                "EXPOSURE_REGISTRY_MEMBERSHIP_MISMATCH")
-        return tuple(_read_regular(p) for p in paths)
+        return ExposureRegistry(self.registry_directory).records()
 
-    def append_exposure(self, raw):
+    def append_exposure(self, raw, *, benchmark=None, expected_prefix=None):
+        if benchmark is not None:
+            require(expected_prefix is not None, "CONFIRMED_EXPOSURE_PREFIX_REQUIRED")
+            confirmed = ExposureRegistry(self.registry_directory).append(raw, benchmark, expected_prefix)
+            # A prior write may have left complete visible bytes before fsync
+            # failed. Confirm the exact existing file and sync it on retry too.
+            target = self.registry_directory/f"{len(expected_prefix):06d}.json"
+            fd = os.open(target, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+            with os.fdopen(fd, "rb") as stream:
+                require(stat.S_ISREG(os.fstat(stream.fileno()).st_mode), "REGULAR_FILE_REQUIRED")
+                require(stream.read() == raw, "POST_WRITE_BYTE_MISMATCH")
+                os.fsync(stream.fileno())
+            return confirmed
+        # Preserve the existing already-authorized Gate H append interface.
+        require(expected_prefix is None, "EXPOSURE_BENCHMARK_REQUIRED")
         records = self.registry_records()
         append_registry_record(self.registry_directory, raw, digest(records[-1]))

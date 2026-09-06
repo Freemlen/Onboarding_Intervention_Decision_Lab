@@ -26,6 +26,7 @@ class Checkpoint6Run:
         self._frozen = None
         self._archive = None
         self._registry = tuple(inputs.registry_records)
+        self._pending_exposure_incident = None
         self._authorization_registry = None
         self._history = [inputs.lifecycle]
         self._state = inputs.lifecycle
@@ -198,24 +199,63 @@ class Checkpoint6Run:
         return self._operation("ORACLE_UNBLIND_APPROVED", stamp, action)
 
     def report_early_exposure(self, exposure_record):
-        # This reporting path intentionally remains usable after another failure.
-        b = parse_record(self._inputs.records["benchmark_commitment.json"])
-        require(self._state not in ("ORACLE_UNBLINDED", "BENCHMARK_CLOSED"), "EARLY_EXPOSURE_STATE_MISMATCH")
-        truth = parse_record(self._inputs.records["dataset_release_record.json"])["payload"]["provenance"][
-            "oracle_package_content_sha256"]
-        validate_exposure_append(exposure_record, self._registry, b, "EARLY_EXPOSURE_INCIDENT", truth, self._last_time)
+        """Oracle §§5, 12: recover evidence without advancing a failed run."""
+        try:
+            require(self._pending_exposure_incident is None or
+                    self._pending_exposure_incident == exposure_record,
+                    "PENDING_EXPOSURE_PERSISTENCE_REQUIRED")
+            b = parse_record(self._inputs.records["benchmark_commitment.json"])
+            require(self._state not in ("ORACLE_UNBLINDED", "BENCHMARK_CLOSED"),
+                    "EARLY_EXPOSURE_STATE_MISMATCH")
+            truth = parse_record(self._inputs.records["dataset_release_record.json"])["payload"]["provenance"][
+                "oracle_package_content_sha256"]
+            current = (self._file_store.registry_records() if self._file_store is not None
+                       else self._registry)
+            require(current[:len(self._registry)] == self._registry,
+                    "EXPOSURE_REGISTRY_PREFIX_MUTATION")
+            prefix = self._registry
+            # An exact repeat after confirmation is idempotent, too. A changed
+            # record with the same ID still goes through duplicate validation.
+            if self._pending_exposure_incident is None and prefix[-1] == exposure_record:
+                prefix = prefix[:-1]
+            expected = (*prefix, exposure_record)
+            require(current == prefix or current == expected,
+                    "EXPOSURE_REGISTRY_RECOVERY_CONFLICT")
+            incident = validate_exposure_append(exposure_record, prefix, b,
+                "EARLY_EXPOSURE_INCIDENT", truth, self._last_time)
+            validate_registry_chain(current, b, incident["created_at_utc"])
+            validate_registry_chain(expected, b, incident["created_at_utc"])
+        except Exception as caught:
+            error = caught if isinstance(caught, ContractError) else ContractError(
+                "EXPOSURE_INCIDENT", "MALFORMED_EXPOSURE_INPUT")
+            self._execution = "FAILED"
+            self.failure_stage = self.failure_stage or error.stage
+            self.reason_codes = tuple(sorted(set((*self.reason_codes, error.reason))))
+            raise error from None
+
+        # Pending evidence is never returned as confirmed exposure history.
         self._execution = "FAILED"
         self.failure_stage = "EXPOSURE_INCIDENT"
-        self.reason_codes = ("SEQUESTERED_TRUTH_EXPOSED_BEFORE_AUTHORIZATION",)
+        self.reason_codes = tuple(sorted(set((*self.reason_codes,
+            "SEQUESTERED_TRUTH_EXPOSED_BEFORE_AUTHORIZATION"))))
+        self._pending_exposure_incident = exposure_record
         try:
             if self._file_store is not None:
-                self._file_store.append_exposure(exposure_record)
-        except ContractError as error:
-            self.reason_codes = tuple(sorted((*self.reason_codes, error.reason)))
-            raise
-        finally:
-            self._registry += (exposure_record,)
-        raise ContractError(self.failure_stage, self.reason_codes[0])
+                self._file_store.append_exposure(exposure_record, benchmark=b, expected_prefix=prefix)
+                confirmed = self._file_store.registry_records()
+                require(confirmed == expected, "EXPOSURE_REGISTRY_POST_WRITE_MISMATCH")
+                validate_registry_chain(confirmed, b, incident["created_at_utc"])
+            else:
+                # Pure in-memory fixtures have no filesystem persistence claim.
+                confirmed = expected
+        except Exception as caught:
+            error = caught if isinstance(caught, ContractError) else ContractError(
+                "ARTIFACT_IO", "REGISTRY_APPEND_FAILED")
+            self.reason_codes = tuple(sorted(set((*self.reason_codes, error.reason))))
+            raise error from None
+        self._registry = confirmed
+        self._pending_exposure_incident = None
+        raise ContractError(self.failure_stage, "SEQUESTERED_TRUTH_EXPOSED_BEFORE_AUTHORIZATION")
 
     def _verify_unblinded(self, stamp):
         approval = self._authorized_originals()

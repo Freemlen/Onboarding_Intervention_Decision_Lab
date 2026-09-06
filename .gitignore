@@ -17,3 +17,7 @@ dist/
 # Preserve the user-supplied reviewed source archive outside repair commits.
 /Onboarding_Intervention_Decision_Lab_Slice1_19e5e2c.zip
 /Onboarding_Intervention_Decision_Lab_Slice1_19e5e2c.zip:Zone.Identifier
+
+# Preserve the supplied source archive for the targeted CP6 review.
+/Onboarding_Intervention_Decision_Lab_Slice1_ab7652a.zip
+/Onboarding_Intervention_Decision_Lab_Slice1_ab7652a.zip:Zone.Identifier

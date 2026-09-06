@@ -413,15 +413,21 @@ def test_externally_recorded_early_exposure_stops_before_freeze(completed_analys
 
 def test_early_exposure_remains_failed_if_registry_write_fails(archived):
     run=clone(archived)
+    prefix, state = run.exposure_records, run.lifecycle
+    raw = event(run,"EARLY_EXPOSURE_INCIDENT",stamp(8))
     class FailedStore:
-        def append_exposure(self,raw):
+        def registry_records(self):
+            return prefix
+        def append_exposure(self,raw,**kwargs):
             raise ContractError("ARTIFACT_IO","FABRICATED_WRITE_FAILURE")
     run._file_store=FailedStore()
     with pytest.raises(ContractError,match="FABRICATED_WRITE_FAILURE"):
-        run.report_early_exposure(event(run,"EARLY_EXPOSURE_INCIDENT",stamp(8)))
+        run.report_early_exposure(raw)
     assert run.run_execution_status=="FAILED"
     assert "SEQUESTERED_TRUTH_EXPOSED_BEFORE_AUTHORIZATION" in run.reason_codes
-    assert parse_record(run.exposure_records[-1])["payload"]["event_kind"]=="EARLY_EXPOSURE_INCIDENT"
+    assert run.lifecycle == state and run.exposure_records == prefix
+    assert run._pending_exposure_incident == raw
+    assert parse_record(run._pending_exposure_incident)["payload"]["event_kind"]=="EARLY_EXPOSURE_INCIDENT"
 
 def test_later_linked_run_append_preserves_original_authorization(completed_cp6):
     run=clone(completed_cp6)

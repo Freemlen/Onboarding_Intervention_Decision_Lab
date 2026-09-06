@@ -200,3 +200,9 @@ historical inspection remains separate.
 
 The supported environment is still .python-version plus requirements-dev.lock.
 No version attributes are overridden to run the regression suite.
+
+The [targeted CP6 exposure recovery repair](docs/cp6_exposure_recovery.md) separates
+pending incidents from durably confirmed history. Exact retries reconcile the
+registry after pre-write or uncertain post-write failures, without reviving the
+failed run. Its filesystem and fresh-process regressions run in the first complete
+suite batch above.
