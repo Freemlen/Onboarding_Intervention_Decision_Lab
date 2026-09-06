@@ -67,6 +67,8 @@ def _write_new(path, raw):
 
 def write_package(root, package, kind, run_id, profile):
     """Write payload first; recompute digest from disk before writing sidecars."""
+    from .environment import verify_execution_environment
+    verify_execution_environment()
     verify_package(package, kind, run_id, profile)
     root = Path(root).absolute()
     _ancestors(root)
@@ -93,6 +95,8 @@ def write_package(root, package, kind, run_id, profile):
 
 def write_record(path, raw):
     """Write one already-finalized existing run artifact; never replace a file."""
+    from .environment import verify_execution_environment
+    verify_execution_environment()
     parse_record(raw)
     path = Path(path).absolute()
     _write_new(path, raw)
@@ -121,7 +125,17 @@ def append_registry_record(directory, raw, previous_record_sha256):
         require(all(p.name == f"{i:06d}.json" for i, p in enumerate(entries)), "EXPOSURE_REGISTRY_MEMBERSHIP_MISMATCH")
         actual_previous = digest(_read_regular(entries[-1])) if entries else None
         require(actual_previous == previous_record_sha256, "EXPOSURE_CHAIN_MISMATCH", "ARTIFACT_IO")
-        return write_record(directory/f"{len(entries):06d}.json", raw)
+        # This persists supplied signed evidence, even after an environment
+        # failure. It does not create a new environment/serializer attestation.
+        target = directory/f"{len(entries):06d}.json"
+        _write_new(target, raw)
+        require(_read_regular(target) == raw, "POST_WRITE_BYTE_MISMATCH", "ARTIFACT_IO")
+        fd = os.open(directory, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        try:
+            os.fsync(fd)
+        finally:
+            os.close(fd)
+        return digest(raw)
     except OSError:
         raise ContractError("ARTIFACT_IO", "REGISTRY_APPEND_FAILED") from None
 
@@ -141,6 +155,8 @@ def new_run_directory(parent, run_id):
 
 
 def write_assignment_commitment(path, raw, expected_sha256):
+    from .environment import verify_execution_environment
+    verify_execution_environment()
     from oidl.domain.randomization import parse_assignment_commitment
     path = Path(path).absolute()
     require(path.name == "assignment_sequence_commitment.json", "SOLE_BARE_ASSIGNMENT_ARTIFACT_REQUIRED")

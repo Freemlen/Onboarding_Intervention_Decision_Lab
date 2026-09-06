@@ -4,7 +4,6 @@ from dataclasses import replace
 from pathlib import Path
 from hashlib import sha256
 
-import numpy as np
 import pytest
 
 from test_contracts import release_files, verified
@@ -15,9 +14,7 @@ from oidl.domain.artifacts import digest, parse_record, record_bytes, PROFILES
 from oidl.domain.contracts import ContractError, canonical_json, typed_equal
 from oidl.domain.governance import GATES, SLICE_PROFILE, lineage_id, exposure_snapshot
 from oidl.domain.provenance import authenticate_release
-from oidl.custody.packages import finalize_oracle_package, oracle_schema, LATENTS, verify_oracle_inventory
-from oidl.generation.post_streams import latent_rows
-from oidl.generation.journey import potential_pair
+from oidl.custody.packages import oracle_schema, verify_oracle_inventory
 
 RUN = "CP4_EXPLICIT_NON_SECRET_FIXTURE"
 COMMIT_TIME = "2000-01-01T00:00:00.000000Z"
@@ -29,11 +26,11 @@ FIXTURE_CODE_COMMIT = "1"*40
 
 
 def registry_record(run_id=RUN, kind="GENESIS_NO_PRIOR_ANALYST_EXPOSURE", previous=None,
-                    created_at_utc=COMMIT_TIME, record_id="EXPLICIT_GENESIS"):
+                    created_at_utc=COMMIT_TIME, record_id="EXPLICIT_GENESIS", configuration=CONFIGURATION):
     return record_bytes(run_id, created_at_utc, dict(
         record_id=record_id, previous_record_sha256=previous,
         exposure_lineage_id=lineage_id("OIDL-ONBOARDING-ASSIST-001", SEED_DIGEST),
-        event_kind=kind, configuration_id=CONFIGURATION, run_profile=SLICE_PROFILE,
+        event_kind=kind, configuration_id=configuration, run_profile=SLICE_PROFILE,
         truth_package_commitment_sha256=None,
         actor_id="fabricated-custodian", role="ORACLE_CUSTODIAN",
         disclosure_scope="Explicit unit-fixture attestation; no real analyst disclosure.",
@@ -56,12 +53,12 @@ def gates(verified, plan):
     return entries
 
 
-def new_run(verified, case, *, run_id=RUN, records=None, parent=None):
+def new_run(verified, case, *, run_id=RUN, records=None, parent=None, configuration=CONFIGURATION):
     return Checkpoint4Run(
         verified, contract_files={p.name:p.read_bytes() for p in (Path(__file__).resolve().parents[1]/"contracts").iterdir()},
         run_id=run_id, code_commit=FIXTURE_CODE_COMMIT, environment_lock_raw=ENVIRONMENT_BYTES,
         seed_commitment_sha256=SEED_DIGEST, assignment_raw=case[1].commitment_bytes,
-        configuration_id=CONFIGURATION, registry_records=records or (registry_record(),),
+        configuration_id=configuration, registry_records=records or (registry_record(configuration=configuration),),
         parent_run_id=parent)
 
 
@@ -73,69 +70,28 @@ def committed(verified, case, **kwargs):
 
 
 @pytest.fixture(scope="session")
-def oracle(tables, case, generated_inputs, verified):
-    # Retain explicit fixture generation inputs already accepted in CP3. No
-    # canonical seed, new random draw, fitting rule or estimator is introduced.
-    persons, _, _ = case
-    draws, fitted = generated_inputs
-    q = fitted._probabilities
-    friction = np.array([p.value("kyc_friction") for p in persons if p.value("eligible_at_t0")])
-    callback = np.where(friction == 1, .18, .08)
-    helped = .98*(q["reach"]*q["accept"] + (1-q["reach"])*.55*callback*.8)
-    exposed = .98*(q["reach"]*(1-q["accept"]) + (1-q["reach"])*.55*(1-callback*.8))
-    probabilities = []
-    for z in (0, 1):
-        e, h = exposed*(1. if z else .005), helped*(1. if z else .005)
-        b = q["bau"]
-        r0, r1 = q["resolution"][:, 0], q["resolution"][:, 1]
-        a = q["initiation"]
-        probabilities.append(q["settlement"]*((1-e-h)*((1-b)*r0*a[:, 0, 0]+b*r1*a[:, 0, 1])
-                             + e*((1-b)*r0*a[:, 1, 0]+b*r1*a[:, 1, 1])+h*r1*a[:, 1, 1]))
-    p0, p1 = probabilities
-    paths, truth = [], []
-    for index, person in enumerate(persons):
-        if not person.value("eligible_at_t0"):
-            continue
-        pair = potential_pair(person, draws, fitted, index)
-        row = fitted._row_for_index[index]
-        for z, path in enumerate(pair):
-            paths.append(dict(person_id=person.person_id, assignment_regime=z, **path))
-        y0, y1 = [p["outcome"]["first_successful_deposit_by_registration_168h"] for p in pair]
-        truth.append(dict(person_id=person.person_id, p_y0=float(p0[row]), p_y1=float(p1[row]),
-                          p_effect=float(p1[row]-p0[row]), y0=y0, y1=y1, realized_effect=y1-y0))
-    latent = latent_rows(draws)
-    components = dict(
-        generation_manifest=dict(
-            dgp_semantic_version="0.3.0", configuration_id=CONFIGURATION,
-            contract_hashes=verified.contract_members(), public_seed_id="EXPLICIT_NON_SECRET_CP4_FIXTURE",
-            seed_commitment_sha256=SEED_DIGEST, calibration_algorithm="DETERMINISTIC_BISECTION",
-            convergence_status="CONVERGED", final_coefficients={k:float(v) for k,v in fitted._coefficients.items()},
-            prng_algorithm="NumPy PCG64", environment_lock_sha256=digest(ENVIRONMENT_BYTES),
-            immutable_numerical_parameters={"parameter_card_utf8": (Path(__file__).resolve().parents[1] /
-                "contracts/DGP_Parameter_Sheet_v0.3.0.md").read_text()}),
-        oracle_screened_snapshot=tables.persons_and_t0_snapshot,
-        latent_traits=tuple(dict(person_id=p.person_id, **{k:float(v) for k,v in zip(LATENTS, latent[i])})
-                            for i,p in enumerate(persons)),
-        potential_paths=tuple(paths), individual_primary_truth=tuple(truth),
-        overall_primary_truth=(dict(probability_control_risk=float(p0.mean()), probability_treatment_risk=float(p1.mean()),
-            tau_probability=float((p1-p0).mean()),
-            tau_realized_schedule=sum(r["realized_effect"] for r in truth)/len(truth),
-            arithmetic_identity_inputs={"N": len(truth), "sum_realized_effect": sum(r["realized_effect"] for r in truth)}),),
-        subgroup_probability_calibration=tuple(dict(kyc_friction=f, N=int((friction==f).sum()),
-            mean_p_y0=float(p0[friction==f].mean()), mean_p_y1=float(p1[friction==f].mean()),
-            mean_p_effect=float((p1-p0)[friction==f].mean()),
-            target_residuals={"control":float(p0[friction==f].mean()-(.24 if f==0 else .1)),
-                "effect":float((p1-p0)[friction==f].mean()-(.004 if f==0 else .035))},
-            tolerance_checks={"absolute_tolerance":1e-10,"calibration_completed_by_CP3":True}) for f in (0,1)),
-        oracle_logical_schema=oracle_schema())
-    return finalize_oracle_package(components, SLICE_PROFILE, RUN, RELEASE_TIME)
+def oracle(tables, case, verified):
+    # Production builds both packages from one realization. The accepted CP3
+    # projection independently checks every analyst table byte.
+    from oidl.domain.analyst_package import table_bytes
+    run = committed(verified, case)
+    run.generate_packages(PUBLIC_FIXTURE_SEED, "EXPLICIT_NON_SECRET_CP4_FIXTURE", RELEASE_TIME)
+    for name in ("persons_and_t0_snapshot", "randomization", "observed_event_log", "primary_outcomes"):
+        assert run.analyst_package.files["payload/"+name+".tsv"] == table_bytes(name, getattr(tables,name))
+    assert run.lifecycle == "BENCHMARK_COMMITTED"
+    assert "analyst_leakage_scan.json" not in run.artifacts
+    return run._oracle
 
 
 @pytest.fixture(scope="session")
 def released(verified, case, tables, oracle, tmp_path_factory):
     from oidl.adapters.run_store import RunFileStore
+    from oidl.adapters.artifacts import append_registry_record
+    registry = tmp_path_factory.mktemp("CP4_EXPLICIT_REGISTRY")
+    append_registry_record(registry, registry_record(), None)
     store = RunFileStore(tmp_path_factory.mktemp("CP4_PUBLIC_FIXTURE"),
-                         tmp_path_factory.mktemp("CP4_SEPARATE_CUSTODY_FIXTURE"))
+                         tmp_path_factory.mktemp("CP4_SEPARATE_CUSTODY_FIXTURE"),
+                         registry_directory=registry)
     run = new_run(verified, case)
     run._file_store = store
     run.approve_spec(gates(verified, case[1]), COMMIT_TIME)

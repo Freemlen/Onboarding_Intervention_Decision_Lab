@@ -30,12 +30,13 @@ From the repository root:
 ```sh
 (cd contracts && sha256sum -c SHA256SUMS.txt)
 PYTHONPATH=src .venv/bin/python -m oidl spec validate --contracts contracts
-.venv/bin/python -m pytest -q --ignore=tests/test_checkpoint6.py --ignore=tests/test_primary_artifacts.py
+.venv/bin/python -m pytest -q --ignore=tests/test_checkpoint6.py --ignore=tests/test_primary_artifacts.py --ignore=tests/test_serious_breach_workflow.py
 .venv/bin/python -m pytest -q tests/test_primary_artifacts.py
 .venv/bin/python -m pytest -q tests/test_checkpoint6.py
+.venv/bin/python -m pytest -q tests/test_serious_breach_workflow.py
 ```
 
-The three non-overlapping pytest batches execute the complete suite while releasing
+The four non-overlapping pytest batches execute the complete suite while releasing
 the full-size session fixtures between processes. This keeps verification within
 the current WSL memory budget; no test is omitted.
 
@@ -186,3 +187,16 @@ custody and local workflow adapters enforce the access sequence. No canonical
 secret is requested, discovered, printed or included in artifacts. Actual human
 approvals, canonical execution and the contract's hidden NULL/ADVERSE runs remain
 custodian responsibilities after implementation acceptance.
+
+## Slice 1 acceptance repairs
+
+[Repair traceability and production entry point](docs/slice1_acceptance_repairs.md)
+documents the R1–R4 implementation repairs. Committed generation now constructs
+the complete oracle and analyst packages from the same retained realization.
+The serious-breach annotation is retained before projection. File-backed runs
+require an explicit durable exposure registry, including for reports after
+failure. New artifacts require the actual supported execution environment;
+historical inspection remains separate.
+
+The supported environment is still .python-version plus requirements-dev.lock.
+No version attributes are overridden to run the regression suite.

@@ -13,3 +13,7 @@ dist/
 # User-supplied release transport; only installed contracts are normative.
 /Onboarding_Intervention_Decision_Lab_Contracts_v0.2.6.zip
 /Onboarding_Intervention_Decision_Lab_Contracts_v0.2.6.zip:Zone.Identifier
+
+# Preserve the user-supplied reviewed source archive outside repair commits.
+/Onboarding_Intervention_Decision_Lab_Slice1_19e5e2c.zip
+/Onboarding_Intervention_Decision_Lab_Slice1_19e5e2c.zip:Zone.Identifier

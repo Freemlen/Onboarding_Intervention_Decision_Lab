@@ -74,6 +74,8 @@ def validation_records(release: VerifiedRelease, run_id: str, created_at_utc: st
 
 def write_validation_records(output: Path, records: dict) -> None:
     """Require a new output directory; never replace an existing validation record."""
+    from .environment import verify_execution_environment
+    verify_execution_environment()
     serialized = {name: canonical_json(value) + b"\n" for name, value in records.items()}
     try:
         output.mkdir()

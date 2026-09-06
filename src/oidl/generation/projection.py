@@ -20,6 +20,40 @@ from oidl.domain.observed import (
 )
 
 
+def retained_assignment_paths(persons, assignments, pairs, *, serious_breach=False):
+    """DGP §12.3: annotate the selected retained regime once, before projection."""
+    people = sorted(persons, key=lambda p: p.person_id)
+    assigned = {a.person_id:a for a in assignments}
+    if len(assigned) != len(assignments):
+        fail("DUPLICATE_ASSIGNMENT")
+    if set(assigned) != {p.person_id for p in people if p.value("eligible_at_t0")}:
+        fail("ASSIGNMENT_POPULATION_MISMATCH")
+    iterator, breach_added = iter(pairs), False
+    for p in people:
+        if p.person_id not in assigned:
+            continue
+        item = next(iterator, None)
+        if item is None or item[0] != p.person_id or len(item[1]) != 2:
+            fail("MISSING_OR_UNORDERED_POTENTIAL_PAIR")
+        pair = tuple(item[1])
+        a = assigned[p.person_id]
+        if serious_breach and not breach_added and a.assigned_onboarding_assistance == 1:
+            initial = next((i for i in pair[1]["interactions"]
+                            if i["interaction_kind"] == "INITIAL_CALL_ATTEMPT"), None)
+            if initial is not None:
+                selected = deepcopy(pair[1])
+                initial = next(i for i in selected["interactions"]
+                               if i["interaction_kind"] == "INITIAL_CALL_ATTEMPT")
+                initial["serious_breach_codes"] = ["DEPOSIT_OR_TRADING_PRESSURE"]
+                pair = (pair[0], selected)
+                breach_added = True
+        yield p.person_id, pair
+    if next(iterator, None) is not None:
+        fail("UNEXPECTED_POTENTIAL_PAIR")
+    if serious_breach and not breach_added:
+        fail("SERIOUS_FIXTURE_NO_INITIAL_ATTEMPT")
+
+
 def construct_tables(persons, assignments, pairs, *, serious_breach_fixture=False):
     """Consume explicit in-memory potential pairs in ascending eligible-person order.
 
@@ -33,8 +67,8 @@ def construct_tables(persons, assignments, pairs, *, serious_breach_fixture=Fals
     if set(assigned) != {p.person_id for p in people if p.value("eligible_at_t0")}:
         fail("ASSIGNMENT_POPULATION_MISMATCH")
     baseline, randomization, events, outcomes = [], [], [], []
-    iterator = iter(pairs)
-    breach_added = False
+    iterator = iter(retained_assignment_paths(people, assignments, pairs, serious_breach=True)
+                    if serious_breach_fixture else pairs)
     for p in people:
         baseline.append(dict(
             person_id=p.person_id, registration_ts=p.registration_ts, t0_ts=p.t0_ts,
@@ -50,15 +84,6 @@ def construct_tables(persons, assignments, pairs, *, serious_breach_fixture=Fals
             if item is None or item[0] != p.person_id or len(item[1]) != 2:
                 fail("MISSING_OR_UNORDERED_POTENTIAL_PAIR")
             path = item[1][a.assigned_onboarding_assistance]
-            if serious_breach_fixture and not breach_added and a.assigned_onboarding_assistance == 1:
-                initial = next((i for i in path["interactions"]
-                                if i["interaction_kind"] == "INITIAL_CALL_ATTEMPT"), None)
-                if initial is not None:
-                    path = deepcopy(path)
-                    initial = next(i for i in path["interactions"]
-                                   if i["interaction_kind"] == "INITIAL_CALL_ATTEMPT")
-                    initial["serious_breach_codes"] = ["DEPOSIT_OR_TRADING_PRESSURE"]
-                    breach_added = True
             validate_journey(p, a.assigned_onboarding_assistance, path)
             randomization.append(dict(
                 person_id=a.person_id, block_id=a.block_id,
@@ -71,8 +96,6 @@ def construct_tables(persons, assignments, pairs, *, serious_breach_fixture=Fals
         events.extend(identify_events(p.person_id, person_events))
     if next(iterator, None) is not None:
         fail("UNEXPECTED_POTENTIAL_PAIR")
-    if serious_breach_fixture and not breach_added:
-        fail("SERIOUS_FIXTURE_NO_INITIAL_ATTEMPT")
     return AnalystTables(tuple(baseline), tuple(randomization), tuple(events), tuple(outcomes))
 
 

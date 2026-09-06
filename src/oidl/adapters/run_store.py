@@ -14,7 +14,10 @@ from oidl.domain.artifacts import require, digest
 
 
 class RunFileStore:
-    def __init__(self, public_directory, custody_directory):
+    def __init__(self, public_directory, custody_directory, *, registry_directory=None):
+        from .exposure import ExposureRegistry
+        require(registry_directory is not None, "EXPLICIT_DURABLE_EXPOSURE_REGISTRY_REQUIRED", "ARTIFACT_IO")
+        self.exposure_registry = ExposureRegistry(registry_directory)
         self.public_directory = Path(public_directory).absolute()
         self.custody_directory = Path(custody_directory).absolute()
         for path in (self.public_directory, self.custody_directory):
@@ -52,3 +55,11 @@ class RunFileStore:
 
     def read_oracle(self, run_id, profile):
         return read_package(self.custody_directory / "oracle", "ORACLE", run_id, profile)
+
+    def registry_records(self):
+        require(self.exposure_registry is not None, "EXPLICIT_DURABLE_EXPOSURE_REGISTRY_REQUIRED", "ARTIFACT_IO")
+        return self.exposure_registry.records()
+
+    def append_exposure(self, raw, benchmark, expected_prefix):
+        require(self.exposure_registry is not None, "EXPLICIT_DURABLE_EXPOSURE_REGISTRY_REQUIRED", "ARTIFACT_IO")
+        return self.exposure_registry.append(raw, benchmark, expected_prefix)

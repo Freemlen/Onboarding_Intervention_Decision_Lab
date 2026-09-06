@@ -102,7 +102,7 @@ def test_run_store_writes_closed_packages_and_original_records(tmp_path):
     public, custody = tmp_path/"public", tmp_path/"custody"
     public.mkdir()
     custody.mkdir()
-    store = RunFileStore(public, custody)
+    store = RunFileStore(public, custody, registry_directory=tmp_path/"registry")
     r, a, o = specimens()
     actual_a, actual_o = store.store_packages(a, o, RUN, PROFILE)
     assert actual_a == a and actual_o == o
@@ -125,4 +125,4 @@ def test_run_store_requires_separate_custody_directory(tmp_path, relation):
     public, custody = ((tmp_path,tmp_path) if relation == "same" else
                         (tmp_path,child) if relation == "custody_inside_public" else (child,tmp_path))
     with pytest.raises(ContractError, match="SEPARATE_CUSTODY_DIRECTORY_REQUIRED"):
-        RunFileStore(public, custody)
+        RunFileStore(public, custody, registry_directory=tmp_path/"registry")

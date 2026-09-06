@@ -56,7 +56,10 @@ def validate_public_predecessors(contract_files, records, environment_lock_raw,
 
 
 def environment_description(environment_lock_raw):
-    """Pinned deterministic serializers; lock identity is original bytes."""
+    """Expected historical manifest schema, not a probe of this process.
+
+    Artifact production separately calls verify_execution_environment.
+    """
     from .analyst_package import FORMAT_ID
     return dict(
         environment_lock_sha256=digest(environment_lock_raw),

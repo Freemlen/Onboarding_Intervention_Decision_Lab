@@ -5,6 +5,7 @@ never labeled an authenticated/validated result. No replacement of CP4 bytes.
 """
 from dataclasses import replace
 from types import MappingProxyType
+from oidl.adapters.environment import verify_execution_environment
 
 from oidl.domain.artifacts import digest, parse_record, record_bytes, require
 from oidl.domain.contracts import ContractError, canonical_json
@@ -53,6 +54,7 @@ class Checkpoint5Analysis:
         try:
             require(self.lifecycle == "ANALYST_PACKAGE_RELEASED", "GOVERNANCE_STATE_SKIPPING_FORBIDDEN",
                     "PRIMARY_VALIDATION")
+            verify_execution_environment(self.inputs.environment_lock_raw)
             return action()
         except (ContractError, KeyError, TypeError, ValueError, IndexError, AttributeError) as caught:
             error = caught if isinstance(caught, ContractError) else ContractError(

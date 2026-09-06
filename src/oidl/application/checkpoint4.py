@@ -6,6 +6,7 @@ result freeze or unblinding.
 """
 from datetime import timedelta
 from types import MappingProxyType
+from oidl.adapters.environment import verify_execution_environment
 
 from oidl.adapters.release import validation_records
 from oidl.custody.packages import verify_oracle_inventory
@@ -16,12 +17,14 @@ from oidl.domain.artifacts import digest, parse_record, record_bytes, require, u
 from oidl.domain.contracts import ContractError, canonical_json, verify_release_bytes
 from oidl.domain.governance import (
     SLICE_PROFILE, benchmark_commitment, validate_gate_entries, verify_benchmark_current,
+    lineage_id, exposure_snapshot,
 )
 from oidl.domain.provenance import (
     create_local_scan, verify_local_scan, sign_release, authenticate_release, fail,
 )
 from oidl.domain.timing import EPOCH, LOCK_TS
-from oidl.domain.predecessors import validate_public_predecessors, environment_description
+from oidl.domain.predecessors import validate_public_predecessors
+from oidl.domain.unblind import validate_registry_chain, validate_exposure_append
 from oidl.domain.design_artifacts import design_records
 
 
@@ -53,9 +56,13 @@ class Checkpoint4Run:
         self._benchmark_hash = None
         self._analyst = None
         self._oracle = None
+        self._oracle_commitment_sha256 = None
         self._scan_hash = None
         self._release_hash = None
         self._exposure_incidents = ()
+        self._pending_exposure_incident = None
+        self._committed_benchmark_raw = None
+        self._last_valid_time = None
 
     @property
     def artifacts(self):
@@ -80,8 +87,11 @@ class Checkpoint4Run:
         require(self.run_execution_status != "FAILED", "FAILED_RUN_CANNOT_RESUME")
         try:
             require(self.lifecycle == state, "GOVERNANCE_STATE_SKIPPING_FORBIDDEN")
-            return action()
-        except (ContractError, KeyError, TypeError, ValueError, IndexError, AttributeError) as caught:
+            verify_execution_environment(self._options["environment_lock_raw"])
+            result = action()
+            self._last_valid_time = self._last_time
+            return result
+        except Exception as caught:
             error = caught if isinstance(caught, ContractError) else ContractError(
                 "CHECKPOINT4_VALIDATION", "MALFORMED_WORKFLOW_INPUT")
             self.run_execution_status = "FAILED"
@@ -122,8 +132,9 @@ class Checkpoint4Run:
                                                          {"code_commit": self._options["code_commit"]}))
             self._store("environment_manifest.json", record_bytes(
                 self._options["run_id"], created_at_utc,
-                environment_description(self._options["environment_lock_raw"])))
+                verify_execution_environment(self._options["environment_lock_raw"])))
             self.lifecycle = "BENCHMARK_COMMITTED"
+            self._committed_benchmark_raw = raw
         return self._operation("SPEC_APPROVED", action)
 
     def _benchmark(self):
@@ -136,6 +147,16 @@ class Checkpoint4Run:
             self._contract_files, self._records, self._options["environment_lock_raw"],
             self._options["registry_records"], self._benchmark_hash)
         require(release == self.release, "VERIFIED_RELEASE_ORIGINAL_BYTES_MISMATCH")
+        if self._file_store is not None and self._file_store.exposure_registry is not None:
+            current = self._file_store.registry_records()
+            require(current[:len(self.exposure_records)] == self.exposure_records,
+                    "EXPOSURE_REGISTRY_PREFIX_MUTATION")
+            validate_registry_chain(current, b, self._last_time)
+            live = parse_record(exposure_snapshot(current,
+                self.release.research_spec["specification"]["study_id"], b["seed_commitment_sha256"],
+                b["run_id"], b["parent_run_id"], self._last_time))["payload"]
+            require(all(live[k] == b[k] for k in ("analysis_exposure_class", "exposure_lineage_id",
+                "prior_exposure_record_hashes", "parent_run_id")), "UNAUTHORIZED_INTERVENING_EXPOSURE")
         return b
 
     def _refresh_packages(self, b, stage, *, custody):
@@ -177,6 +198,28 @@ class Checkpoint4Run:
             verify_oracle_inventory(oracle_package, b["run_id"], b["run_profile"], b)
             self._analyst = finalize_analyst_package(tables, b["run_profile"], b["run_id"], created_at_utc)
             self._oracle = oracle_package
+            self._oracle_commitment_sha256 = parse_record(oracle_package.files[
+                "oracle_package_manifest.json"])["payload"]["package_content_sha256"]
+            if self._file_store is not None:
+                self._analyst, self._oracle = self._file_store.store_packages(
+                    self._analyst, self._oracle, b["run_id"], b["run_profile"])
+        return self._operation("BENCHMARK_COMMITTED", action)
+
+    def generate_packages(self, seed_text, public_seed_id, created_at_utc):
+        """Authorized production entry: Oracle §§1.2, 2.6, 3.1; DGP §§2–18."""
+        self._last_time = created_at_utc
+        def action():
+            b = self._benchmark()
+            require(self._analyst is None and self._oracle is None, "FINALIZED_PACKAGES_CANNOT_BE_REPLACED")
+            from oidl.custody.generation import generate_committed_slice1
+            generated = generate_committed_slice1(
+                contract_files=self._contract_files, records=self._records,
+                environment_lock_raw=self._options["environment_lock_raw"],
+                registry_records=self._options["registry_records"], benchmark_hash=self._benchmark_hash,
+                seed_text=seed_text, public_seed_id=public_seed_id, created_at_utc=created_at_utc)
+            self._analyst, self._oracle = generated.analyst, generated.oracle
+            self._oracle_commitment_sha256 = parse_record(self._oracle.files[
+                "oracle_package_manifest.json"])["payload"]["package_content_sha256"]
             if self._file_store is not None:
                 self._analyst, self._oracle = self._file_store.store_packages(
                     self._analyst, self._oracle, b["run_id"], b["run_profile"])
@@ -232,23 +275,59 @@ class Checkpoint4Run:
         return self._operation("BENCHMARK_COMMITTED", action)
 
     def report_early_exposure(self, signed_record):
-        """Accept a supplied custodian incident; never invent an attestation."""
-        incident = parse_record(signed_record)
-        self._last_time = incident["created_at_utc"]
-        def action():
-            b = self._benchmark()
-            p = incident["payload"]
-            require(incident["run_id"] == b["run_id"] and
-                    p["event_kind"] == "EARLY_EXPOSURE_INCIDENT" and
-                    p["exposure_lineage_id"] == b["exposure_lineage_id"] and
-                    p["previous_record_sha256"] == digest(self.exposure_records[-1]),
-                    "EXPOSURE_INCIDENT_BINDING_MISMATCH")
-            require(p["role"] == "ORACLE_CUSTODIAN" and p["actor_id"] and p["reason"] and p["disclosure_scope"],
-                    "EXPOSURE_CUSTODIAN_ATTESTATION_REQUIRED")
-            require(utc(incident["created_at_utc"]) >= utc(b["created_at_utc"]), "EXPOSURE_TIME_ORDER")
-            self._exposure_incidents += (signed_record,)
-            raise ContractError("EARLY_EXPOSURE_INCIDENT", "SEQUESTERED_TRUTH_EXPOSED_BEFORE_AUTHORIZATION")
-        return self._operation(self.lifecycle, action)
+        """Persist a supplied incident even after failure; never resume the run."""
+        try:
+            require(self._pending_exposure_incident is None or self._pending_exposure_incident == signed_record,
+                    "PENDING_EXPOSURE_PERSISTENCE_REQUIRED")
+            incident = parse_record(signed_record)
+            current = (self._file_store.registry_records() if self._file_store is not None
+                       else self.exposure_records)
+            require(current[:len(self.exposure_records)] == self.exposure_records,
+                    "EXPOSURE_REGISTRY_PREFIX_MUTATION")
+            if self._committed_benchmark_raw is not None:
+                b = verify_benchmark_current(self._committed_benchmark_raw, self._benchmark_hash,
+                                            self.release, self._options["assignment_raw"])
+            else:
+                # Pre-commit reporting binds the explicit configured run/lineage;
+                # this internal context is not a fabricated benchmark artifact.
+                b = dict(run_id=self._options["run_id"], run_profile=self._options["run_profile"],
+                    configuration_id=self._options["configuration_id"],
+                    seed_commitment_sha256=self._options["seed_commitment_sha256"],
+                    exposure_lineage_id=lineage_id(self.release.research_spec["specification"]["study_id"],
+                                                  self._options["seed_commitment_sha256"]))
+            stamp = incident["created_at_utc"]
+            validate_registry_chain(current, b, stamp)
+            # An uncertain write may already have committed these exact bytes.
+            if self._pending_exposure_incident == signed_record and current == (*self.exposure_records, signed_record):
+                current = current[:-1]
+            truth = self._oracle_commitment_sha256
+            after = self._last_valid_time or parse_record(current[-1])["created_at_utc"]
+            validate_exposure_append(signed_record, current, b, "EARLY_EXPOSURE_INCIDENT", truth, after)
+            validate_registry_chain((*current, signed_record), b, stamp)
+        except Exception as caught:
+            error = caught if isinstance(caught, ContractError) else ContractError(
+                "EARLY_EXPOSURE_INCIDENT", "MALFORMED_EXPOSURE_INPUT")
+            self.run_execution_status = "FAILED"
+            self.failure_stage = self.failure_stage or error.stage
+            self.reason_codes = tuple(sorted(set((*self.reason_codes, error.reason))))
+            raise error from None
+        # Record failure before I/O; persistence failure cannot revive the run.
+        self.run_execution_status = "FAILED"
+        self.failure_stage = "EARLY_EXPOSURE_INCIDENT"
+        self.reason_codes = tuple(sorted(set((*self.reason_codes,
+            "SEQUESTERED_TRUTH_EXPOSED_BEFORE_AUTHORIZATION"))))
+        self._pending_exposure_incident = signed_record
+        try:
+            if self._file_store is not None:
+                self._file_store.append_exposure(signed_record, b, self.exposure_records)
+        except Exception as caught:
+            error = caught if isinstance(caught, ContractError) else ContractError(
+                "ARTIFACT_IO", "REGISTRY_APPEND_FAILED")
+            self.reason_codes = tuple(sorted(set((*self.reason_codes, error.reason))))
+            raise error from None
+        self._exposure_incidents = tuple(current[len(self._options["registry_records"]):])+(signed_record,)
+        self._pending_exposure_incident = None
+        raise ContractError(self.failure_stage, "SEQUESTERED_TRUTH_EXPOSED_BEFORE_AUTHORIZATION")
 
     def audit(self, created_at_utc):
         """Oracle §2.4.1 / SAP §4.3: released data, original bytes, exact 45 rows."""

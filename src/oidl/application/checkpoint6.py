@@ -4,6 +4,7 @@ The analyst freeze receives public inputs only. Custody/evaluator imports and
 truth access occur at their respective gates, never in the analyst domain.
 """
 from types import MappingProxyType
+from oidl.adapters.environment import verify_execution_environment
 
 from oidl.domain.artifacts import digest, parse_json, parse_record, record_bytes, require, utc
 from oidl.domain.contracts import ContractError, canonical_json, validate_research_hash_placement
@@ -89,6 +90,7 @@ class Checkpoint6Run:
         require(self._execution != "FAILED", "FAILED_RUN_CANNOT_RESUME", "CP6_WORKFLOW")
         try:
             require(self._state == state, "GOVERNANCE_STATE_SKIPPING_FORBIDDEN", "CP6_WORKFLOW")
+            verify_execution_environment(self._inputs.environment_lock_raw)
             require(utc(stamp) >= utc(self._last_time), "WORKFLOW_TIME_ORDER", "CP6_WORKFLOW")
             self._integrity(stamp)
             result = action()
