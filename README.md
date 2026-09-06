@@ -137,12 +137,26 @@ records. Tests supply only fabricated non-secret fixtures and approvals.
 
 Accepted Checkpoints 1–3 generation and event semantics remain unchanged.
 The workflow stops at ANALYST_PACKAGE_RELEASED with design diagnostics; it does
-not enter ANALYSIS_COMPLETE or freeze statistical results. Gate D before primary
-analysis, ITT/Neyman/CI/p-values, descriptive fidelity reporting, analysis freeze,
-archive/unblind gates and oracle comparison remain for later checkpoints.
+not enter ANALYSIS_COMPLETE or freeze statistical results. The Checkpoint 5 capability below adds Gate D, primary inference and descriptive
+fidelity reporting. Analysis freeze, archive/unblind gates and oracle comparison
+remain for later checkpoints.
 
 The complete Slice 1 acceptance remains defined by its frozen Definition of Done.
 No canonical or hidden-seed run is generated or released by these checkpoints.
 No HTE, economics, policy selection, guardrail decisions, ML/AI/agents or reporting
 UI is implemented. Checkpoint 4 component verification does not claim full Slice 1
 acceptance.
+
+## Checkpoint 5 primary analysis
+
+Checkpoint 5 adds the frozen assignment-level blocked ITT calculation, exact
+rational count aggregation, Neyman variance, normal confidence interval and
+p-value, including every exact-zero branch. It emits the required descriptive
+analyst diagnostics and primary JSON/Markdown only from authenticated public
+inputs with explicit Gate D approval. The workflow stops at ANALYSIS_COMPLETE;
+statistical freeze and oracle access remain deferred.
+
+See [Checkpoint 5 clause traceability, API and verification](docs/checkpoint_5.md).
+The CP4 workflow remains available unchanged; its validator can also return the
+freshly reconciled observed inputs for immediate analyst reuse without skipping
+any validation. No canonical hidden-seed run is generated.

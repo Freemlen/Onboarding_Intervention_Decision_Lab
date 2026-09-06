@@ -59,7 +59,7 @@ def _common(release, b, hashes):
     return deterministic, provenance
 
 
-def _results(analyst, release, b, hashes, records, created_at_utc):
+def _results(analyst, release, b, hashes, records, created_at_utc, *, return_inputs=False):
     tables = load_analyst_package(analyst, b["run_id"], b["run_profile"])
     people, assignments = observed_inputs(tables, canonical_counts=True)
     counts = audit_randomization(people, assignments, records["assignment_sequence_commitment.json"],
@@ -94,7 +94,7 @@ def _results(analyst, release, b, hashes, records, created_at_utc):
         validate_research_hash_placement(parse_record(raw), "RESULT_WITH_DETERMINISTIC_RESULT",
                                          release.research_spec_hash)
         result[name] = raw
-    return result
+    return (result, tables, people, assignments) if return_inputs else result
 
 
 @validation_boundary("DATA_DESIGN_VALIDATION", "MALFORMED_DESIGN_INPUT")
@@ -108,8 +108,13 @@ def design_records(analyst, contract_files, records, environment_lock_raw,
 
 @validation_boundary("DATA_DESIGN_VALIDATION", "MALFORMED_DESIGN_ARTIFACT")
 def validate_design_records(candidate, analyst, contract_files, records, environment_lock_raw,
-                            registry_records, benchmark_hash):
-    """Re-authenticate originals, then recompute the full typed diagnostic result."""
+                            registry_records, benchmark_hash, *, return_inputs=False):
+    """Re-authenticate originals, then recompute the full typed diagnostic result.
+
+    A following analyst calculation may reuse the freshly reconciled observed
+    tables returned by this same validation; no validation step is skipped or
+    cached. The existing default return remains True.
+    """
     require(type(candidate) is dict and set(candidate) == set(RESULT_NAMES), "EXACT_DESIGN_ARTIFACTS_REQUIRED")
     actual = {name: parse_record(candidate[name]) for name in RESULT_NAMES}
     created_at = actual["randomization_audit.json"]["created_at_utc"]
@@ -131,10 +136,11 @@ def validate_design_records(candidate, analyst, contract_files, records, environ
     balance = actual["randomization_audit.json"]["payload"]["deterministic_result"]["balance_diagnostics"]
     projection = actual["baseline_balance.json"]["payload"]["deterministic_result"]["balance_diagnostics"]
     require(typed_equal(balance, projection), "BALANCE_PROJECTION_MISMATCH", "DATA_DESIGN_VALIDATION")
-    expected = _results(analyst, release, b, hashes, records, created_at)
+    expected, tables, people, assignments = _results(
+        analyst, release, b, hashes, records, created_at, return_inputs=True)
     require(all(typed_equal(actual[name], parse_record(expected[name])) for name in RESULT_NAMES),
             "DESIGN_RECOMPUTATION_MISMATCH")
-    return True
+    return (tables, people, assignments) if return_inputs else True
 
 
 def deterministic_result_digest(raw):
