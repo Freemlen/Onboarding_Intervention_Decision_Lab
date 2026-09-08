@@ -96,9 +96,10 @@ def test_bootstrap_has_no_handoff_or_verdict(store):
 @pytest.mark.parametrize("kind", list(p.SCHEMAS))
 def test_exported_schemas_are_closed_and_versioned(kind):
     schema = p.SCHEMAS[kind]
-    assert schema["additionalProperties"] is False
-    assert set(schema["required"]) == set(schema["properties"])
-    assert schema["properties"]["protocol_version"]["const"] == "0.1"
+    for shape in schema.get("anyOf", [schema]):
+        assert shape["additionalProperties"] is False
+        assert set(shape["required"]) == set(shape["properties"])
+        assert shape["properties"]["protocol_version"]["const"] == "0.1"
 
 
 @pytest.mark.parametrize("raw", [
@@ -643,3 +644,351 @@ def test_cli_explicit_invalid_verdict_returns_human_state_without_parse_error(st
     assert result["phase"] == "HUMAN_GATE"
     assert Store(store.directory).validate() == result
     assert p.parse((store.directory / "ledger.jsonl").read_bytes().splitlines()[-1])["reason"] == "NONE"
+
+
+# Human resolution fixtures remain entirely fabricated and use isolated stores.
+def authorization(handoff_id=HANDOFF):
+    return {"handoff_id": handoff_id, "authorized": True}
+
+
+def gated_transport(store, request_body, reason="TRANSPORT_UNCONFIRMED"):
+    store.act("CREATE_HANDOFF", HEAD, request=request_body)
+    return store.act("HUMAN_GATE", HEAD, reason=reason)
+
+
+def stored_bytes(store):
+    return {path.relative_to(store.directory): path.read_bytes()
+            for path in store.directory.rglob("*")
+            if path.is_file() and path.name != ".lock"}
+
+
+def resolve(store, action="RESUME_TRANSPORT", head=HEAD, reason="TRANSPORT_UNCONFIRMED"):
+    return store.act(action, head, reason=reason, human_authorization=authorization())
+
+
+def test_human_resume_preserves_request_and_records_only_authorized_transport(store, request_body):
+    gated = gated_transport(store, request_body)
+    request = store.handoff_path(HANDOFF, "request").read_bytes()
+    ledger = (store.directory / "ledger.jsonl").read_bytes()
+    result = resolve(store)
+    assert result == dict(gated, phase="COMPUTER_USE", next_actor="COMPUTER_USE",
+                          human_intervention_required=False, revision=gated["revision"] + 1)
+    assert store.handoff_path(HANDOFF, "request").read_bytes() == request
+    assert result["active_handoff"]["request_sha256"] == p.digest(request)
+    assert not store.handoff_path(HANDOFF, "response").exists()
+    updated = (store.directory / "ledger.jsonl").read_bytes()
+    assert updated.startswith(ledger)
+    event = p.parse(updated[len(ledger):])
+    assert event["action"] == "RESUME_TRANSPORT"
+    assert event["human_authorization"] == authorization()
+    assert event["reason"] == "TRANSPORT_UNCONFIRMED"
+    assert event["request_sha256"] is event["response_sha256"] is event["classification"] is None
+    assert Store(store.directory).validate() == result
+    assert Store(store.directory).recover() == result
+    assert (store.directory / "ledger.jsonl").read_bytes() == updated
+    with pytest.raises(p.ProtocolError, match="ILLEGAL_TRANSITION"):
+        store.act("REVIEW_RESPONSE", HEAD, response_raw=p.canonical(response()))
+    store.act("DELIVERED", HEAD)
+    assert store.act("REVIEW_RESPONSE", HEAD,
+                     response_raw=p.canonical(response()))["last_external_verdict"]["classification"] == "GO"
+
+
+@pytest.mark.parametrize("reason", ["OPERATOR_REQUEST", "RESPONSE_MISSING"])
+def test_resume_rejects_nonrecoverable_gate_without_mutation(store, request_body, reason):
+    gated_transport(store, request_body, reason)
+    before = stored_bytes(store)
+    with pytest.raises(p.ProtocolError, match="NON_RECOVERABLE_GATE"):
+        resolve(store)
+    assert stored_bytes(store) == before
+
+
+@pytest.mark.parametrize("action,reason", [
+    ("RESUME_TRANSPORT", "TRANSPORT_UNCONFIRMED"),
+    ("ABANDON_HANDOFF", "OPERATOR_ABANDONED"),
+])
+@pytest.mark.parametrize("auth,error", [
+    (None, "HUMAN_AUTHORIZATION_REQUIRED"),
+    ({}, "SCHEMA_INVALID"),
+    ({"handoff_id": HANDOFF, "authorized": False}, "SCHEMA_INVALID"),
+    ({"handoff_id": HANDOFF, "authorized": 1}, "SCHEMA_INVALID"),
+    ({"handoff_id": HANDOFF, "authorized": "true"}, "SCHEMA_INVALID"),
+    (dict(authorization(), extra="bypass"), "SCHEMA_INVALID"),
+    (authorization("00000000-0000-4000-8000-000000000099"), "WRONG_HANDOFF"),
+])
+def test_resolution_requires_exact_bound_authorization(store, request_body, action, reason, auth, error):
+    gated_transport(store, request_body)
+    before = stored_bytes(store)
+    with pytest.raises(p.ProtocolError, match=error):
+        store.act(action, HEAD, reason=reason, human_authorization=auth)
+    assert stored_bytes(store) == before
+
+
+def test_resume_rejects_stale_head_without_mutation(store, request_body):
+    gated_transport(store, request_body)
+    before = stored_bytes(store)
+    with pytest.raises(p.ProtocolError, match="STALE_HEAD"):
+        resolve(store, head=OTHER_HEAD)
+    assert stored_bytes(store) == before
+
+
+def test_resume_rejects_confirmed_delivery_even_with_transport_gate_reason(store, request_body):
+    pending(store, request_body)
+    store.act("HUMAN_GATE", HEAD, reason="TRANSPORT_UNCONFIRMED")
+    before = stored_bytes(store)
+    with pytest.raises(p.ProtocolError, match="DELIVERY_ALREADY_CONFIRMED"):
+        resolve(store)
+    assert stored_bytes(store) == before
+
+
+@pytest.mark.parametrize("wire", [
+    p.canonical(response("HUMAN_REQUIRED")), p.canonical(response("INVALID_RESPONSE")), b"invalid",
+])
+def test_resume_rejects_every_durably_recorded_response(store, request_body, wire):
+    pending(store, request_body)
+    store.act("REVIEW_RESPONSE", HEAD, response_raw=wire)
+    before = stored_bytes(store)
+    with pytest.raises(p.ProtocolError, match="RESPONSE_ALREADY_RECORDED"):
+        resolve(store)
+    assert stored_bytes(store) == before
+
+
+@pytest.mark.parametrize("damage,error", [
+    ("hash", "REQUEST_HASH_MISMATCH"), ("missing", None), ("orphan_response", "RESPONSE_ARTIFACT_PRESENT"),
+])
+def test_resume_authenticates_request_and_refuses_orphan_response(store, request_body, damage, error):
+    gated_transport(store, request_body)
+    path = store.handoff_path(HANDOFF, "request")
+    if damage == "hash":
+        body = p.parse(path.read_bytes())
+        body["review_question"] = "Altered fabricated question."
+        path.write_bytes(p.canonical(body))
+    elif damage == "missing":
+        path.unlink()
+    else:
+        store.handoff_path(HANDOFF, "response").write_bytes(p.canonical(response()))
+    before = stored_bytes(store)
+    with pytest.raises((p.ProtocolError, OSError), match=error):
+        resolve(store)
+    assert stored_bytes(store) == before
+
+
+@pytest.mark.parametrize("limit", [1, 2, 3])
+def test_transport_attempt_bound_is_configured_and_survives_restart(tmp_path, configs, request_body, limit):
+    project, policy = configs
+    policy["max_review_cycles"] = limit
+    for name, value in (("project", project), ("policy", policy)):
+        (tmp_path / (name + ".json")).write_bytes(p.canonical(value))
+    store = Store(tmp_path)
+    store.bootstrap(HEAD)
+    gated_transport(store, request_body)
+    for _ in range(limit - 1):
+        assert resolve(Store(tmp_path))["review_cycle_count"] == 1
+        store.act("HUMAN_GATE", HEAD, reason="TRANSPORT_UNCONFIRMED")
+    before = stored_bytes(store)
+    with pytest.raises(p.ProtocolError, match="TRANSPORT_ATTEMPT_LIMIT"):
+        resolve(Store(tmp_path))
+    assert stored_bytes(store) == before
+
+
+@pytest.mark.parametrize("head", [HEAD, OTHER_HEAD])
+@pytest.mark.parametrize("reason", p.ABANDON_REASONS)
+def test_abandon_retires_gated_handoff_without_review_or_evidence_loss(store, request_body, head, reason):
+    gated = gated_transport(store, request_body)
+    evidence = stored_bytes(store)
+    result = resolve(store, "ABANDON_HANDOFF", head, reason)
+    assert result == dict(gated, phase="REPO_WORK", active_handoff=None,
+                          next_actor="REPOSITORY_AGENT", human_intervention_required=False,
+                          revision=gated["revision"] + 1)
+    after = stored_bytes(store)
+    for path, raw in evidence.items():
+        if path.as_posix() not in ("state.json", "ledger.jsonl"):
+            assert after[path] == raw
+    ledger = store.directory / "ledger.jsonl"
+    assert ledger.read_bytes().startswith(evidence[Path("ledger.jsonl")])
+    event = p.parse(ledger.read_bytes().splitlines()[-1])
+    assert event["action"] == "ABANDON_HANDOFF" and event["reason"] == reason
+    assert event["human_authorization"] == authorization()
+    assert event["observed_head"] == head
+    assert event["classification"] is event["response_sha256"] is None
+    assert Store(store.directory).validate() == result
+    assert Store(store.directory).recover() == result
+    with pytest.raises(p.ProtocolError, match="GO_REQUIRED"):
+        store.act("COMPLETE", head)
+    with pytest.raises(p.ProtocolError, match="ILLEGAL_TRANSITION"):
+        store.act("REVIEW_RESPONSE", head, response_raw=p.canonical(response()))
+
+
+@pytest.mark.parametrize("verdict", ["HUMAN_REQUIRED", "INVALID_RESPONSE", "NO_GO"])
+def test_abandon_preserves_review_evidence_and_budget_after_verdict_gate(store, request_body, verdict):
+    # NO_GO becomes gated only on the configured final cycle.
+    cycles = store.policy["max_review_cycles"] if verdict == "NO_GO" else 1
+    for cycle in range(1, cycles + 1):
+        request_body["handoff_id"] = f"00000000-0000-4000-8000-{cycle:012d}"
+        pending(store, request_body)
+        result = store.act("REVIEW_RESPONSE", HEAD, response_raw=p.canonical(
+            response(verdict, request_body["handoff_id"])))
+    assert result["phase"] == "HUMAN_GATE"
+    old_ledger = (store.directory / "ledger.jsonl").read_bytes()
+    old_response = store.handoff_path(request_body["handoff_id"], "response").read_bytes()
+    result = store.act("ABANDON_HANDOFF", OTHER_HEAD, reason="STALE_HANDOFF",
+                       human_authorization=authorization(request_body["handoff_id"]))
+    assert result["last_external_verdict"] is None and result["review_cycle_count"] == cycles
+    assert result["phase"] == "REPO_WORK"
+    assert (store.directory / "ledger.jsonl").read_bytes().startswith(old_ledger)
+    assert store.handoff_path(request_body["handoff_id"], "response").read_bytes() == old_response
+    assert Store(store.directory).validate() == result
+    if cycles == store.policy["max_review_cycles"]:
+        assert store.act("CREATE_HANDOFF", OTHER_HEAD, request=request_body)["phase"] == "HUMAN_GATE"
+
+
+def test_abandon_cannot_reuse_an_earlier_go_to_complete_or_accept_old_response(store, request_body):
+    pending(store, request_body)
+    store.act("REVIEW_RESPONSE", HEAD, response_raw=p.canonical(response()))
+    second_id = "00000000-0000-4000-8000-000000000002"
+    request_body["handoff_id"] = second_id
+    gated_transport(store, request_body)
+    result = store.act("ABANDON_HANDOFF", HEAD, reason="OPERATOR_ABANDONED",
+                       human_authorization=authorization(second_id))
+    assert result["last_external_verdict"] is None
+    with pytest.raises(p.ProtocolError, match="GO_REQUIRED"):
+        store.act("COMPLETE", HEAD)
+    before = stored_bytes(store)
+    with pytest.raises(p.ProtocolError, match="DUPLICATE_HANDOFF"):
+        store.act("CREATE_HANDOFF", HEAD, request=request_body)
+    assert stored_bytes(store) == before
+    request_body["handoff_id"] = "00000000-0000-4000-8000-000000000003"
+    pending(store, request_body)
+    result = store.act("REVIEW_RESPONSE", HEAD, response_raw=p.canonical(response(handoff_id=second_id)))
+    assert result["phase"] == "HUMAN_GATE"
+    assert result["last_external_verdict"]["classification"] == "INVALID_RESPONSE"
+    assert p.parse((store.directory / "ledger.jsonl").read_bytes().splitlines()[-1])["reason"] == "WRONG_HANDOFF"
+
+
+@pytest.mark.parametrize("action", p.HUMAN_ACTIONS)
+def test_resolution_requires_gated_active_handoff(store, request_body, action):
+    reason = "TRANSPORT_UNCONFIRMED" if action == "RESUME_TRANSPORT" else "OPERATOR_ABANDONED"
+    with pytest.raises(p.ProtocolError, match="ILLEGAL_TRANSITION"):
+        resolve(store, action, reason=reason)
+    store.act("HUMAN_GATE", HEAD, reason="OPERATOR_REQUEST")
+    before = stored_bytes(store)
+    with pytest.raises(p.ProtocolError, match="PENDING_HANDOFF_REQUIRED"):
+        resolve(store, action, reason=reason)
+    assert stored_bytes(store) == before
+
+
+@pytest.mark.parametrize("action,reason", [
+    ("RESUME_TRANSPORT", "STALE_HANDOFF"), ("ABANDON_HANDOFF", "TRANSPORT_UNCONFIRMED"),
+    ("ABANDON_HANDOFF", "arbitrary reason"), ("ABANDON_HANDOFF", "x" * 1025),
+    ("FORCE_GO", "NONE"), ("COMPLETE", "NONE"), ("REPO_WORK", "NONE"),
+])
+def test_malformed_human_actions_do_not_bypass_gate(store, request_body, action, reason):
+    gated_transport(store, request_body)
+    before = stored_bytes(store)
+    with pytest.raises(p.ProtocolError):
+        resolve(store, action, reason=reason)
+    assert stored_bytes(store) == before
+
+
+@pytest.mark.parametrize("action", ["CREATE_HANDOFF", "DELIVERED", "REVIEW_RESPONSE", "COMPLETE", "HUMAN_GATE"])
+def test_automatic_gate_exit_remains_prohibited(store, request_body, action):
+    gated = gated_transport(store, request_body)
+    before = stored_bytes(store)
+    assert Store(store.directory).validate() == gated
+    assert Store(store.directory).recover() == gated
+    with pytest.raises(p.ProtocolError):
+        store.act(action, HEAD, request=request_body, response_raw=p.canonical(response()))
+    assert stored_bytes(store) == before
+
+
+@pytest.mark.parametrize("action,reason", [
+    ("RESUME_TRANSPORT", "TRANSPORT_UNCONFIRMED"), ("ABANDON_HANDOFF", "STALE_HANDOFF"),
+])
+def test_human_commit_snapshot_failure_replays_exactly_once(store, request_body, monkeypatch, action, reason):
+    gated = gated_transport(store, request_body)
+    with monkeypatch.context() as patch:
+        patch.setattr(store, "_snapshot", lambda _: (_ for _ in ()).throw(OSError("fixture failure")))
+        with pytest.raises(OSError):
+            resolve(store, action, reason=reason)
+    ledger = (store.directory / "ledger.jsonl").read_bytes()
+    fresh = Store(store.directory)
+    with pytest.raises(p.ProtocolError, match="SNAPSHOT_RECOVERY_REQUIRED"):
+        fresh.validate()
+    result = fresh.recover()
+    assert result["revision"] == gated["revision"] + 1
+    assert result["phase"] == ("COMPUTER_USE" if action == "RESUME_TRANSPORT" else "REPO_WORK")
+    with pytest.raises(p.ProtocolError, match="ILLEGAL_TRANSITION"):
+        resolve(fresh, action, reason=reason)
+    assert (store.directory / "ledger.jsonl").read_bytes() == ledger
+
+
+@pytest.mark.parametrize("damage", ["missing_authorization", "false_authorization", "wrong_handoff", "wrong_reason"])
+def test_rehashed_invalid_human_event_fails_semantic_replay(store, request_body, damage):
+    gated_transport(store, request_body)
+    resolve(store)
+    path = store.directory / "ledger.jsonl"
+    events = [p.parse(line) for line in path.read_bytes().splitlines()]
+    event = events[-1]
+    if damage == "missing_authorization":
+        del event["human_authorization"]
+    elif damage == "false_authorization":
+        event["human_authorization"]["authorized"] = False
+    elif damage == "wrong_handoff":
+        event["human_authorization"] = authorization("00000000-0000-4000-8000-000000000099")
+    else:
+        event["reason"] = "OPERATOR_ABANDONED"
+    event["event_sha256"] = p.digest(p.canonical({key: value for key, value in event.items()
+                                                if key != "event_sha256"}))
+    path.write_bytes(b"".join(p.canonical(entry) for entry in events))
+    before = stored_bytes(store)
+    with pytest.raises(p.ProtocolError):
+        Store(store.directory).recover()
+    assert stored_bytes(store) == before
+
+
+@pytest.mark.parametrize("kind", list(p.SCHEMAS))
+def test_all_cli_schema_exports_equal_executable_definitions(kind, capfd):
+    assert main(["schema", kind]) == 0
+    assert json.loads(capfd.readouterr().out) == {
+        "$schema": "https://json-schema.org/draft/2020-12/schema", **p.SCHEMAS[kind]}
+
+
+@pytest.mark.parametrize("action,reason,head,phase", [
+    ("RESUME_TRANSPORT", "TRANSPORT_UNCONFIRMED", HEAD, "COMPUTER_USE"),
+    ("ABANDON_HANDOFF", "STALE_HANDOFF", OTHER_HEAD, "REPO_WORK"),
+])
+def test_cli_resolution_requires_authorization_and_reads_current_head(
+        store, request_body, monkeypatch, capfd, action, reason, head, phase):
+    gated_transport(store, request_body)
+    calls = []
+    def actual_head(repository):
+        calls.append(repository)
+        return head
+    monkeypatch.setattr("repo_orchestration.__main__.git_head", actual_head)
+    args = ["--control-dir", str(store.directory), "resolve", action,
+            "--handoff-id", HANDOFF, "--reason", reason]
+    before = stored_bytes(store)
+    with pytest.raises(SystemExit) as missing:
+        main(args)
+    assert missing.value.code == 2
+    capfd.readouterr()
+    assert stored_bytes(store) == before and calls == []
+    assert main([*args, "--human-authorized"]) == 0
+    output = capfd.readouterr()
+    assert output.err == ""
+    assert json.loads(output.out)["phase"] == phase
+    assert calls == [Path(".")]
+    process = subprocess.run([sys.executable, "-B", "-m", "repo_orchestration",
+                              "--control-dir", str(store.directory), "validate"],
+                             capture_output=True, check=True)
+    assert json.loads(process.stdout) == store.validate()
+
+
+def test_cli_resume_keeps_actual_head_check(store, request_body, monkeypatch, capfd):
+    gated_transport(store, request_body)
+    monkeypatch.setattr("repo_orchestration.__main__.git_head", lambda _: OTHER_HEAD)
+    before = stored_bytes(store)
+    assert main(["--control-dir", str(store.directory), "resolve", "RESUME_TRANSPORT",
+                 "--handoff-id", HANDOFF, "--reason", "TRANSPORT_UNCONFIRMED",
+                 "--human-authorized"]) == 1
+    assert capfd.readouterr().err.strip() == "STALE_HEAD"
+    assert stored_bytes(store) == before

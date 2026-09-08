@@ -5,7 +5,7 @@ import subprocess
 import sys
 
 from .protocol import (
-    HEAD, ProtocolError, SCHEMAS, canonical, check, parse,
+    ABANDON_REASONS, HEAD, HUMAN_ACTIONS, ProtocolError, SCHEMAS, canonical, check, parse,
 )
 from .store import Store, regular_read
 
@@ -37,6 +37,12 @@ def main(argv=None):
     accept.add_argument("response", type=Path)
     gate = commands.add_parser("gate")
     gate.add_argument("reason", choices=("TRANSPORT_UNCONFIRMED", "RESPONSE_MISSING", "OPERATOR_REQUEST"))
+    resolve = commands.add_parser("resolve", help="Record an explicit human resolution; no transport.")
+    resolve.add_argument("action", choices=HUMAN_ACTIONS)
+    resolve.add_argument("--handoff-id", required=True)
+    resolve.add_argument("--human-authorized", action="store_true", required=True)
+    resolve.add_argument("--reason", required=True,
+                         choices=("TRANSPORT_UNCONFIRMED", *ABANDON_REASONS))
     args = parser.parse_args(argv)
     try:
         if args.command == "schema":
@@ -63,6 +69,10 @@ def main(argv=None):
                 state = store.act("REVIEW_RESPONSE", head, response_raw=raw)
             elif args.command == "gate":
                 state = store.act("HUMAN_GATE", head, reason=args.reason)
+            elif args.command == "resolve":
+                state = store.act(args.action, head, reason=args.reason, human_authorization={
+                    "handoff_id": args.handoff_id, "authorized": args.human_authorized,
+                })
             else:
                 state = store.act({"delivered": "DELIVERED", "complete": "COMPLETE"}[args.command], head)
         sys.stdout.buffer.write(canonical(state))

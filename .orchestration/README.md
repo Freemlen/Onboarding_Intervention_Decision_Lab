@@ -75,6 +75,8 @@ none performs a GUI action or contacts a reviewer:
 | `gate RESPONSE_MISSING` | Stop when a pending review has no response. |
 | `gate OPERATOR_REQUEST` | Explicitly stop for human intervention. |
 | `recover` | Replay verified history into a missing or known earlier state snapshot. No delivery, retry, or verdict is inferred. |
+| `resolve RESUME_TRANSPORT --handoff-id UUID --human-authorized --reason TRANSPORT_UNCONFIRMED` | Audit an explicit human authorization for one more transport attempt of the same gated handoff. No delivery. |
+| `resolve ABANDON_HANDOFF --handoff-id UUID --human-authorized --reason REASON` | Audit the human retirement of a gated handoff, retaining its history and artifacts. No work is started. |
 | `complete` | Explicitly finish after GO has returned control to REPO_WORK, with the same HEAD. |
 
 Mutating commands measure the actual repository HEAD with a local
@@ -103,9 +105,12 @@ EXTERNAL_REVIEW -- HUMAN_REQUIRED / INVALID_RESPONSE --> HUMAN_GATE
 EXTERNAL_REVIEW -- NO_GO at cycle limit ---------------> HUMAN_GATE
 REPO_WORK      -- attempt beyond cycle limit ----------> HUMAN_GATE
 any nonterminal phase -- explicit gate ----------------> HUMAN_GATE
+HUMAN_GATE -- authorized RESUME_TRANSPORT -------------> COMPUTER_USE
+HUMAN_GATE -- authorized ABANDON_HANDOFF --------------> REPO_WORK
 ```
 
-HUMAN_GATE and COMPLETE have no automatic exit in v0.1. An invalid response
+HUMAN_GATE means no automatic continuation. Only the two explicit, handoff-bound
+human resolutions below may exit it. COMPLETE remains terminal. An invalid response
 changes only the control route to the safe human stop: it never resumes repository
 work, finishes the objective, or increments the cycle count. The pending handoff
 identity remains available in HUMAN_GATE. Late responses in any phase except
@@ -279,9 +284,95 @@ can still return control to the repository and then complete.
 Explicit INVALID_RESPONSE and malformed/wrong/stale responses go directly to
 HUMAN_GATE without consuming another attempt or resetting the counter; there are no automatic
 transport retries, parser repair, review retries, timers, or budget resets. Changing
-the cycle policy after bootstrap is refused by its journal binding. HUMAN_GATE
-requires a later accountable manual resolution outside the v0.1 command surface;
-there is deliberately no reset, force-GO, or bypass command.
+the cycle policy after bootstrap is refused by its journal binding. The same
+immutable `max_review_cycles` value also caps total transport attempts for each
+handoff: creation reserves attempt one and each audited RESUME_TRANSPORT reserves
+one additional attempt. With the configured value of three, a handoff permits at
+most two human-authorized resumes. This is a per-handoff transport bound in addition
+to the objective-wide review bound; a resume does not increment or reset
+`review_cycle_count`. Restart, snapshot recovery, and abandonment do not reset
+either history or the objective budget.
+
+## Explicit human resolution
+
+These commands only record a local resolution. They perform no Computer Use,
+delivery, review, product work, or networking. They must be invoked only after the
+human has authorized the specific action and handoff. The mandatory CLI
+`--human-authorized` flag records the caller's explicit assertion of that authority;
+it is not human identity authentication or permission for an agent to self-authorize.
+The handoff ID must be supplied explicitly to prevent resolving a different handoff
+than the one the human authorized.
+
+The Store interface is `Store.act(action, head, reason=reason,
+human_authorization={"handoff_id": uuid, "authorized": True})`. The CLI measures
+the current local repository HEAD; it has no HEAD override. The low-level adapter
+receives HEAD from its caller as before. Missing authorization, false or non-boolean
+authorization, unknown/missing fields, and the wrong handoff ID are rejected.
+Ordinary actions reject a human-authorization payload.
+
+Both actions require HUMAN_GATE, an active handoff, and successful locked validation
+of the configuration, full hash-linked journal, canonical historical requests,
+accepted responses, and current snapshot. No resolution can repair corrupt evidence,
+replace a request, fabricate a verdict, clear a budget, or force completion.
+
+### RESUME_TRANSPORT
+
+The only recoverable v0.1 gate reason is TRANSPORT_UNCONFIRMED. The immediately
+preceding event must be an explicit HUMAN_GATE with that reason, and the resolution
+must supply the same reason. Verified history must contain neither DELIVERED nor
+REVIEW_RESPONSE for the active handoff, including rejected responses. An existing
+orphan response artifact also blocks a live resume; it is never inferred to be a
+review verdict. Current HEAD must equal the active originating HEAD. Request
+identity, canonical bytes, and SHA-256 must still validate through journal replay.
+The review count must remain within its configured bound, and the number of
+reserved transport attempts must be below that same bound before reserving another.
+
+On success, the normal fsynced append/snapshot path records RESUME_TRANSPORT with
+the handoff-bound authorization and TRANSPORT_UNCONFIRMED reason. Only the route,
+human-intervention flag, and audit revision change: phase/next actor become
+COMPUTER_USE, intervention becomes false, and revision increments once. The handoff
+ID, request bytes/hash, objective, last verdict, and review-cycle count are preserved.
+No DELIVERED or REVIEW_RESPONSE event is generated. Any later transport failure
+requires another explicit gate; another resume needs new human authorization and
+remaining budget. There is no automatic retry.
+
+### ABANDON_HANDOFF
+
+Allowed abandonment reasons are exactly STALE_HANDOFF, TRANSPORT_EXHAUSTED, and
+OPERATOR_ABANDONED. Abandonment works for any valid active HUMAN_GATE, including
+a review verdict gate, and deliberately permits current HEAD to differ from the
+originating HEAD. It retires the handoff instead of authorizing its delivery.
+
+The normal audit path records ABANDON_HANDOFF, its bounded reason, current HEAD,
+and handoff-bound authorization. It clears the active handoff, sets phase to
+REPO_WORK and next actor to REPOSITORY_AGENT, clears human intervention, and advances
+revision once. It also clears the snapshot's last verdict so an earlier GO cannot
+authorize completion of abandoned work; all original verdicts, requests, responses,
+and failure events remain in the immutable history. Objective and review-cycle count
+are preserved. No work is started, and no review, delivery, or GO is recorded.
+There is no direct HUMAN_GATE to COMPLETE transition.
+
+A retired ID cannot be reused. Response ingestion still requires EXTERNAL_REVIEW
+and matching active handoff/current HEAD. A late retired response is rejected in
+REPO_WORK; after a new, separately authorized handoff, it fails the identity check.
+Abandonment does not make a stale response acceptable.
+
+### Replay and compatibility
+
+Human events have the existing event fields plus the required
+`human_authorization: {handoff_id: UUID, authorized: true}` object. Their action and
+reason are allow-listed and their entire content is covered by the event hash.
+The event schema accepts two closed shapes: unchanged original v0.1 events and
+human-resolution events. Replay rechecks the human action, binding, preceding gate,
+HEAD (for resume), and historical attempt/delivery/response constraints against the
+verified prefix. An interrupted snapshot publication can be recovered from one
+already-committed resolution without authorizing another attempt.
+
+Request/response schemas, protocol version, state shape, and project/policy files
+are unchanged. Existing v0.1 events keep their exact bytes and hashes. No migration,
+normalization, or rewriting of an existing ledger/snapshot/request is needed.
+`recover` still only replays the latest durable state and cannot manufacture a
+human event or exit a gate. There is no reset, force-GO, or generic bypass command.
 
 ## Durability, failure, and recovery
 
@@ -292,9 +383,11 @@ The snapshot is atomically replaced afterward; fsync is also used for new files
 and parent directories. Kernel-held exclusive locks serialize cooperating local
 writers and are released when a process exits. A second writer reports STORE_BUSY.
 
-Each event has exactly: protocol_version, sequence, previous_event_sha256,
+Each original event has exactly: protocol_version, sequence, previous_event_sha256,
 config_sha256, action, observed_head, reason, request_sha256, response_sha256,
-classification, state, and event_sha256. Nullable hash/classification fields are
+classification, state, and event_sha256. Human-resolution events additionally require
+the handoff-bound human_authorization object described above; ordinary events
+cannot contain it. Nullable hash/classification fields are
 null when inapplicable. Hashes use sorted-key compact UTF-8 JSON with a final LF.
 The event digest covers all fields except event_sha256. Request digests bind
 canonical request bytes; response digests bind exact original bytes. The ledger
@@ -321,7 +414,7 @@ a gate. The transient ignored lock and snapshot temporary files have no authorit
 | Response stale originating or current HEAD | INVALID_RESPONSE / STALE_HEAD, then HUMAN_GATE; never accept an old GO. Delivery/completion under changed HEAD is also refused. |
 | Restart while pending | Verify journal, configs, and artifacts; restore only a known snapshot if needed; retain pending actor/ID/count exactly. Never send again or infer delivery. |
 | Truncated/corrupt journal, altered artifact/config, unknown divergent snapshot, symlink, or conflicting file | Refuse further actions and recovery; human reconciliation is required. Preserve original bytes. If storage cannot commit a HUMAN_GATE event, report failure rather than fake a durable transition. |
-| Late/duplicate response, repeated completed request ID, terminal-state action | Explicit rejection with no transition or counter change. |
+| Late/duplicate response, repeated retired/completed request ID, ordinary HUMAN_GATE action, or any COMPLETE action | Explicit rejection with no transition or counter change. |
 
 Validation and recovery do not collect evidence, access product data or protected
 truth, contact a reviewer, or create approvals. Bootstrap validation does not prove

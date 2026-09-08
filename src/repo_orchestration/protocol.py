@@ -119,7 +119,7 @@ STATE = record(
     human_intervention_required={"type": "boolean"},
     revision={"type": "integer", "minimum": 0},
 )
-EVENT = record(
+STANDARD_EVENT = record(
     protocol_version=PROTOCOL,
     sequence={"type": "integer", "minimum": 0},
     previous_event_sha256=nullable(HASH), config_sha256=HASH,
@@ -132,6 +132,19 @@ EVENT = record(
     classification=nullable(enum("GO", "NO_GO", "HUMAN_REQUIRED", "INVALID_RESPONSE")),
     state=STATE, event_sha256=HASH,
 )
+HUMAN_ACTIONS = ("RESUME_TRANSPORT", "ABANDON_HANDOFF")
+ABANDON_REASONS = ("STALE_HANDOFF", "TRANSPORT_EXHAUSTED", "OPERATOR_ABANDONED")
+HUMAN_AUTHORIZATION = record(
+    handoff_id=HANDOFF_ID, authorized={"type": "boolean", "const": True},
+)
+HUMAN_EVENT = record(**{
+    **STANDARD_EVENT["properties"],
+    "action": enum(*HUMAN_ACTIONS),
+    "reason": enum("TRANSPORT_UNCONFIRMED", *ABANDON_REASONS),
+    "human_authorization": HUMAN_AUTHORIZATION,
+})
+# Preserve old event shapes and hashes; only human events carry authorization.
+EVENT = {"anyOf": [STANDARD_EVENT, HUMAN_EVENT]}
 SCHEMAS = {"project": PROJECT, "policy": POLICY, "state": STATE,
            "request": REQUEST, "response": RESPONSE, "event": EVENT}
 
@@ -292,17 +305,60 @@ def classify_response(raw, state, current_head, policy):
     return response["verdict"], "NONE", response
 
 
+def human_resolution(state, action, head, policy, reason, authorization, history):
+    """Check a handoff-bound human assertion against the verified journal prefix."""
+    require(state["phase"] == "HUMAN_GATE", "ILLEGAL_TRANSITION")
+    require(authorization is not None, "HUMAN_AUTHORIZATION_REQUIRED")
+    check(authorization, HUMAN_AUTHORIZATION)
+    active = state["active_handoff"]
+    require(active is not None, "PENDING_HANDOFF_REQUIRED")
+    require(authorization["handoff_id"] == active["handoff_id"], "WRONG_HANDOFF")
+    require(bool(history) and history[-1]["state"] == state, "VERIFIED_HISTORY_REQUIRED")
+    if action == "ABANDON_HANDOFF":
+        require(reason in ABANDON_REASONS, "INVALID_REASON")
+        return
+    # Bind events to the preceding state, including responses which clear the
+    # active handoff. The Store authenticates this entire prefix before use.
+    events = [event for previous, event in zip(history, history[1:])
+              if previous["state"]["active_handoff"] == active]
+    require(not any(event["action"] == "REVIEW_RESPONSE" for event in events),
+            "RESPONSE_ALREADY_RECORDED")
+    require(not any(event["action"] == "DELIVERED" for event in events),
+            "DELIVERY_ALREADY_CONFIRMED")
+    require(reason == "TRANSPORT_UNCONFIRMED" and
+            history[-1]["action"] == "HUMAN_GATE" and
+            history[-1]["reason"] == reason, "NON_RECOVERABLE_GATE")
+    require(head == active["originating_head"], "STALE_HEAD")
+    # The immutable configured bound also caps total transport attempts per
+    # handoff. Creation reserves attempt one; each resume reserves one more.
+    attempts = 1 + sum(event["action"] == "RESUME_TRANSPORT" for event in events)
+    require(attempts < policy["max_review_cycles"], "TRANSPORT_ATTEMPT_LIMIT")
+
+
 def transition(state, action, head, project, policy, *, request=None,
-               classification=None, reason="NONE"):
+               classification=None, reason="NONE", human_authorization=None, history=None):
     """One explicit action. HUMAN_GATE and COMPLETE have no autonomous exit."""
     validate_state(state, project, policy)
     check(head, HEAD)
-    if action not in ("REVIEW_RESPONSE", "HUMAN_GATE"):
+    if action not in ("REVIEW_RESPONSE", "HUMAN_GATE", *HUMAN_ACTIONS):
         require(reason == "NONE", "INVALID_REASON")
-    require(state["phase"] not in ("HUMAN_GATE", "COMPLETE"), "TERMINAL_STATE")
+    if action in HUMAN_ACTIONS:
+        require(request is None and classification is None, "EVENT_PAYLOAD_MISMATCH")
+        human_resolution(state, action, head, policy, reason, human_authorization, history)
+    else:
+        require(human_authorization is None, "UNEXPECTED_HUMAN_AUTHORIZATION")
+        require(state["phase"] not in ("HUMAN_GATE", "COMPLETE"), "TERMINAL_STATE")
     result = deepcopy(state)
     phase = state["phase"]
-    if action == "CREATE_HANDOFF":
+    if action == "RESUME_TRANSPORT":
+        result["phase"] = "COMPUTER_USE"
+    elif action == "ABANDON_HANDOFF":
+        result["phase"] = "REPO_WORK"
+        result["active_handoff"] = None
+        # Prior verdicts stay in the journal, but cannot authorize completion
+        # of abandoned work or keep a resolved verdict gate in this snapshot.
+        result["last_external_verdict"] = None
+    elif action == "CREATE_HANDOFF":
         require(phase == "REPO_WORK", "ILLEGAL_TRANSITION")
         if state["review_cycle_count"] >= policy["max_review_cycles"]:
             result["phase"] = "HUMAN_GATE"

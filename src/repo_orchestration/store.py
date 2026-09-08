@@ -11,7 +11,7 @@ import stat
 import tempfile
 
 from .protocol import (
-    ProtocolError, VERSION, canonical, classify_response, digest, initial_state,
+    HUMAN_ACTIONS, ProtocolError, VERSION, canonical, classify_response, digest, initial_state,
     parse, require, transition, validate, validate_config, validate_state,
 )
 
@@ -127,7 +127,8 @@ class Store:
             os.fsync(stream.fileno())
 
     def _event(self, previous, state, action, head, reason="NONE",
-               request_hash=None, response_hash=None, classification=None):
+               request_hash=None, response_hash=None, classification=None,
+               human_authorization=None):
         event = {
             "protocol_version": VERSION, "sequence": state["revision"],
             "previous_event_sha256": previous["event_sha256"] if previous else None,
@@ -136,6 +137,8 @@ class Store:
             "response_sha256": response_hash, "classification": classification,
             "state": state,
         }
+        if human_authorization is not None:
+            event["human_authorization"] = human_authorization
         event["event_sha256"] = digest(canonical(event))
         validate("event", event)
         return event
@@ -209,11 +212,12 @@ class Store:
                             response_raw, previous["state"], event["observed_head"], self.policy)
                         require((classification, reason) == (actual, actual_reason),
                                 "RESPONSE_CLASSIFICATION_MISMATCH")
-                elif action != "HUMAN_GATE":
+                elif action not in ("HUMAN_GATE", *HUMAN_ACTIONS):
                     require(reason == "NONE", "INVALID_REASON")
                 expected = transition(
                     previous["state"], action, event["observed_head"], self.project, self.policy,
-                    request=request, classification=classification, reason=reason)
+                    request=request, classification=classification, reason=reason,
+                    human_authorization=event.get("human_authorization"), history=history)
                 require(expected == event["state"], "STATE_REPLAY_MISMATCH")
             validate_state(event["state"], self.project, self.policy)
             history.append(event)
@@ -245,18 +249,27 @@ class Store:
             self._snapshot(history[-1]["state"])
             return history[-1]["state"]
 
-    def act(self, action, head, *, request=None, response_raw=None, reason="NONE"):
+    def act(self, action, head, *, request=None, response_raw=None, reason="NONE",
+            human_authorization=None):
         with self.locked():
             history = self._history()
             state = self._current(history)
             classification = None
             response = None
+            if action in HUMAN_ACTIONS:
+                require(response_raw is None, "EVENT_PAYLOAD_MISMATCH")
             if action == "REVIEW_RESPONSE":
                 require(state["phase"] == "EXTERNAL_REVIEW", "ILLEGAL_TRANSITION")
                 classification, reason, response = classify_response(response_raw, state, head, self.policy)
             next_state = transition(
                 state, action, head, self.project, self.policy, request=request,
-                classification=classification, reason=reason)
+                classification=classification, reason=reason,
+                human_authorization=human_authorization, history=history)
+            if action == "RESUME_TRANSPORT":
+                # An orphan response is not a durable verdict, but still makes
+                # another delivery unsafe until separately reconciled.
+                path = self.handoff_path(state["active_handoff"]["handoff_id"], "response")
+                require(not path.exists() and not path.is_symlink(), "RESPONSE_ARTIFACT_PRESENT")
             request_hash = None
             response_hash = None
             if action == "CREATE_HANDOFF" and next_state["active_handoff"]:
@@ -274,7 +287,7 @@ class Store:
                               response_raw)
                 # Rejected raw input is not persisted or printed, only its digest and reason.
             event = self._event(history[-1], next_state, action, head, reason,
-                                request_hash, response_hash, classification)
+                                request_hash, response_hash, classification, human_authorization)
             self._append(event)
             self._snapshot(next_state)
             return next_state
