@@ -1,0 +1,16 @@
+{
+  "protocol_version": "0.1",
+  "authority": "NON_NORMATIVE",
+  "project_id": "onboarding-intervention-decision-lab",
+  "objective": {
+    "id": "local-handoff-loop-proof",
+    "description": "Prepare for a later separately authorized bounded repository-to-external-review-to-repository handoff proof; bootstrap only, no live handoff yet."
+  },
+  "review_target": "external-chatgpt-reviewer",
+  "authoritative_contracts": [
+    {
+      "reference": "contracts/Contract_Bundle_v0.2.7.md",
+      "sha256": "fb013604d824e157ecbaeb75ce670c20cadfac702dd5132601eac01e4334b67d"
+    }
+  ]
+}

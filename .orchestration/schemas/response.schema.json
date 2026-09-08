@@ -1,0 +1,85 @@
+{
+    "$comment": "GO requires empty blocking_findings and required_repairs. NO_GO requires at least one blocking finding and repair. Use HUMAN_REQUIRED for a necessary human decision. Use INVALID_RESPONSE for an incomplete, malformed, unsafe, or insufficiently evidenced handoff; a valid matching envelope routes to HUMAN_GATE without advancing work or changing the cycle count. The entire UTF-8 JSON response must fit response_byte_limit in the request.",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "blocking_findings": {
+            "items": {
+                "maxLength": 1024,
+                "minLength": 1,
+                "type": "string"
+            },
+            "maxItems": 16,
+            "minItems": 0,
+            "type": "array"
+        },
+        "handoff_id": {
+            "maxLength": 36,
+            "minLength": 1,
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "type": "string"
+        },
+        "non_blocking_findings": {
+            "items": {
+                "maxLength": 1024,
+                "minLength": 1,
+                "type": "string"
+            },
+            "maxItems": 16,
+            "minItems": 0,
+            "type": "array"
+        },
+        "protocol_version": {
+            "const": "0.1",
+            "type": "string"
+        },
+        "required_repairs": {
+            "items": {
+                "maxLength": 1024,
+                "minLength": 1,
+                "type": "string"
+            },
+            "maxItems": 16,
+            "minItems": 0,
+            "type": "array"
+        },
+        "reviewed_head": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$",
+            "type": "string"
+        },
+        "reviewer_notes": {
+            "anyOf": [
+                {
+                    "type": "null"
+                },
+                {
+                    "maxLength": 2048,
+                    "minLength": 1,
+                    "type": "string"
+                }
+            ]
+        },
+        "verdict": {
+            "enum": [
+                "GO",
+                "NO_GO",
+                "HUMAN_REQUIRED",
+                "INVALID_RESPONSE"
+            ],
+            "type": "string"
+        }
+    },
+    "required": [
+        "protocol_version",
+        "handoff_id",
+        "reviewed_head",
+        "verdict",
+        "blocking_findings",
+        "non_blocking_findings",
+        "required_repairs",
+        "reviewer_notes"
+    ],
+    "type": "object"
+}

@@ -210,3 +210,10 @@ suite batch above.
 An explicitly [NON_CANONICAL_DEMO end-to-end runner](examples/README.md) composes
 the accepted Slice 1 capabilities with fixed public fabricated inputs. It saves
 its isolated artifacts and copied numerical summary under outputs/demo_slice1/.
+
+## Local developer orchestration (non-normative)
+
+[The local orchestration bootstrap](.orchestration/README.md) provides a bounded,
+durable developer review protocol, separate from all product workflows and frozen
+contracts. It includes explicit local commands and fabricated-input tests only;
+no GUI, external review, networking, product approval, or canonical run is performed.
