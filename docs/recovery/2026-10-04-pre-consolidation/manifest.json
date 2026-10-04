@@ -1,0 +1,168 @@
+{
+  "preservation_date": "2026-10-04",
+  "date_timezone": "Europe/Moscow",
+  "authority": "INFORMATIVE_NON_NORMATIVE_EVIDENCE_COPY",
+  "source_repository_wsl": "/home/wsl/Projects/Onboarding_Intervention_Decision_Lab",
+  "source_repository_windows": "\\\\wsl$\\Ubuntu-24.04\\home\\wsl\\Projects\\Onboarding_Intervention_Decision_Lab",
+  "source_branch": "infra/autonomous-supervisor-v0.1",
+  "source_head": "6080f5c22253728033b0123d2268bcbed1e87baa",
+  "local_branches": [
+    {
+      "branch": "demo/slice1",
+      "head": "6f8c8afcfd4565680894b6a6c9db189ea64cf338"
+    },
+    {
+      "branch": "infra/autonomous-supervisor-v0.1",
+      "head": "6080f5c22253728033b0123d2268bcbed1e87baa"
+    },
+    {
+      "branch": "main",
+      "head": "db507f05928d07f39044a64171cfbe6af1769502"
+    }
+  ],
+  "git_remotes": [],
+  "initial_modified_paths": [
+    ".orchestration/ledger.jsonl",
+    ".orchestration/state.json"
+  ],
+  "initial_untracked_paths": [
+    ".orchestration/handoffs/052a0112-1889-4f42-a54d-183e239521a8.request.json",
+    ".orchestration/handoffs/758603b0-4835-4207-bcfb-6acf5131f033.request.json"
+  ],
+  "excluded_transient_paths": [
+    ".orchestration/.lock"
+  ],
+  "snapshot_state": {
+    "active_handoff": {
+      "handoff_id": "758603b0-4835-4207-bcfb-6acf5131f033",
+      "originating_head": "6080f5c22253728033b0123d2268bcbed1e87baa",
+      "request_sha256": "3ad84d71945f0ed13026373c8d308e0377dd0fccfeec74450f897c899ff42c38"
+    },
+    "current_objective": {
+      "description": "Prepare for a later separately authorized bounded repository-to-external-review-to-repository handoff proof; bootstrap only, no live handoff yet.",
+      "id": "local-handoff-loop-proof"
+    },
+    "human_intervention_required": true,
+    "last_external_verdict": null,
+    "next_actor": "HUMAN",
+    "phase": "HUMAN_GATE",
+    "protocol_version": "0.1",
+    "review_cycle_count": 2,
+    "revision": 7
+  },
+  "last_ledger_reason": "TRANSPORT_UNCONFIRMED",
+  "files": [
+    {
+      "source_path": ".orchestration/.gitignore",
+      "snapshot_path": ".orchestration/.gitignore",
+      "byte_length": 15,
+      "sha256": "4c722900ad0f8c2501632e876b9a8a6d5df90c2ccdd850769e96f5746011c0e0",
+      "role": "LIVE_CONTROL_EVIDENCE"
+    },
+    {
+      "source_path": ".orchestration/README.md",
+      "snapshot_path": ".orchestration/README.md",
+      "byte_length": 25979,
+      "sha256": "4531b262b7f8208db4f22d2921159ccb2e0626fd8997edc7400f87d5c9546e40",
+      "role": "LIVE_CONTROL_EVIDENCE"
+    },
+    {
+      "source_path": ".orchestration/handoffs/.gitkeep",
+      "snapshot_path": ".orchestration/handoffs/.gitkeep",
+      "byte_length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "role": "LIVE_CONTROL_EVIDENCE"
+    },
+    {
+      "source_path": ".orchestration/handoffs/052a0112-1889-4f42-a54d-183e239521a8.request.json",
+      "snapshot_path": ".orchestration/handoffs/052a0112-1889-4f42-a54d-183e239521a8.request.json",
+      "byte_length": 33192,
+      "sha256": "c63535fb750655a390acc8a1c957df7c27c86328360373d7c3a74137b66ab5ed",
+      "role": "LIVE_CONTROL_EVIDENCE"
+    },
+    {
+      "source_path": ".orchestration/handoffs/758603b0-4835-4207-bcfb-6acf5131f033.request.json",
+      "snapshot_path": ".orchestration/handoffs/758603b0-4835-4207-bcfb-6acf5131f033.request.json",
+      "byte_length": 31142,
+      "sha256": "3ad84d71945f0ed13026373c8d308e0377dd0fccfeec74450f897c899ff42c38",
+      "role": "LIVE_CONTROL_EVIDENCE"
+    },
+    {
+      "source_path": ".orchestration/ledger.jsonl",
+      "snapshot_path": ".orchestration/ledger.jsonl",
+      "byte_length": 8567,
+      "sha256": "5a6efa1e97ed7a8817d5d169a31a3b83b4f4d5f67e98842cc04925371b427c77",
+      "role": "LIVE_CONTROL_EVIDENCE"
+    },
+    {
+      "source_path": ".orchestration/policy.json",
+      "snapshot_path": ".orchestration/policy.json",
+      "byte_length": 819,
+      "sha256": "dc531447387061555a9990d7c560517e45cc158844d53bf231b190d6f3eddb0c",
+      "role": "LIVE_CONTROL_EVIDENCE"
+    },
+    {
+      "source_path": ".orchestration/project.json",
+      "snapshot_path": ".orchestration/project.json",
+      "byte_length": 584,
+      "sha256": "c86c4f71ca29af95b5c34be8021e111a94fa6c758c4f18ae2bddd93abf175036",
+      "role": "LIVE_CONTROL_EVIDENCE"
+    },
+    {
+      "source_path": ".orchestration/schemas/request.schema.json",
+      "snapshot_path": ".orchestration/schemas/request.schema.json",
+      "byte_length": 8523,
+      "sha256": "61a309fe1f42eded1cc023f746ad9d00292139d89103719996846e1a12387443",
+      "role": "LIVE_CONTROL_EVIDENCE"
+    },
+    {
+      "source_path": ".orchestration/schemas/response.schema.json",
+      "snapshot_path": ".orchestration/schemas/response.schema.json",
+      "byte_length": 2631,
+      "sha256": "ffa7abdefdcfa56937ee8a86d17e1e4be51a95f4d4321892cb73853854971973",
+      "role": "LIVE_CONTROL_EVIDENCE"
+    },
+    {
+      "source_path": ".orchestration/state.json",
+      "snapshot_path": ".orchestration/state.json",
+      "byte_length": 602,
+      "sha256": "96eb3d4b951851091a294c2006a548e25a77f020f37578430322418d97e2f11f",
+      "role": "LIVE_CONTROL_EVIDENCE"
+    },
+    {
+      "source_path": ".checkpoint-tmp/loopback-H-0001/request-input.json",
+      "snapshot_path": "local-transport-inputs/loopback-H-0001/request-input.json",
+      "byte_length": 33192,
+      "sha256": "c63535fb750655a390acc8a1c957df7c27c86328360373d7c3a74137b66ab5ed",
+      "role": "NON_AUTHORITATIVE_LOCAL_TRANSPORT_INPUT"
+    },
+    {
+      "source_path": ".checkpoint-tmp/h0002/pre-run.ledger.jsonl",
+      "snapshot_path": "local-transport-inputs/h0002/pre-run.ledger.jsonl",
+      "byte_length": 4050,
+      "sha256": "0d951c00855445448ac9d2feb5f09613462da4ebc2be69f7b11aa35e89913a0b",
+      "role": "NON_AUTHORITATIVE_LOCAL_TRANSPORT_INPUT"
+    },
+    {
+      "source_path": ".checkpoint-tmp/h0002/pre-run.state.json",
+      "snapshot_path": "local-transport-inputs/h0002/pre-run.state.json",
+      "byte_length": 418,
+      "sha256": "fc8c4fac4f625b6299707d457f36693927f5b4b78d3fc2978244a432e78d7cd6",
+      "role": "NON_AUTHORITATIVE_LOCAL_TRANSPORT_INPUT"
+    },
+    {
+      "source_path": ".checkpoint-tmp/h0002/request-candidate.json",
+      "snapshot_path": "local-transport-inputs/h0002/request-candidate.json",
+      "byte_length": 31142,
+      "sha256": "3ad84d71945f0ed13026373c8d308e0377dd0fccfeec74450f897c899ff42c38",
+      "role": "NON_AUTHORITATIVE_LOCAL_TRANSPORT_INPUT"
+    }
+  ],
+  "limitations": [
+    "Byte-preserving evidence copy; does not initialize or authorize an operational control directory.",
+    "No confirmed delivery or reviewer verdict is recorded.",
+    "Local transport candidate and pre-run files are historical inputs only and do not override the live durable journal.",
+    "No source file was modified; no gate was resolved; no canonical or hidden-seed execution occurred.",
+    "Snapshot files are uncommitted until the user separately authorizes a commit."
+  ]
+}

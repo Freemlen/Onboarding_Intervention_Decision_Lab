@@ -1,0 +1,2 @@
+# Preserve the supplied historical source bytes, including CRLF.
+2026-10-04-recovered-history.txt -text

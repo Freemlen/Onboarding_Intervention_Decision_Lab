@@ -1,0 +1,61 @@
+{
+  "authority": "INFORMATIVE_LOCAL_DOCUMENTATION_CHECKS",
+  "recorded_date": "2026-10-04",
+  "date_timezone": "Europe/Moscow",
+  "source_head": "6080f5c22253728033b0123d2268bcbed1e87baa",
+  "source_branch": "infra/autonomous-supervisor-v0.1",
+  "recovered_source_path": "docs/reviews/sources/2026-10-04-recovered-history.txt",
+  "recovered_source_byte_length": 5115,
+  "recovered_source_sha256": "2152c8b9f395f5e82c5d9a1d33f68fa5f06e9d0c0ca7583ef895ff0b1686c259",
+  "updated_document_paths": [
+    "docs/PROJECT_STATE.md",
+    "docs/reviews/README.md",
+    "docs/reviews/cp6-exposure-recovery.md",
+    "docs/reviews/slice1-acceptance-repairs.md",
+    "docs/reviews/transport-history.md",
+    "docs/decisions/README.md",
+    "docs/decisions/2026-10-04-preservation-boundaries.md"
+  ],
+  "created_source_and_record_paths": [
+    "docs/reviews/sources/2026-10-04-recovered-history.txt",
+    "docs/reviews/recovered-history-2026-10-04.md",
+    "docs/decisions/2026-10-04-recovered-history-and-deletion-readiness.md"
+  ],
+  "document_sha256": {
+    "docs/PROJECT_STATE.md": "f1896ed4a93ec3fe7312f348e9e3315c0dbb1b0462acea758304838a0feaa069",
+    "docs/reviews/README.md": "3428a9a086d092a0f015a53272b41c21cb054c434cd37d24621ed49e98f41b59",
+    "docs/reviews/cp6-exposure-recovery.md": "2933cb2a141d1807151b6418c32f4cf467f10cc538ed704eeb65ac99785dcc03",
+    "docs/reviews/slice1-acceptance-repairs.md": "1c10e4f367b87f5ccf40e21678e6b5abbb5dcf3b85f862277e6a10755c5df3e6",
+    "docs/reviews/transport-history.md": "11d3e055958bdd39f011a94b8e0216bdf3ad3e4c96d9ba9c74cb95e8b20e6e61",
+    "docs/decisions/README.md": "a6ebba4542db014e25afca5cbd8e13078daa4c3859a6aa7fde03ab0876199ad9",
+    "docs/decisions/2026-10-04-preservation-boundaries.md": "19a915600127b1600ed4317d2b45118ab7c2af3049c904e108b184984cc0c7e1",
+    "docs/reviews/sources/2026-10-04-recovered-history.txt": "2152c8b9f395f5e82c5d9a1d33f68fa5f06e9d0c0ca7583ef895ff0b1686c259",
+    "docs/reviews/recovered-history-2026-10-04.md": "a88876c98fda5e94249fc8f666a11f0f060492685460c998c0babe53bc0a9222",
+    "docs/decisions/2026-10-04-recovered-history-and-deletion-readiness.md": "69eaf95f0c66a14186f50aa27b1b91f5be94dd1a19114d8ba916107cf3f578e3"
+  },
+  "checks": {
+    "relative_document_links_and_anchors": "PASS",
+    "documentation_whitespace": "PASS",
+    "independent_read_only_content_review": "PASS after initial/autonomous scope clarifications",
+    "preserved_snapshot_copies_verified": 15,
+    "live_control_and_transport_inputs_byte_identical_to_prior_capture": 15,
+    "frozen_release_files_byte_identical_to_HEAD": 17,
+    "source_tests_dependency_config_diff": "NONE",
+    "staged_changes": "NONE",
+    "remotes": "NONE",
+    "git_diff_check": "PASS"
+  },
+  "live_route_preserved": {
+    "phase": "HUMAN_GATE",
+    "revision": 7,
+    "active_handoff": "758603b0-4835-4207-bcfb-6acf5131f033",
+    "last_external_verdict": null
+  },
+  "limitations": [
+    "Static document and byte-integrity checks only; no tests, workflow, Store operation, canonical/hidden execution or reviewer transport.",
+    "Recovered historical manual acceptance is not an autonomous handoff response and does not change the live null verdict.",
+    "The source is a user-supplied recovery summary, not a full original conversation export; exact earlier four findings remain unavailable.",
+    "Documentation and preservation evidence remain uncommitted; full named-chat deletion readiness is not established.",
+    "This receipt is not a product/reviewer verdict or human operational approval."
+  ]
+}

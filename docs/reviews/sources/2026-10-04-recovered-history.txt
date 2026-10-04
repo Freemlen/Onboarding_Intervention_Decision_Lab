@@ -1,0 +1,161 @@
+Update the preservation documentation using the following recovered historical
+ChatGPT evidence.
+
+This task is documentation-only.
+
+DO NOT:
+- modify frozen contracts;
+- alter or resolve the live HUMAN_GATE;
+- change .orchestration operational state;
+- rebind any handoff;
+- infer delivery or an autonomous reviewer verdict;
+- run canonical/hidden execution;
+- invent missing R1–R4 wording;
+- commit yet.
+
+Important distinction:
+
+A manual/external Slice 1 review on 2026-09-06 is separate from the later
+autonomous-supervisor transport loop on 2026-09-08.
+
+The manual review may establish historical Slice 1 acceptance.
+It MUST NOT populate or alter the autonomous supervisor's external verdict,
+which remains null because no autonomous handoff delivery was confirmed.
+
+RECOVERED HISTORICAL FACTS
+
+1. Review of ab7652aed4855cf3100070960cec49232df3477a
+
+The review found exactly one remaining BLOCKING defect:
+
+CP6 early-exposure persistence could diverge between in-memory history and
+durable registry state after a failed append, preventing idempotent recovery
+and allowing a fresh process to classify linked lineage as unexposed.
+
+The review verdict was:
+
+# REJECT SLICE 1
+
+The review environment reported:
+631 passed, 17 failed, 367 errors.
+
+The reviewer explicitly did not treat this as confirmation of the separately
+reported 1,015 passing tests.
+
+Do not invent additional findings for this review.
+
+2. Targeted closure review of
+db507f05928d07f39044a64171cfbe6af1769502
+
+Recovered final conclusions:
+
+Remaining blocker: CLOSED
+New blocker introduced by repair: NO
+
+Final verdict:
+
+# ACCEPT SLICE 1
+
+No additional BLOCKING or NON-BLOCKING finding was reported in the recovered
+closure result.
+
+Record this as historical manual/external Slice 1 acceptance.
+Do NOT confuse it with an autonomous-supervisor response.
+
+3. Autonomous reviewer conversation setup
+
+Conversation title:
+
+DLAB AUTONOMOUS REVIEWER
+
+Declared role:
+- external review endpoint for autonomous handoffs from the
+  Onboarding Intervention Decision Lab repository;
+- use only supplied handoff evidence;
+- respect frozen normative contracts;
+- do not redesign unless explicitly requested;
+- distinguish BLOCKING from NON-BLOCKING;
+- never request, infer, reveal, or reconstruct hidden canonical seed/truth;
+- do not assume missing implementation evidence;
+- return a clear review verdict;
+- end with the exact machine-readable response envelope required by the
+  handoff protocol;
+- incomplete or unsafe handoffs route to INVALID_RESPONSE or HUMAN_REQUIRED.
+
+Durable project state and authoritative contracts remain in the repository.
+
+No stable URL or conversation ID was recovered.
+Do not invent one.
+
+4. Transport chronology
+
+H-0001:
+052a0112-1889-4f42-a54d-183e239521a8
+
+Observed Computer Use failure occurred before the reviewer conversation was
+reached. No request delivery was confirmed.
+
+Observed runtime error:
+"trusted Node process exited unexpectedly; kernel reset, rerun your request"
+
+Result:
+TRANSPORT_UNCONFIRMED -> HUMAN_GATE
+
+A human later explicitly authorized ABANDON_HANDOFF for H-0001 with reason
+STALE_HANDOFF.
+
+H-0002:
+758603b0-4835-4207-bcfb-6acf5131f033
+
+The first native Computer Use attempt again failed before reviewer delivery
+with TRANSPORT_UNCONFIRMED.
+
+A human explicitly authorized the recovery command:
+
+resolve RESUME_TRANSPORT --handoff-id 758603b0-4835-4207-bcfb-6acf5131f033 --human-authorized --reason TRANSPORT_UNCONFIRMED
+
+A subsequent browser-transport attempt also failed before authenticated
+ChatGPT/reviewer UI was reached, with the same trusted Node process failure.
+
+Therefore:
+- no autonomous request delivery was confirmed;
+- no autonomous reviewer response was received;
+- no autonomous verdict exists;
+- current null external verdict remains correct.
+
+5. Unknown evidence
+
+The exact original four BLOCKING findings from the earlier review of
+19e5e2ca43e70a366547d134b08dca98bfcde917 have NOT been reliably recovered.
+
+Do not reconstruct them from commit messages or later repairs.
+Keep them explicitly unavailable unless a direct source is recovered.
+
+TASK
+
+Update the appropriate non-normative files under docs/reviews/,
+docs/decisions/, and PROJECT_STATE.md.
+
+Clearly distinguish:
+- manual/external Slice 1 acceptance on 2026-09-06;
+- autonomous reviewer endpoint setup on 2026-09-08;
+- unsuccessful autonomous transport attempts;
+- current supervisor verdict=null.
+
+For every recovered chat-derived assertion, label its provenance as historical
+ChatGPT conversation evidence and date it where possible.
+
+Do not modify operational state.
+
+After edits:
+1. show git diff --stat;
+2. show git status;
+3. summarize exactly which historical gaps remain;
+4. say whether, based solely on durable repository evidence after these edits,
+   the following chats are safe to delete:
+   - Review Slice One Implementation
+   - Как прокачать проект
+   - Разбор ноутбука
+   - DLAB AUTONOMOUS REVIEWER
+
+Do not commit.

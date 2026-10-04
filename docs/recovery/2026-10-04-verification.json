@@ -1,0 +1,46 @@
+{
+  "recorded_date": "2026-10-04",
+  "date_timezone": "Europe/Moscow",
+  "authority": "INFORMATIVE_LOCAL_PRESERVATION_CHECKS",
+  "source_head": "6080f5c22253728033b0123d2268bcbed1e87baa",
+  "source_branch": "infra/autonomous-supervisor-v0.1",
+  "snapshot_manifest": "2026-10-04-pre-consolidation/manifest.json",
+  "snapshot_manifest_sha256": "5692b04b8d8710f14ee2d5eb05c37088c14647a1b7f3755eba5e761648c8ede4",
+  "checks": {
+    "snapshot_copies_verified": 15,
+    "original_source_files_still_byte_identical": 15,
+    "frozen_release_files_byte_identical_to_HEAD": 17,
+    "contract_manifest_entries_verified": 16,
+    "journal_events_hash_chain_sequence_verified": 8,
+    "journal_bound_requests_digest_verified": 2,
+    "final_snapshot_equals_last_journal_state": true,
+    "new_document_links_and_anchors": "PASS",
+    "git_diff_check": "PASS",
+    "source_tests_dependency_configuration_changed": false,
+    "git_refs_changed": false,
+    "remote_configured": false,
+    "staged_changes": false
+  },
+  "preserved_live_state": {
+    "phase": "HUMAN_GATE",
+    "next_actor": "HUMAN",
+    "revision": 7,
+    "latest_reason": "TRANSPORT_UNCONFIRMED",
+    "active_handoff_id": "758603b0-4835-4207-bcfb-6acf5131f033",
+    "last_external_verdict": null
+  },
+  "verification_scope": "Independent file/hash checks and static document/source review only. No application validator or semantic transition replay was invoked.",
+  "not_performed": [
+    "Application tests",
+    "Demo or notebook execution",
+    "Canonical or hidden-seed execution",
+    "Reviewer transport or response ingestion",
+    "Recovery or human-gate resolution",
+    "Git staging, commit, branch consolidation, or remote setup"
+  ],
+  "limitations": [
+    "Checks verify local byte integrity and consistency; they are not independent product/reviewer acceptance or human approval.",
+    "Evidence copies and documentation remain uncommitted at task completion.",
+    "No source conversation was inspected; absent historical facts remain unknown."
+  ]
+}

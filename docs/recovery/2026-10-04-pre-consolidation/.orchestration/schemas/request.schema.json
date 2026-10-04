@@ -1,0 +1,245 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "authoritative_contracts": {
+            "items": {
+                "additionalProperties": false,
+                "properties": {
+                    "reference": {
+                        "maxLength": 240,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_][A-Za-z0-9_./# -]*$",
+                        "type": "string"
+                    },
+                    "sha256": {
+                        "maxLength": 64,
+                        "minLength": 1,
+                        "pattern": "^[0-9a-f]{64}$",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "reference",
+                    "sha256"
+                ],
+                "type": "object"
+            },
+            "maxItems": 32,
+            "minItems": 1,
+            "type": "array"
+        },
+        "constraints": {
+            "items": {
+                "maxLength": 1024,
+                "minLength": 1,
+                "type": "string"
+            },
+            "maxItems": 16,
+            "minItems": 1,
+            "type": "array"
+        },
+        "evidence_declaration": {
+            "enum": [
+                "PUBLIC_OR_FABRICATED_ONLY"
+            ],
+            "type": "string"
+        },
+        "handoff_id": {
+            "maxLength": 36,
+            "minLength": 1,
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "type": "string"
+        },
+        "implementation_evidence": {
+            "items": {
+                "additionalProperties": false,
+                "properties": {
+                    "content": {
+                        "maxLength": 8192,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "kind": {
+                        "enum": [
+                            "IMPLEMENTATION",
+                            "VALIDATION",
+                            "PUBLIC_CONTRACT_EXCERPT"
+                        ],
+                        "type": "string"
+                    },
+                    "label": {
+                        "maxLength": 80,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$",
+                        "type": "string"
+                    },
+                    "sha256": {
+                        "maxLength": 64,
+                        "minLength": 1,
+                        "pattern": "^[0-9a-f]{64}$",
+                        "type": "string"
+                    },
+                    "source_reference": {
+                        "maxLength": 240,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9_][A-Za-z0-9_./# -]*$",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "label",
+                    "source_reference",
+                    "kind",
+                    "content",
+                    "sha256"
+                ],
+                "type": "object"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "type": "array"
+        },
+        "objective_id": {
+            "maxLength": 80,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$",
+            "type": "string"
+        },
+        "originating_head": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$",
+            "type": "string"
+        },
+        "protocol_version": {
+            "const": "0.1",
+            "type": "string"
+        },
+        "request_status": {
+            "enum": [
+                "PENDING"
+            ],
+            "type": "string"
+        },
+        "required_reviewer_output_schema": {
+            "const": {
+                "$comment": "GO requires empty blocking_findings and required_repairs. NO_GO requires at least one blocking finding and repair. Use HUMAN_REQUIRED for a necessary human decision. Use INVALID_RESPONSE for an incomplete, malformed, unsafe, or insufficiently evidenced handoff; a valid matching envelope routes to HUMAN_GATE without advancing work or changing the cycle count. The entire UTF-8 JSON response must fit response_byte_limit in the request.",
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "additionalProperties": false,
+                "properties": {
+                    "blocking_findings": {
+                        "items": {
+                            "maxLength": 1024,
+                            "minLength": 1,
+                            "type": "string"
+                        },
+                        "maxItems": 16,
+                        "minItems": 0,
+                        "type": "array"
+                    },
+                    "handoff_id": {
+                        "maxLength": 36,
+                        "minLength": 1,
+                        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                        "type": "string"
+                    },
+                    "non_blocking_findings": {
+                        "items": {
+                            "maxLength": 1024,
+                            "minLength": 1,
+                            "type": "string"
+                        },
+                        "maxItems": 16,
+                        "minItems": 0,
+                        "type": "array"
+                    },
+                    "protocol_version": {
+                        "const": "0.1",
+                        "type": "string"
+                    },
+                    "required_repairs": {
+                        "items": {
+                            "maxLength": 1024,
+                            "minLength": 1,
+                            "type": "string"
+                        },
+                        "maxItems": 16,
+                        "minItems": 0,
+                        "type": "array"
+                    },
+                    "reviewed_head": {
+                        "maxLength": 64,
+                        "minLength": 1,
+                        "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$",
+                        "type": "string"
+                    },
+                    "reviewer_notes": {
+                        "anyOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "maxLength": 2048,
+                                "minLength": 1,
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "verdict": {
+                        "enum": [
+                            "GO",
+                            "NO_GO",
+                            "HUMAN_REQUIRED",
+                            "INVALID_RESPONSE"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "protocol_version",
+                    "handoff_id",
+                    "reviewed_head",
+                    "verdict",
+                    "blocking_findings",
+                    "non_blocking_findings",
+                    "required_repairs",
+                    "reviewer_notes"
+                ],
+                "type": "object"
+            }
+        },
+        "response_byte_limit": {
+            "maximum": 16384,
+            "minimum": 1024,
+            "type": "integer"
+        },
+        "review_question": {
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+        },
+        "review_type": {
+            "maxLength": 80,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$",
+            "type": "string"
+        }
+    },
+    "required": [
+        "protocol_version",
+        "handoff_id",
+        "originating_head",
+        "objective_id",
+        "review_type",
+        "request_status",
+        "authoritative_contracts",
+        "implementation_evidence",
+        "review_question",
+        "constraints",
+        "evidence_declaration",
+        "response_byte_limit",
+        "required_reviewer_output_schema"
+    ],
+    "type": "object"
+}

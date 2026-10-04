@@ -1,5 +1,18 @@
 # Onboarding Intervention Decision Lab
 
+**ARCHIVED / FINALIZED — 2026-10-04 (informative, non-normative).** DLAB Slice 1
+is finalized as a portfolio/research artifact. Manual/external Slice 1 acceptance
+was reached on **2026-09-06** at `db507f05928d07f39044a64171cfbe6af1769502`.
+The experimental autonomous supervisor transport proof was not completed and is
+intentionally discontinued. Its preserved `HUMAN_GATE / TRANSPORT_UNCONFIRMED /
+verdict=null` state is historical evidence, not an outstanding Slice 1 requirement.
+No canonical/hidden execution or real brokerage deployment is claimed.
+No further development is planned unless the owner explicitly reopens the project.
+
+Start with [durable project state](docs/PROJECT_STATE.md) for commit anchors,
+review evidence and recovery guidance, and the [finalization decision](docs/decisions/2026-10-04-finalization.md)
+for the archive boundary. Frozen product authority remains the Contract Bundle.
+
 Checkpoints 1–6 implement the frozen **v0.2.7** Slice 1 workflow with
 explicit non-secret fixtures: contract validation, population/journey construction,
 analyst release, primary ITT, freeze, authorized oracle access and comparison.
